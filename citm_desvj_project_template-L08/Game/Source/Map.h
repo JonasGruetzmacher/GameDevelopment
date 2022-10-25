@@ -142,6 +142,10 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadAllLayers(pugi::xml_node mapNode);
 
+	bool LoadCollisions(pugi::xml_node& node);
+	bool LoadObjectGroup(pugi::xml_node& node);
+	bool LoadAllObjectGroups(pugi::xml_node mapNode);
+
 	// L06: DONE 2
 	TileSet* GetTilesetFromTileId(int gid) const;
 

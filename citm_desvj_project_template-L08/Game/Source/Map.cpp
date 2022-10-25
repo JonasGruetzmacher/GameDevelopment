@@ -193,9 +193,11 @@ bool Map::Load()
     
     // L07 DONE 3: Create colliders
     // Later you can create a function here to load and create the colliders from the map
-    app->physics->CreateRectangle(224 + 128, 543 + 32, 256, 64, STATIC);
-    app->physics->CreateRectangle(352 + 64, 384 + 32, 128, 64, STATIC);
-    app->physics->CreateRectangle(256, 704 + 32, 576, 64, STATIC);
+    if (ret == true)
+    {
+        ret = LoadAllObjectGroups(mapFileXML.child("map"));
+    }
+    
 
     if(ret == true)
     {
@@ -333,6 +335,65 @@ bool Map::LoadAllLayers(pugi::xml_node mapNode) {
     }
 
     return ret;
+}
+
+bool Map::LoadCollisions(pugi::xml_node& node)
+{
+    bool ret = true;
+
+    for (pugi::xml_node objectNode = node.child("object"); objectNode; objectNode = objectNode.next_sibling("object"))
+    {
+        int x = objectNode.attribute("x").as_int();
+        int y = objectNode.attribute("y").as_int();
+        int width = objectNode.attribute("width").as_int();
+        int height = objectNode.attribute("height").as_int();
+        SString shape = objectNode.first_child().name();
+        LOG(objectNode.first_child().name());
+        if (shape == "ellipse")
+        {
+            LOG("ellipse");
+            app->physics->CreateRectangle(x + width / 2, y + height / 2, width, height, STATIC);
+        }
+        else
+        {
+            LOG("rect");
+            app->physics->CreateRectangle(x + width/2, y + height/2, width, height, STATIC);
+        }
+        
+    }
+
+    return ret;
+}
+
+bool Map::LoadObjectGroup(pugi::xml_node& node)
+{
+    bool ret = true;
+    SString name = node.attribute("name").as_string();
+    bool isColliders = name == "Collisions";
+    if (isColliders)
+    {
+        LOG("TEST");
+        LoadCollisions(node);
+    }
+    return ret;
+}
+
+bool Map::LoadAllObjectGroups(pugi::xml_node mapNode)
+{
+    bool ret = true;
+
+    for (pugi::xml_node groupNode = mapNode.child("objectgroup"); groupNode && ret; groupNode = groupNode.next_sibling("objectgroup"))
+    {
+        //Load the layer
+        //MapLayer* mapLayer = new MapLayer();
+        ret = LoadObjectGroup(groupNode);
+
+        //add the objectgroup to the map
+        //mapData.maplayers.Add(mapLayer);
+    }
+
+    return ret;
+
 }
 
 // L06: DONE 6: Load a group of properties from a node and fill a list with it
