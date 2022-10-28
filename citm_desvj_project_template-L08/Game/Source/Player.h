@@ -6,7 +6,12 @@
 #include "SDL/include/SDL.h"
 
 struct SDL_Texture;
-
+enum _moveState {
+	MS_LEFT,
+	MS_RIGHT,
+	MS_IDLE,
+	MS_JUMP
+};
 class Player : public Entity
 {
 public:
@@ -33,7 +38,12 @@ private:
 
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
+	_moveState moveState;
 
+	void Move();
+	
 };
+
+
 
 #endif // __PLAYER_H__

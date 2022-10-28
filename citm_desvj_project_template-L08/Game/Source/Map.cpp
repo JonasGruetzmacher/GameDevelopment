@@ -348,15 +348,12 @@ bool Map::LoadCollisions(pugi::xml_node& node)
         int width = objectNode.attribute("width").as_int();
         int height = objectNode.attribute("height").as_int();
         SString shape = objectNode.first_child().name();
-        LOG(objectNode.first_child().name());
         if (shape == "ellipse")
         {
-            LOG("ellipse");
             app->physics->CreateRectangle(x + width / 2, y + height / 2, width, height, STATIC);
         }
         else
         {
-            LOG("rect");
             app->physics->CreateRectangle(x + width/2, y + height/2, width, height, STATIC);
         }
         
@@ -372,7 +369,6 @@ bool Map::LoadObjectGroup(pugi::xml_node& node)
     bool isColliders = name == "Collisions";
     if (isColliders)
     {
-        LOG("TEST");
         LoadCollisions(node);
     }
     return ret;
