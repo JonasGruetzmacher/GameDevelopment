@@ -198,6 +198,17 @@ bool Map::Load()
         ret = LoadAllObjectGroups(mapFileXML.child("map"));
     }
     
+    PhysBody* c1 = app->physics->CreateRectangle(224 + 128, 543 + 32, 256, 64, STATIC);
+    // L07 DONE 7: Assign collider type
+    c1->ctype = ColliderType::PLATFORM;
+
+    PhysBody* c2 = app->physics->CreateRectangle(352 + 64, 384 + 32, 128, 64, STATIC);
+    // L07 DONE 7: Assign collider type
+    c2->ctype = ColliderType::PLATFORM;
+
+    PhysBody* c3 = app->physics->CreateRectangle(256, 704 + 32, 576, 64, STATIC);
+    // L07 DONE 7: Assign collider type
+    c3->ctype = ColliderType::PLATFORM;
 
     if(ret == true)
     {

@@ -39,6 +39,13 @@ bool Player::Start() {
 
 	// L07 DONE 5: Add physics to the player - initialize physics body
 	pbody = app->physics->CreateCircle(position.x+16, position.y+16, 16, bodyType::DYNAMIC);
+
+	pbody->listener = this;
+
+	pbody->ctype = ColliderType::PLAYER;
+
+	pickCoinFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
+
 	moveState = MS_IDLE;
 	return true;
 }
@@ -71,7 +78,9 @@ bool Player::Update()
 		moveState = MS_IDLE;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
-		moveState = MS_JUMP;
+		pbody->body->ApplyLinearImpulse(b2Vec2(0, -7), pbody->body->GetWorldCenter(), true);
+
+		//moveState = MS_JUMP;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP) {
 		moveState = MS_IDLE;
@@ -152,4 +161,25 @@ void Player::Move() {
 	impulseX =  (desiredVel - vel.x);
 	pbody->body->ApplyLinearImpulse(b2Vec2(impulseX, impulseY), pbody->body->GetWorldCenter(), true);
 	
+}
+void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
+
+	// L07 DONE 7: Detect the type of collision
+
+	switch (physB->ctype)
+	{
+	case ColliderType::ITEM:
+		LOG("Collision ITEM");
+		app->audio->PlayFx(pickCoinFxId);
+		break;
+	case ColliderType::PLATFORM:
+		LOG("Collision PLATFORM");
+		break;
+	case ColliderType::UNKNOWN:
+		LOG("Collision UNKNOWN");
+		break;
+	}
+
+
+
 }
