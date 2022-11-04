@@ -50,21 +50,20 @@ bool Player::Start() {
 	return true;
 }
 
-void isjumping(int jumpspeed) {
+void Player::Jump(float jumpImpulse = 7) {
+	if (jump < 2) {
+		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+		pbody->body->ApplyLinearImpulse(b2Vec2(0, -7), pbody->body->GetWorldCenter(), true);
+		jump++;
+	}
+
 	
 }
 
 bool Player::Update()
 {
 
-	// L07 DONE 5: Add physics to the player - updated player position using physics
-
-	int speed = 10;
-	int jumpspeed = 10;
-
-	//b2Vec2 vel = b2Vec2(0, -GRAVITY_Y);
-
-	
+	// L07 DONE 5: Add physics to the player - updated player position using physics	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveState = MS_LEFT;
 	}
@@ -78,16 +77,7 @@ bool Player::Update()
 		moveState = MS_IDLE;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
-		if (jump < 2) {
-			if (jump < 1) {
-				pbody->body->ApplyLinearImpulse(b2Vec2(0, -7), pbody->body->GetWorldCenter(), true);
-				jump++;
-			}
-			else {
-				pbody->body->ApplyLinearImpulse(b2Vec2(0, -3), pbody->body->GetWorldCenter(), true);
-				jump++;
-			}
-		}
+		Jump();
 
 		//moveState = MS_JUMP;
 	}
@@ -95,39 +85,8 @@ bool Player::Update()
 		moveState = MS_IDLE;
 	}
 	Move();
-	/*
-	//L02: DONE 4: modify the position of the player using arrow keys and render the texture
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-
-		vel = b2Vec2(0, -jumpspeed);
 
 
-
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
-		//
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		vel = b2Vec2(-speed, -GRAVITY_Y);
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			vel = b2Vec2(-speed, -jumpspeed);
-
-		}
-	}
-
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		vel = b2Vec2(speed, -GRAVITY_Y);
-		if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
-			vel = b2Vec2(speed, -jumpspeed);
-
-		}
-	}
-
-	//Set the velocity of the pbody of the player
-	pbody->body->SetLinearVelocity(vel);
-	*/
 	//Update player position in pixels
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;

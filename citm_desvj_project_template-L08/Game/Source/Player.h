@@ -45,6 +45,8 @@ private:
 	int pickCoinFxId;
 
 	void Move();
+
+	void Jump(float impulse);
 	
 };
 
