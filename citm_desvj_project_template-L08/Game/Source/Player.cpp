@@ -40,7 +40,7 @@ bool Player::Start() {
 	// L07 DONE 5: Add physics to the player - initialize physics body
 	pbody = app->physics->CreateCircle(position.x+16, position.y+16, 16, bodyType::DYNAMIC);
 
-	pbody->listener = this;
+	//pbody->listener = this;
 
 	pbody->ctype = ColliderType::PLAYER;
 
