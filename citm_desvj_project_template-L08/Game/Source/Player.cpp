@@ -53,7 +53,7 @@ bool Player::Start() {
 	return true;
 }
 
-void Player::Jump(float jumpImpulse = 10) {
+void Player::Jump(float jumpImpulse = 15) {
 	if (jump < 2) {
 		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 		float mass = pbody->body->GetMass();
@@ -90,8 +90,7 @@ bool Player::Update()
 		LOG(tests.GetString());
 
 	}
-	app->render->camera.x = -position.x-100;
-	app->render->camera.y = -position.y*3+500;
+	
 	Move();
 	
 
@@ -99,6 +98,9 @@ bool Player::Update()
 	//Update player position in pixels
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x)-8;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y)-8;
+
+	app->render->camera.x = -position.x * 1.5 - 100;
+	app->render->camera.y = -position.y * 3 + 500;
 
 	app->render->DrawTexture(texture, position.x, position.y);
 
