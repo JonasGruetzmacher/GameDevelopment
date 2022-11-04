@@ -90,7 +90,10 @@ bool Player::Update()
 		LOG(tests.GetString());
 
 	}
+	app->render->camera.x = -position.x-100;
+	app->render->camera.y = -position.y*3+500;
 	Move();
+	
 
 
 	//Update player position in pixels
