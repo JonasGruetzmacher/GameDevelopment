@@ -40,7 +40,7 @@ bool Player::Start() {
 	// L07 DONE 5: Add physics to the player - initialize physics body
 	pbody = app->physics->CreateCircle(position.x+16, position.y+16, 16, bodyType::DYNAMIC);
 
-	//pbody->listener = this;
+	pbody->listener = this;
 
 	pbody->ctype = ColliderType::PLAYER;
 
@@ -78,7 +78,16 @@ bool Player::Update()
 		moveState = MS_IDLE;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
-		pbody->body->ApplyLinearImpulse(b2Vec2(0, -7), pbody->body->GetWorldCenter(), true);
+		if (jump < 2) {
+			if (jump < 1) {
+				pbody->body->ApplyLinearImpulse(b2Vec2(0, -7), pbody->body->GetWorldCenter(), true);
+				jump++;
+			}
+			else {
+				pbody->body->ApplyLinearImpulse(b2Vec2(0, -3), pbody->body->GetWorldCenter(), true);
+				jump++;
+			}
+		}
 
 		//moveState = MS_JUMP;
 	}
@@ -174,9 +183,11 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
+		jump = 0;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
+		jump = 0;
 		break;
 	}
 
