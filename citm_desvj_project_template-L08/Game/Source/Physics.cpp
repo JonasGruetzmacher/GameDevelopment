@@ -98,6 +98,7 @@ PhysBody* Physics::CreateRectangle(int x, int y, int width, int height, bodyType
 	b->SetUserData(pbody);
 	pbody->width = width * 0.5f;
 	pbody->height = height * 0.5f;
+	
 
 	return pbody;
 }
@@ -135,6 +136,7 @@ PhysBody* Physics::CreateCircle(int x, int y, int radious, bodyType type)
 	b->SetUserData(pbody);
 	pbody->width = radious * 0.5f;
 	pbody->height = radious * 0.5f;
+	
 
 	// Return our PhysBody class
 	return pbody;

@@ -38,11 +38,14 @@ bool Player::Start() {
 	texture = app->tex->Load(texturePath);
 
 	// L07 DONE 5: Add physics to the player - initialize physics body
-	pbody = app->physics->CreateCircle(position.x+16, position.y+16, 16, bodyType::DYNAMIC);
+	pbody = app->physics->CreateRectangle(position.x, position.y, 8,16, bodyType::DYNAMIC);
+	pbody->body->SetFixedRotation(true);
+	
 
 	pbody->listener = this;
 
 	pbody->ctype = ColliderType::PLAYER;
+
 
 	pickCoinFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
 
@@ -50,10 +53,11 @@ bool Player::Start() {
 	return true;
 }
 
-void Player::Jump(float jumpImpulse = 7) {
+void Player::Jump(float jumpImpulse = 10) {
 	if (jump < 2) {
 		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
-		pbody->body->ApplyLinearImpulse(b2Vec2(0, -7), pbody->body->GetWorldCenter(), true);
+		float mass = pbody->body->GetMass();
+		pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpImpulse * mass), pbody->body->GetWorldCenter(), true);
 		jump++;
 	}
 
@@ -78,18 +82,20 @@ bool Player::Update()
 	}
 	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
 		Jump();
-
-		//moveState = MS_JUMP;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_UP) {
-		moveState = MS_IDLE;
+	if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) {
+		b2Fixture* test = (pbody->body->GetFixtureList());
+		
+		SString tests = SString(test->GetDensity());
+		LOG(tests.GetString());
+
 	}
 	Move();
 
 
 	//Update player position in pixels
-	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 16;
-	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 16;
+	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x)-8;
+	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y)-8;
 
 	app->render->DrawTexture(texture, position.x, position.y);
 
@@ -107,25 +113,20 @@ void Player::Move() {
 	float desiredVel = 0;
 	float impulseX = 0;
 	float impulseY = 0;
-	vel.y = -GRAVITY_Y;
 	switch (moveState)
 	{
 		case MS_LEFT: 
-			desiredVel = -5;
+			desiredVel = -speed;
 			break;
 		case MS_RIGHT:
-			desiredVel = 5;
+			desiredVel = speed;
 			break;
 		case MS_IDLE: 
 			desiredVel = 0;
 			break;
-		case MS_JUMP: 
-			impulseY = -7;
-			break;
 		default:
 			break;
 	}
-	//pbody->body->SetLinearVelocity(vel);
 	impulseX =  (desiredVel - vel.x);
 	pbody->body->ApplyLinearImpulse(b2Vec2(impulseX, impulseY), pbody->body->GetWorldCenter(), true);
 	
