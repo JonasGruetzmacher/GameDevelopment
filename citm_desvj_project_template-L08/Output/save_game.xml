@@ -9,6 +9,6 @@
 	<entitymanager />
 	<map />
 	<renderer>
-		<camera x="-129" y="0" />
+		<camera x="-454" y="-433" />
 	</renderer>
 </save_state>

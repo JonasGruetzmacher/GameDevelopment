@@ -80,7 +80,7 @@ bool Player::Update()
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveState = MS_IDLE;
 	}
-	if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		Jump();
 	}
 	if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) {
@@ -133,6 +133,7 @@ void Player::Move() {
 			break;
 	}
 	impulseX =  (desiredVel - vel.x);
+	float mass = pbody->body->GetMass();
 	pbody->body->ApplyLinearImpulse(b2Vec2(impulseX, impulseY), pbody->body->GetWorldCenter(), true);
 	
 }
@@ -154,7 +155,19 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("Collision UNKNOWN");
 		jump = 0;
 		break;
+	case ColliderType::WALL:
+		LOG("Collision WALL");
+		break;
+	case ColliderType::WATER:
+		position.x = parameters.attribute("x").as_int();
+		position.y = parameters.attribute("y").as_int();
+		pbody->body->SetTransform(b2Vec2(position.x, position.y),0);
+		app->render->DrawTexture(texture, position.x, position.y);
+		LOG("Collision WATER");
+		break;
 	}
+
+
 
 
 

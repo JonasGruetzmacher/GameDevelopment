@@ -8751,13 +8751,24 @@
   </data>
  </layer>
  <objectgroup id="5" name="Collisions">
-  <object id="18" x="2024" y="222.667" width="29.3333" height="664"/>
-  <object id="21" x="128.333" y="328.333" width="184" height="6.25"/>
-  <object id="22" x="360.667" y="288" width="102.333" height="1.66667"/>
-  <object id="23" x="480" y="232.667" width="71.6667" height="2.33333"/>
-  <object id="24" x="328.333" y="192" width="111.333" height="3"/>
-  <object id="26" x="98.6667" y="0" width="3.33333" height="392"/>
-  <object id="27" x="101.818" y="385.455" width="588.909" height="2.90909"/>
-  <object id="28" x="689.455" y="0.363636" width="4.18182" height="387.091"/>
+  <object id="21" class="Platform" x="128.333" y="328.333" width="184" height="6.25">
+   <properties>
+    <property name="type" value="Platform"/>
+   </properties>
+  </object>
+  <object id="22" class="Platform" x="360.667" y="288" width="102.333" height="1.66667">
+   <properties>
+    <property name="type" value="Platform"/>
+   </properties>
+  </object>
+  <object id="23" class="Platform" x="481" y="232.667" width="71.6667" height="2.33333"/>
+  <object id="24" class="Platform" x="328.333" y="192" width="111.333" height="3">
+   <properties>
+    <property name="type" value="Platform"/>
+   </properties>
+  </object>
+  <object id="26" class="Wall" x="98.6667" y="0" width="3.33333" height="392"/>
+  <object id="27" class="Water" x="101.818" y="385.455" width="588.909" height="2.90909"/>
+  <object id="28" class="Wall" x="689.455" y="0.363636" width="4.18182" height="387.091"/>
  </objectgroup>
 </map>

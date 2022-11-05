@@ -347,16 +347,27 @@ bool Map::LoadCollisions(pugi::xml_node& node)
         int width = objectNode.attribute("width").as_int();
         int height = objectNode.attribute("height").as_int();
         SString shape = objectNode.first_child().name();
-        if (shape == "ellipse")
+        SString type = objectNode.attribute("class").as_string();
+
+        PhysBody* pbody = app->physics->CreateRectangle(x + width / 2, y + height / 2, width, height, STATIC);
+        
+        if (type == "Platform")
         {
-            PhysBody* pbody = app->physics->CreateRectangle(x + width / 2, y + height / 2, width, height, STATIC);
             pbody->ctype = ColliderType::PLATFORM;
+        }
+        else if (type == "Water") 
+        {
+            pbody->ctype = ColliderType::WATER;
+        }
+        else if (type == "Wall")
+        {
+            pbody->ctype = ColliderType::WALL;
         }
         else
         {
-            PhysBody* pbody = app->physics->CreateRectangle(x + width / 2, y + height / 2, width, height, STATIC);
-            pbody->ctype = ColliderType::PLATFORM;
+            pbody->ctype = ColliderType::UNKNOWN;
         }
+
         
     }
 
