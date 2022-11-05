@@ -54,7 +54,7 @@ bool Player::Start() {
 }
 
 void Player::Jump(float jumpImpulse = 15) {
-	if (jump < 2) {
+	if (jump < 2 || godMode) {
 		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 		float mass = pbody->body->GetMass();
 		pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpImpulse * mass), pbody->body->GetWorldCenter(), true);
@@ -85,10 +85,12 @@ bool Player::Update()
 	}
 	if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) {
 		b2Fixture* test = (pbody->body->GetFixtureList());
-		
+
 		SString tests = SString(test->GetDensity());
 		LOG(tests.GetString());
-
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
+		godMode = !godMode;
 	}
 	
 	Move();
@@ -160,7 +162,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::WATER:
 		LOG("Collision WATER");
-		Die();
+		if (!godMode) {
+			Die();
+		}
 		
 		break;
 	}

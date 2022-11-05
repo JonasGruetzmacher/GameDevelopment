@@ -50,6 +50,8 @@ private:
 	int pickCoinFxId;
 	int speed = 8;
 
+	bool godMode = false;
+
 	void Move();
 
 	void Jump(float impulse);
