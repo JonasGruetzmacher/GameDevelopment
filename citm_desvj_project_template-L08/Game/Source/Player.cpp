@@ -89,9 +89,6 @@ bool Player::Update()
 		SString tests = SString(test->GetDensity());
 		LOG(tests.GetString());
 	}
-	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) {
-		godMode = !godMode;
-	}
 	
 	Move();
 	
@@ -102,7 +99,7 @@ bool Player::Update()
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y)-8;
 
 	app->render->camera.x = -position.x * 1.5 - 100;
-	app->render->camera.y = -position.y * 3 + 500;
+	app->render->camera.y = -position.y * 3 + 350;
 
 	app->render->DrawTexture(texture, position.x, position.y);
 

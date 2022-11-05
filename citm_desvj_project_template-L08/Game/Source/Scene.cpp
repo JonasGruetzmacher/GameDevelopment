@@ -78,7 +78,10 @@ bool Scene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
-
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		app->LoadGameRequest();
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+		player->godMode = !player->godMode;
 	
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
