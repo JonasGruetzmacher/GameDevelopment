@@ -46,18 +46,17 @@ bool Player::Start() {
 
 	pbody->ctype = ColliderType::PLAYER;
 
-
-	pickCoinFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
-
 	moveState = MS_IDLE;
 	return true;
 }
 
 void Player::Jump(float jumpImpulse = 15) {
 	if (jump < 2 || godMode) {
+		app->audio->PlayFx(1);
 		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 		float mass = pbody->body->GetMass();
 		pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpImpulse * mass), pbody->body->GetWorldCenter(), true);
+		
 		jump++;
 	}
 
@@ -169,7 +168,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 bool Player::Die() {
 	LOG("Player died");
-
+	app->audio->PlayFx(2);
 	app->LoadGameRequest();
 
 	return true;

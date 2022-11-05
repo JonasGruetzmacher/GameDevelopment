@@ -29,13 +29,19 @@ public:
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
 
+	
+
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
 private:
 
+	void LoadAllFx(pugi::xml_node&);
+
 	_Mix_Music* music;
 	List<Mix_Chunk *>	fx;
+	int musicVolume;
+	int fxVolume;
 };
 
 #endif // __AUDIO_H__

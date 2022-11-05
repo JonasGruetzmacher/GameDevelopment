@@ -17,8 +17,12 @@
   </window>
 
   <audio>
-    <music volume="128"/>
+    <music volume="128" path="Assets/Audio/Music/GameDevMusic.mp3"/>
     <fx volume="128"/>
+	<sounds>
+        <fx name="jump" path="Assets/Audio/Fx/jump.wav"/>
+		<fx name="death" path="Assets/Audio/Fx/death.wav"/>
+	</sounds>
   </audio>
 
   <!-- L02: DONE: Add an element for the entity manager and add the player parameters -->
