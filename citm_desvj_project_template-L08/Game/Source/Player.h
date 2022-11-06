@@ -4,7 +4,7 @@
 #include "Entity.h"
 #include "Point.h"
 #include "SDL/include/SDL.h"
-
+#include "Animation.h"
 
 struct SDL_Texture;
 enum _moveState {
