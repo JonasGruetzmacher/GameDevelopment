@@ -1,4 +1,5 @@
-/*#include "Menu.h"
+/*
+#include "Menu.h"
 #include "Player.h"
 #include "App.h"
 #include "Scene.h"
@@ -37,13 +38,14 @@ bool Menu::Start()
 	//P1.selector = App->particles->P1ind;
 	//App->particles->AddParticle(P1.selector, p1x, y, 0, P1.speed);
 
-	P1.Locked = false;
+	pbody.Locked = false;
 
 	return ret;
 }
 
 Update_Status Menu::Update()
 {
+
 }
 
 // Update: draw background

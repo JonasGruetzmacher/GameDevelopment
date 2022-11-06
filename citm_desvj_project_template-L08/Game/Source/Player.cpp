@@ -29,6 +29,10 @@ bool Player::Awake() {
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
 
+	idle.PushBack({ 1,57,7,63 });
+	idle.PushBack({ 9,57,15,63 });
+	idle.PushBack({ 17,58,23,63 });
+	idle.PushBack({ 25,58,31,63 });
 	return true;
 }
 
@@ -69,6 +73,10 @@ bool Player::Update()
 	// L07 DONE 5: Add physics to the player - updated player position using physics	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveState = MS_LEFT;
+	}
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+		moveState = MS_IDLE;
+		currentAnimation = &idle;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveState = MS_IDLE;

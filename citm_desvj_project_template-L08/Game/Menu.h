@@ -1,4 +1,4 @@
-#ifndef __MENU_H__
+/*#ifndef __MENU_H__
 #define __MENU_H__
 
 #include "EntityManager.h"
@@ -56,3 +56,4 @@ public:
 };
 
 #endif
+*/
