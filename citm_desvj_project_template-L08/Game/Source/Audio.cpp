@@ -55,6 +55,10 @@ bool Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
+	PlayMusic(config.child("music").attribute("path").as_string());
+
+	LoadAllFx(config.child("sounds"));
+
 	return ret;
 }
 
@@ -108,7 +112,7 @@ bool Audio::PlayMusic(const char* path, float fadeTime)
 	}
 
 	music = Mix_LoadMUS(path);
-
+	LOG("music");
 	if(music == NULL)
 	{
 		LOG("Cannot load music %s. Mix_GetError(): %s\n", path, Mix_GetError());
@@ -132,10 +136,20 @@ bool Audio::PlayMusic(const char* path, float fadeTime)
 				ret = false;
 			}
 		}
+		LOG("Successfully playing %s", path);
 	}
 
-	LOG("Successfully playing %s", path);
+	
 	return ret;
+}
+
+void Audio::LoadAllFx(pugi::xml_node& sounds) {
+	for (pugi::xml_node fxNode = sounds.child("fx"); fxNode; fxNode = fxNode.next_sibling("fx"))
+    {
+        //Load the layer
+		LoadFx(fxNode.attribute("path").as_string());
+        //add the layer to the map
+    }
 }
 
 // Load WAV

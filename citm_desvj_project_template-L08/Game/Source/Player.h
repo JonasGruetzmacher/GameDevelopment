@@ -31,6 +31,13 @@ public:
 
 	void OnCollision(PhysBody* physA, PhysBody* physB);
 
+	bool LoadState(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&);
+
+	bool Die();
+
+	bool godMode = false;
+
 public:
 
 private:
@@ -45,6 +52,8 @@ private:
 	int jump = 0;
 	int pickCoinFxId;
 	int speed = 8;
+
+	
 
 	void Move();
 
