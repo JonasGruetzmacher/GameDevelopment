@@ -46,7 +46,7 @@ bool Player::Start() {
 	texture = app->tex->Load(texturePath);
 
 	// L07 DONE 5: Add physics to the player - initialize physics body
-	pbody = app->physics->CreateRectangle(position.x, position.y, 8, 16, bodyType::DYNAMIC);
+	pbody = app->physics->CreateRectangle(position.x, position.y, 8, 8, bodyType::DYNAMIC);
 	pbody->body->SetFixedRotation(true);
 
 
@@ -112,8 +112,8 @@ bool Player::Update()
 
 
 	//Update player position in pixels
-	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 8;
-	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 8;
+	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 4;
+	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 4;
 
 	app->render->camera.x = -position.x * 1.5 - 100;
 	app->render->camera.y = -position.y * 3 + 350;
