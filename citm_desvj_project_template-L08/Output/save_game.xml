@@ -8,13 +8,13 @@
 	<scene />
 	<entitymanager>
 		<entities>
-			<Player x="28.1672173" y="31.9850063" jump="0">
+			<Player x="13.6649952" y="11.085001" jump="2">
 				<velocity x="0" y="0" />
 			</Player>
 		</entities>
 	</entitymanager>
 	<map />
 	<renderer>
-		<camera x="-509" y="-583" />
+		<camera x="-292" y="44" />
 	</renderer>
 </save_state>
