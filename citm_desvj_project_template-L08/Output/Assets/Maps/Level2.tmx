@@ -17508,7 +17508,7 @@
   <object id="28" class="Wall" x="689.455" y="0.363636" width="4.18182" height="387.091"/>
   <object id="29" class="Platform" x="248.182" y="136" width="39.8182" height="1.09091"/>
   <object id="30" class="Platform" x="120.091" y="176" width="24" height="1.36364"/>
-  <object id="31" class="Wall" x="120.455" y="121.148" width="7.45455" height="39.9432"/>
+  <object id="31" class="Wall" x="120.455" y="121.148" width="7.45455" height="37.7614"/>
   <object id="32" class="Platform" x="120.307" y="120" width="31.2727" height="1"/>
   <object id="33" class="Wall" x="519.938" y="232.688" width="1.1875" height="2.75"/>
   <object id="34" class="Wall" x="382.849" y="192.313" width="1.1875" height="2.75"/>
