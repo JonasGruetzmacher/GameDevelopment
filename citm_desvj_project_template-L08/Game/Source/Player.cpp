@@ -33,10 +33,10 @@ bool Player::Awake() {
 	idle.PushBack({ 8,56,8,8 });
 	idle.PushBack({ 16,57,8,8 });
 	idle.PushBack({ 24,57,8,8 });
-	//idleleft.Pushback({ 0,66,6,72 });
-	//idleleft.Pushback({ 8,66,14,72 });
-	//idleleft.Pushback({ 16,67,22,72 });
-	//idleleft.Pushback({ 24,67,6,72 });
+	idleleft.Pushback({ 0,66,6,72 });
+	idleleft.Pushback({ 8,66,14,72 });
+	idleleft.Pushback({ 16,67,22,72 });
+	idleleft.Pushback({ 24,67,6,72 });
 	return true;
 }
 

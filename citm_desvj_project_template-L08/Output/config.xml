@@ -27,7 +27,7 @@
 
   <!-- L02: DONE: Add an element for the entity manager and add the player parameters -->
   <scene>
-    <player x="150" y="300" texturepath="C:\Users\oscar\OneDrive\Desktop\github\GameDevelopment\citm_desvj_project_template-L08\Output\Assets\Textures\Paper-Pixels-8x8/Player.png"/>
+    <player x="150" y="300" texturepath="GameDevelopment\citm_desvj_project_template-L08\Output\Assets\Textures\Paper-Pixels-8x8/Player.png"/>
    <!-- <item x="256" y="515" texturepath="Assets/Textures/goldCoin.png"/> -->
 
   </scene>
