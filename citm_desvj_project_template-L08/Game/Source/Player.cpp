@@ -33,6 +33,10 @@ bool Player::Awake() {
 	idle.PushBack({ 9,57,15,63 });
 	idle.PushBack({ 17,58,23,63 });
 	idle.PushBack({ 25,58,31,63 });
+	//idleleft.Pushback({ 0,66,6,72 });
+	//idleleft.Pushback({ 8,66,14,72 });
+	//idleleft.Pushback({ 16,67,22,72 });
+	//idleleft.Pushback({ 24,67,6,72 });
 	return true;
 }
 
@@ -73,6 +77,7 @@ bool Player::Update()
 	// L07 DONE 5: Add physics to the player - updated player position using physics	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveState = MS_LEFT;
+		currentAnimation = &idle;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveState = MS_IDLE;
@@ -80,15 +85,19 @@ bool Player::Update()
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveState = MS_IDLE;
+		currentAnimation = &idle;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		moveState = MS_RIGHT;
+		currentAnimation = &idle;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+		currentAnimation = &idle;
 		moveState = MS_IDLE;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		Jump();
+		currentAnimation = &idle;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) {
 		b2Fixture* test = (pbody->body->GetFixtureList());
@@ -109,7 +118,7 @@ bool Player::Update()
 	app->render->camera.y = -position.y * 3 + 350;
 
 	app->render->DrawTexture(texture, position.x, position.y);
-
+	//currentAnimation->Update();
 	return true;
 }
 
