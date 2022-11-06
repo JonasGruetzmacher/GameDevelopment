@@ -44,7 +44,13 @@ private:
 	//L02: DONE 1: Declare player parameters
 	SDL_Texture* texture;
 	const char* texturePath;
+<<<<<<< Updated upstream
 
+=======
+	Animation* currentAnimation = nullptr;
+	Animation idle;
+	Animation idleleft;
+>>>>>>> Stashed changes
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 	_moveState moveState;
