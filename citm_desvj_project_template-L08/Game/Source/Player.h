@@ -1,9 +1,12 @@
+
+
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 
 #include "Entity.h"
 #include "Point.h"
 #include "SDL/include/SDL.h"
+#include "Animation.h"
 
 struct SDL_Texture;
 enum _moveState {
@@ -17,7 +20,7 @@ class Player : public Entity
 public:
 
 	Player();
-	
+
 	virtual ~Player();
 
 	bool Awake();
@@ -44,13 +47,9 @@ private:
 	//L02: DONE 1: Declare player parameters
 	SDL_Texture* texture;
 	const char* texturePath;
-<<<<<<< Updated upstream
-
-=======
 	Animation* currentAnimation = nullptr;
 	Animation idle;
 	Animation idleleft;
->>>>>>> Stashed changes
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 	_moveState moveState;
@@ -58,12 +57,12 @@ private:
 	int pickCoinFxId;
 	int speed = 8;
 
-	
+
 
 	void Move();
 
 	void Jump(float impulse);
-	
+
 };
 
 
