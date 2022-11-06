@@ -29,10 +29,10 @@ bool Player::Awake() {
 	position.y = parameters.attribute("y").as_int();
 	texturePath = parameters.attribute("texturepath").as_string();
 
-	idle.PushBack({ 1,57,7,63 });
-	idle.PushBack({ 9,57,15,63 });
-	idle.PushBack({ 17,58,23,63 });
-	idle.PushBack({ 25,58,31,63 });
+	idle.PushBack({ 0,56,8,8 });
+	idle.PushBack({ 8,56,8,8 });
+	idle.PushBack({ 16,57,8,8 });
+	idle.PushBack({ 24,57,8,8 });
 	//idleleft.Pushback({ 0,66,6,72 });
 	//idleleft.Pushback({ 8,66,14,72 });
 	//idleleft.Pushback({ 16,67,22,72 });
@@ -55,6 +55,7 @@ bool Player::Start() {
 	pbody->ctype = ColliderType::PLAYER;
 
 	moveState = MS_IDLE;
+
 	return true;
 }
 
@@ -73,7 +74,7 @@ void Player::Jump(float jumpImpulse = 15) {
 
 bool Player::Update()
 {
-
+	currentAnimation = &idle;
 	// L07 DONE 5: Add physics to the player - updated player position using physics	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveState = MS_LEFT;
@@ -117,7 +118,8 @@ bool Player::Update()
 	app->render->camera.x = -position.x * 1.5 - 100;
 	app->render->camera.y = -position.y * 3 + 350;
 
-	app->render->DrawTexture(texture, position.x, position.y);
+	currentAnimation->Update();
+	app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
 	//currentAnimation->Update();
 	return true;
 }
