@@ -50,6 +50,8 @@ private:
 	Animation* currentAnimation = nullptr;
 	Animation idle;
 	Animation idleleft;
+	Animation runright;
+	Animation runleft;
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 	_moveState moveState;

@@ -37,6 +37,23 @@ bool Player::Awake() {
 	idleleft.PushBack({ 8,64,8,8 });
 	idleleft.PushBack({ 16,65,8,8 });
 	idleleft.PushBack({ 24,65,8,8 });
+	runright.PushBack({ 0,8,8,8 });
+	runright.PushBack({ 8,8,8,8 });
+	runright.PushBack({ 16,8,8,8 });
+	runright.PushBack({ 24,8,8,8 });
+	runright.PushBack({ 32,8,8,8 });
+	runright.PushBack({ 40,8,8,8 });
+	runright.PushBack({ 48,8,8,8 });
+	runright.PushBack({ 56,8,8,8 });
+	runleft.PushBack({ 0,16,8,8 });
+	runleft.PushBack({ 8,16,8,8 });
+	runleft.PushBack({ 16,16,8,8 });
+	runleft.PushBack({ 24,16,8,8 });
+	runleft.PushBack({ 32,16,8,8 });
+	runleft.PushBack({ 40,16,8,8 });
+	runleft.PushBack({ 48,16,8,8 });
+	runleft.PushBack({ 56,16,8,8 });
+	
 	return true;
 }
 
@@ -78,22 +95,22 @@ bool Player::Update()
 	// L07 DONE 5: Add physics to the player - updated player position using physics	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveState = MS_LEFT;
-		currentAnimation = &idleleft;
+		currentAnimation = &runleft;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveState = MS_IDLE;
-		currentAnimation = &idle;
+		currentAnimation = &runright;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveState = MS_IDLE;
-		currentAnimation = &idleleft;
+		currentAnimation = &runleft;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		moveState = MS_RIGHT;
-		currentAnimation = &idle;
+		currentAnimation = &runright;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		currentAnimation = &idle;
+		currentAnimation = &runright;
 		moveState = MS_IDLE;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
