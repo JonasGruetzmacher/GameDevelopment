@@ -5,7 +5,6 @@
 #include "Point.h"
 #include "SDL/include/SDL.h"
 
-
 struct SDL_Texture;
 enum _moveState {
 	MS_LEFT,

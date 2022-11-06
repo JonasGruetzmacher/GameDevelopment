@@ -28,7 +28,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio();
 	//L07 DONE 2: Add Physics module
 	physics = new Physics();
-	scene = new Scene(false);
+	scene = new Scene();
 	entityManager = new EntityManager();
 	map = new Map();
 
