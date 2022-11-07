@@ -57,13 +57,14 @@ private:
 	_moveState moveState;
 	int jump = 0;
 	int pickCoinFxId;
-	int speed = 8;
+	int speed = 15;
+	int jumpPower = 30;
 
 
 
 	void Move();
 
-	void Jump(float impulse);
+	void Jump();
 
 };
 

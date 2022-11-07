@@ -76,12 +76,12 @@ bool Player::Start() {
 	return true;
 }
 
-void Player::Jump(float jumpImpulse = 15) {
+void Player::Jump() {
 	if (jump < 2 || godMode) {
 		app->audio->PlayFx(1);
 		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 		float mass = pbody->body->GetMass();
-		pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpImpulse * mass), pbody->body->GetWorldCenter(), true);
+		pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpPower * mass), pbody->body->GetWorldCenter(), true);
 
 		jump++;
 	}

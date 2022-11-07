@@ -378,8 +378,8 @@ bool Map::LoadObjectGroup(pugi::xml_node& node)
 {
     bool ret = true;
     SString name = node.attribute("name").as_string();
-    bool isColliders = name == "Collisions";
-    if (isColliders)
+
+    if (name == "Collisions")
     {
         LoadCollisions(node);
     }
