@@ -75,13 +75,16 @@ bool Scene::Update(float dt)
 	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
 	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 		app->SaveGameRequest();
-
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		player->godMode = !player->godMode;
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+		app->audio->IncreaseVolume();
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+		app->audio->DecreaseVolume();
 	
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 

@@ -23,6 +23,10 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void IncreaseVolume();
+
+	void DecreaseVolume();
+
 	// Play a music file
 	bool PlayMusic(const char* path, float fadeTime = DEFAULT_MUSIC_FADE_TIME);
 

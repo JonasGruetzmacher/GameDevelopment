@@ -17,8 +17,8 @@
   </window>
 
   <audio>
-    <music volume="128" path="Assets/Audio/Music/GameDevMusic.mp3"/>
-    <fx volume="128"/>
+    <music volume="10" path="Assets/Audio/Music/GameDevMusic.mp3"/>
+    <fx volume="0"/>
 	<sounds>
         <fx name="jump" path="Assets/Audio/Fx/jump.wav"/>
 		<fx name="death" path="Assets/Audio/Fx/death.wav"/>
