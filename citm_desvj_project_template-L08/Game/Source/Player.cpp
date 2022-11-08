@@ -92,43 +92,62 @@ void Player::Jump(float jumpImpulse = 15) {
 bool Player::Update()
 {
 
-
-	currentAnimation = &idle;
+	if (direction == 1) {
+		currentAnimation = &idle;
+	}
+	else {
+		currentAnimation = &idleleft;
+	}
+	
 
 
 	// L07 DONE 5: Add physics to the player - updated player position using physics	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveState = MS_LEFT;
 		currentAnimation = &runleft;
+		direction = -1;
 
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveState = MS_IDLE;
 		currentAnimation = &runright;
+		direction = 1;
+
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveState = MS_IDLE;
 		currentAnimation = &runleft;
+		direction = -1;
+
 
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		moveState = MS_RIGHT;
 		currentAnimation = &runright;
+		direction = 1;
+
 
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		currentAnimation = &runright;
 		moveState = MS_IDLE;
+		direction = 1;
+
 
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		Jump();
-		currentAnimation = &idle;
+		if (direction == 1) {
+			currentAnimation = &idle;
+		}
+		else {
+			currentAnimation = &idleleft;
+		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) {
 		b2Fixture* test = (pbody->body->GetFixtureList());

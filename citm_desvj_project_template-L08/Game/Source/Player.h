@@ -58,7 +58,7 @@ private:
 	int jump = 0;
 	int pickCoinFxId;
 	int speed = 8;
-
+	int direction = 1;
 
 
 	void Move();
