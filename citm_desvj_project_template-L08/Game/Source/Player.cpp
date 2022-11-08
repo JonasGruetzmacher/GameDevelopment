@@ -22,13 +22,10 @@ Player::~Player() {
 bool Player::Awake() {
 
 	//L02: DONE 1: Initialize Player parameters
-	//pos = position;
-	//texturePath = "Assets/Textures/player/idle1.png";
 
 	//L02: DONE 5: Get Player parameters from XML
 	position.x = parameters.attribute("x").as_int();
 	position.y = parameters.attribute("y").as_int();
-	LOG("TEST");
 	SString name = parameters.attribute("name").as_string();
 	LOG(name.GetString());
 	//texturePath = parameters.child("properties").child("property").attribute("texturepath").as_string();
@@ -36,8 +33,8 @@ bool Player::Awake() {
 
 	idle.PushBack({ 0,56,8,8 });
 	idle.PushBack({ 8,56,8,8 });
-	idle.PushBack({ 16,57,8,8 });
-	idle.PushBack({ 24,57,8,8 });
+	idle.PushBack({ 16,56,8,8 });
+	idle.PushBack({ 24,56,8,8 });
 	idleleft.PushBack({ 0,64,8,8 });
 	idleleft.PushBack({ 8,64,8,8 });
 	idleleft.PushBack({ 16,65,8,8 });

@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "Physics.h"
 #include "Scene.h"
+#include "EntityManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -343,14 +344,14 @@ bool Map::LoadCollisions(pugi::xml_node& node)
 
     for (pugi::xml_node objectNode = node.child("object"); objectNode; objectNode = objectNode.next_sibling("object"))
     {
-        int x = objectNode.attribute("x").as_int();
-        int y = objectNode.attribute("y").as_int();
-        int width = objectNode.attribute("width").as_int();
-        int height = objectNode.attribute("height").as_int();
+        float x = objectNode.attribute("x").as_float();
+        float y = objectNode.attribute("y").as_float();
+        float width = objectNode.attribute("width").as_float();
+        float height = objectNode.attribute("height").as_float();
         SString shape = objectNode.first_child().name();
         SString type = objectNode.attribute("class").as_string();
-
-        PhysBody* pbody = app->physics->CreateRectangle(x + width / 2, y + height / 2, width, height, STATIC);
+        
+        PhysBody* pbody = app->physics->CreateRectangle(round(x + width / 2), round(y + height / 2), round(width), round(height), STATIC);
         
         if (type == "Platform")
         {
@@ -404,6 +405,9 @@ bool Map::LoadEntities(pugi::xml_node& node)
             //app->scene->player->parameters = objectNode;
             app->scene->player->position.x = x;
             app->scene->player->position.y = y;
+           
+           //app->scene->player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+            //app->scene->player->parameters = objectNode;
         }
     }
 
