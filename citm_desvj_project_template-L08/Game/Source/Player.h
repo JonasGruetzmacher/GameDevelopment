@@ -38,6 +38,8 @@ public:
 
 	bool Die();
 
+	bool SetPosition(int x, int y);
+
 	bool godMode = false;
 
 public:

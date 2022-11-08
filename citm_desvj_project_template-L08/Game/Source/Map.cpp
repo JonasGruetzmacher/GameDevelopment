@@ -4,6 +4,7 @@
 #include "Textures.h"
 #include "Map.h"
 #include "Physics.h"
+#include "Scene.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -378,11 +379,34 @@ bool Map::LoadObjectGroup(pugi::xml_node& node)
 {
     bool ret = true;
     SString name = node.attribute("name").as_string();
-
     if (name == "Collisions")
     {
         LoadCollisions(node);
     }
+    if (name == "Entities") {
+        LoadEntities(node);
+    }
+    return ret;
+}
+
+bool Map::LoadEntities(pugi::xml_node& node)
+{
+    bool ret = true;
+
+    for (pugi::xml_node objectNode = node.child("object"); objectNode; objectNode = objectNode.next_sibling("object"))
+    {
+        SString name = objectNode.attribute("name").as_string();
+        if (name == "Player") {
+            int x = objectNode.attribute("x").as_int();
+            int y = objectNode.attribute("y").as_int();
+            int width = objectNode.attribute("width").as_int();
+            int height = objectNode.attribute("height").as_int();
+            //app->scene->player->parameters = objectNode;
+            app->scene->player->position.x = x;
+            app->scene->player->position.y = y;
+        }
+    }
+
     return ret;
 }
 

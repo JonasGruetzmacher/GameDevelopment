@@ -5,6 +5,7 @@
 #include "List.h"
 #include "Point.h"
 
+
 #include "PugiXml\src\pugixml.hpp"
 
 // L04: DONE 2: Create a struct to hold information for a TileSet
@@ -143,6 +144,7 @@ private:
 	bool LoadAllLayers(pugi::xml_node mapNode);
 
 	bool LoadCollisions(pugi::xml_node& node);
+	bool LoadEntities(pugi::xml_node& node);
 	bool LoadObjectGroup(pugi::xml_node& node);
 	bool LoadAllObjectGroups(pugi::xml_node mapNode);
 

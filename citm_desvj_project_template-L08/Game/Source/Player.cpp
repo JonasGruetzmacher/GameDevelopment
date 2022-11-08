@@ -9,6 +9,7 @@
 #include "Point.h"
 #include "Physics.h"
 
+
 Player::Player() : Entity(EntityType::PLAYER)
 {
 	name.Create("Player");
@@ -27,6 +28,10 @@ bool Player::Awake() {
 	//L02: DONE 5: Get Player parameters from XML
 	position.x = parameters.attribute("x").as_int();
 	position.y = parameters.attribute("y").as_int();
+	LOG("TEST");
+	SString name = parameters.attribute("name").as_string();
+	LOG(name.GetString());
+	//texturePath = parameters.child("properties").child("property").attribute("texturepath").as_string();
 	texturePath = parameters.attribute("texturepath").as_string();
 
 	idle.PushBack({ 0,56,8,8 });
@@ -76,6 +81,21 @@ bool Player::Start() {
 	return true;
 }
 
+bool Player::SetPosition(int x, int y) 
+{
+	bool ret = true;
+
+
+	b2Vec2 transform;
+	transform.x = PIXEL_TO_METERS(x);
+	transform.y = PIXEL_TO_METERS(y);
+	pbody->body->SetTransform(transform, 0);
+	jump = 0;
+	pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+
+	return ret;
+}
+
 void Player::Jump() {
 	if (jump < 2 || godMode) {
 		app->audio->PlayFx(1);
@@ -85,8 +105,6 @@ void Player::Jump() {
 
 		jump++;
 	}
-
-
 }
 
 bool Player::Update()
@@ -100,41 +118,29 @@ bool Player::Update()
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveState = MS_LEFT;
 		currentAnimation = &runleft;
-
-
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveState = MS_IDLE;
 		currentAnimation = &runright;
-
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveState = MS_IDLE;
 		currentAnimation = &runleft;
-
-
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		moveState = MS_RIGHT;
 		currentAnimation = &runright;
-
-
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		currentAnimation = &runright;
 		moveState = MS_IDLE;
-
-
 	}
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		Jump();
 		currentAnimation = &idle;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) {
-		b2Fixture* test = (pbody->body->GetFixtureList());
-
-		SString tests = SString(test->GetDensity());
-		LOG(tests.GetString());
+		SetPosition(150,320);
 	}
 
 	Move();
@@ -226,8 +232,8 @@ bool Player::Die() {
 bool Player::LoadState(pugi::xml_node& data)
 {
 	b2Vec2 transform;
-	transform.x = data.attribute("x").as_int() + 0.2;
-	transform.y = data.attribute("y").as_int() + 1;
+	transform.x = data.attribute("x").as_int();
+	transform.y = data.attribute("y").as_int();
 	pbody->body->SetTransform(transform, 0);
 	position.x = METERS_TO_PIXELS(transform.x);
 	position.y = METERS_TO_PIXELS(transform.y);
