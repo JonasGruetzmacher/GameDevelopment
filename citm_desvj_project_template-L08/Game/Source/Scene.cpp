@@ -10,6 +10,7 @@
 
 #include "Defs.h"
 #include "Log.h"
+#include "LogoScene.h"
 
 Scene::Scene() : Module()
 {
@@ -19,6 +20,8 @@ Scene::Scene() : Module()
 // Destructor
 Scene::~Scene()
 {}
+
+
 
 // Called before render is available
 bool Scene::Awake(pugi::xml_node& config)
@@ -44,8 +47,6 @@ bool Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool Scene::Start()
 {
-	//img = app->tex->Load("Assets/Textures/test.png");
-	//app->audio->PlayMusic("Assets/Audio/Music/music_spy.ogg");
 	
 	// L03: DONE: Load map
 	app->map->Load();

@@ -24,8 +24,9 @@ bool Player::Awake() {
 	//L02: DONE 1: Initialize Player parameters
 
 	//L02: DONE 5: Get Player parameters from XML
-	position.x = parameters.attribute("x").as_int();
-	position.y = parameters.attribute("y").as_int();
+	position.x = round(parameters.attribute("x").as_float());
+	position.y = round(parameters.attribute("y").as_int());
+	startPosition = position;
 	SString name = parameters.attribute("name").as_string();
 	LOG(name.GetString());
 	//texturePath = parameters.child("properties").child("property").attribute("texturepath").as_string();
@@ -82,13 +83,8 @@ bool Player::SetPosition(int x, int y)
 {
 	bool ret = true;
 
+	LOG("TESTEST");
 
-	b2Vec2 transform;
-	transform.x = PIXEL_TO_METERS(x);
-	transform.y = PIXEL_TO_METERS(y);
-	pbody->body->SetTransform(transform, 0);
-	jump = 0;
-	pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 
 	return ret;
 }
@@ -159,7 +155,6 @@ bool Player::Update()
 
 bool Player::CleanUp()
 {
-
 	return true;
 }
 
@@ -221,6 +216,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 bool Player::Die() {
 	LOG("Player died");
 	app->audio->PlayFx(2);
+	//SetPosition(startPosition.x, startPosition.y);
 	app->LoadGameRequest();
 
 	return true;

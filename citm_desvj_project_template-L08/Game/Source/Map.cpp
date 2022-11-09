@@ -344,14 +344,14 @@ bool Map::LoadCollisions(pugi::xml_node& node)
 
     for (pugi::xml_node objectNode = node.child("object"); objectNode; objectNode = objectNode.next_sibling("object"))
     {
-        float x = objectNode.attribute("x").as_float();
-        float y = objectNode.attribute("y").as_float();
-        float width = objectNode.attribute("width").as_float();
-        float height = objectNode.attribute("height").as_float();
+        float x = round(objectNode.attribute("x").as_float());
+        float y = round(objectNode.attribute("y").as_float());
+        float width = round(objectNode.attribute("width").as_float());
+        float height = round(objectNode.attribute("height").as_float());
         SString shape = objectNode.first_child().name();
         SString type = objectNode.attribute("class").as_string();
         
-        PhysBody* pbody = app->physics->CreateRectangle(round(x + width / 2), round(y + height / 2), round(width), round(height), STATIC);
+        PhysBody* pbody = app->physics->CreateRectangle(x + round(width / 2), y +round(height / 2), width, height, STATIC);
         
         if (type == "Platform")
         {

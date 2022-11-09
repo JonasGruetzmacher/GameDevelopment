@@ -5,10 +5,11 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Scene.h"
-#include "Scene.h"
+#include "LogoScene.h"
 #include "EntityManager.h"
 #include "Map.h"
 #include "Physics.h"
+#include "FadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -24,10 +25,12 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	input = new Input();
 	win = new Window();
 	render = new Render();
+	fadeToBlack = new FadeToBlack();
 	tex = new Textures();
 	audio = new Audio();
 	//L07 DONE 2: Add Physics module
 	physics = new Physics();
+	logoScene = new LogoScene();
 	scene = new Scene();
 	entityManager = new EntityManager();
 	map = new Map();
@@ -40,10 +43,13 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	//L07 DONE 2: Add Physics module
 	AddModule(physics);
-	AddModule(scene);
+	
+	AddModule(scene);	
+	
 	AddModule(entityManager);
 	AddModule(map);
-
+	AddModule(logoScene);
+	AddModule(fadeToBlack);
 	// Render last to swap buffer
 	AddModule(render);
 }
