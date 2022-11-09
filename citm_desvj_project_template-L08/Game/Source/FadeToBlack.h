@@ -16,9 +16,9 @@ public:
 	bool Awake(pugi::xml_node& conf);
 	bool Start();
 	bool Update(float dt);
-	bool DoFadeToBlack(int level, float time = 0.5f);
-	bool FadeToBlackPlayerOnly(float time = 0.5f);
-	bool FadeToBlackScene(char* scene, float time = 0.5f);
+	bool DoFadeToBlack(int level, float time = 1.5f);
+	bool FadeToBlackPlayerOnly(float time = 1.5f);
+	bool FadeToBlackScene(char* scene, float time = 1.5f);
 	bool SwitchMap(int level);
 	bool SwitchScenes(char* scene);
 

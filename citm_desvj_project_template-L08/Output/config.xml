@@ -42,5 +42,9 @@
 		<duration value="3"/>
 		<path value="Assets/Textures/upc.png"/>
 	</logoScene>
+	<titleScene>
+		<logorect x="0" y="0" w="400" h="200"/>
+		<path value="Assets/Textures/TitleScreen.png"/>
+	</titleScene>
   
 </config>

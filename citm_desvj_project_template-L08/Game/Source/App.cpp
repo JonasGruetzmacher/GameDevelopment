@@ -6,6 +6,7 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "LogoScene.h"
+#include "TitleScene.h"
 #include "EntityManager.h"
 #include "Map.h"
 #include "Physics.h"
@@ -31,6 +32,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	//L07 DONE 2: Add Physics module
 	physics = new Physics();
 	logoScene = new LogoScene();
+	titleScene = new TitleScene();
 	scene = new Scene();
 	entityManager = new EntityManager();
 	map = new Map();
@@ -48,7 +50,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	
 	AddModule(entityManager);
 	AddModule(map);
+	AddModule(titleScene);
 	AddModule(logoScene);
+	
 	AddModule(fadeToBlack);
 	// Render last to swap buffer
 	AddModule(render);

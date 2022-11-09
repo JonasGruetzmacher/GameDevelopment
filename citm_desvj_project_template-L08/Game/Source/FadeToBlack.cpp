@@ -10,6 +10,7 @@
 #include "Map.h"
 #include "Scene.h"
 #include "LogoScene.h"
+#include "TitleScene.h"
 #include "External/SDL/include/SDL_render.h"
 #include "External/SDL/include/SDL_timer.h"
 #include "Physics.h"
@@ -42,7 +43,7 @@ bool FadeToBlack::Start()
 
 	fadingPlayer = false;
 	sceneSwitch = false;
-	wantToSwitchScene = "Scene";
+	wantToSwitchScene = "LogoScene";
 
 	return true;
 }
@@ -65,16 +66,6 @@ bool FadeToBlack::Update(float dt)
 		{
 			if (!sceneSwitch)
 			{
-
-				if (fadingPlayer)
-				{
-					//app->scene->player->ResetPlayer();
-					//app->Scene->showUI = true;
-				}
-				else
-				{
-					SwitchMap(nextLevel);
-				}
 			}
 			else
 			{
@@ -123,24 +114,7 @@ bool FadeToBlack::DoFadeToBlack(int level, float time)
 	return ret;
 }
 
-// Fade to black. At mid point deactivate one module, then activate the other
-bool FadeToBlack::FadeToBlackPlayerOnly(float time)
-{
-	bool ret = false;
 
-	fadingPlayer = true;
-
-	if (currentStep == FadeStep::NONE)
-	{
-		currentStep = FadeStep::FADE_TO;
-		startTime = SDL_GetTicks();
-		totalTime = (Uint32)(time * 0.5f * 1000.0f);
-		ret = true;
-
-	}
-
-	return ret;
-}
 
 
 
@@ -179,6 +153,15 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->map->active = false;
 			app->physics->active = false;
 			app->logoScene->active = true;
+			app->titleScene->active = false;
+		}
+		if (scene == "TitleScene")
+		{
+			app->scene->active = false;
+			app->map->active = false;
+			app->physics->active = false;
+			app->logoScene->active = false;
+			app->titleScene->active = true;
 		}
 		if (scene == "Scene")
 		{
@@ -186,6 +169,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->logoScene->active = false;
 			app->map->active = true;
 			app->physics->active = true;
+			app->titleScene->active = false;
 		}
 
 		activeScene = scene;
