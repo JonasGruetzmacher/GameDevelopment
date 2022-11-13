@@ -103,30 +103,43 @@ void Player::Jump() {
 bool Player::Update()
 {
 
-
-	currentAnimation = &idle;
+	if (direction == 0) {
+		currentAnimation = &idle;
+	}
+	if (direction == 1) {
+		currentAnimation = &idleleft;
+	}
 
 
 	// L07 DONE 5: Add physics to the player - updated player position using physics	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveState = MS_LEFT;
 		currentAnimation = &runleft;
+		direction = 1;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveState = MS_IDLE;
 		currentAnimation = &runright;
+		direction = 0;
+
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveState = MS_IDLE;
 		currentAnimation = &runleft;
+		direction = 1;
+
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		moveState = MS_RIGHT;
 		currentAnimation = &runright;
+		direction = 0;
+
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		currentAnimation = &runright;
 		moveState = MS_IDLE;
+		direction = 0;
+
 	}
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		Jump();
