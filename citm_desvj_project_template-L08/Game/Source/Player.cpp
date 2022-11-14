@@ -56,6 +56,14 @@ bool Player::Awake() {
 	runleft.PushBack({ 40,16,8,8 });
 	runleft.PushBack({ 48,16,8,8 });
 	runleft.PushBack({ 56,16,8,8 });
+	jumpright.PushBack({ 0,32,8,8 });
+	jumpright.PushBack({ 8,32,8,8 });
+	jumpright.PushBack({ 16,32,8,8 });
+	jumpright.PushBack({ 24,32,8,8 });
+	jumpleft.PushBack({ 0,40,8,8 });
+	jumpleft.PushBack({ 8,40,8,8 });
+	jumpleft.PushBack({ 16,40,8,8 });
+	jumpleft.PushBack({ 24,40,8,8 });
 	
 	return true;
 }
@@ -119,13 +127,13 @@ bool Player::Update()
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveState = MS_IDLE;
-		currentAnimation = &runright;
+		currentAnimation = &jumpright;
 		direction = 0;
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveState = MS_IDLE;
-		currentAnimation = &runleft;
+		currentAnimation = &jumpleft;
 		direction = 1;
 
 	}
@@ -136,14 +144,20 @@ bool Player::Update()
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		currentAnimation = &runright;
+		currentAnimation = &jumpright;
 		moveState = MS_IDLE;
 		direction = 0;
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		Jump();
-		currentAnimation = &idle;
+		if (direction == 0) {
+			currentAnimation = &jumpright;
+		}
+		if (direction == 1) {
+			currentAnimation = &jumpleft;
+		}
+
 	}
 	if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) {
 		SetPosition(150,320);
