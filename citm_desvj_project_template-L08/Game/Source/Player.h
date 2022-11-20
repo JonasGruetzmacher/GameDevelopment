@@ -54,6 +54,8 @@ private:
 	Animation idleleft;
 	Animation runright;
 	Animation runleft;
+	Animation jumpright;
+	Animation jumpleft;
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 	_moveState moveState;
@@ -61,7 +63,7 @@ private:
 	int pickCoinFxId;
 	int speed = 15;
 	int jumpPower = 30;
-
+	int direction = 0;
 
 
 	void Move();
