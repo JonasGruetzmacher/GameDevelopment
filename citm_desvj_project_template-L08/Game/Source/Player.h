@@ -69,6 +69,8 @@ private:
 	void Move();
 
 	void Jump();
+	void ResetPlayer();
+	void SummonPlayer();
 
 };
 

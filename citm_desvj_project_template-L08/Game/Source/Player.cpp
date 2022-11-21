@@ -73,16 +73,9 @@ bool Player::Start() {
 	//initilize textures
 	texture = app->tex->Load(texturePath);
 
+	SummonPlayer();
 	// L07 DONE 5: Add physics to the player - initialize physics body
-	pbody = app->physics->CreateRectangle(position.x, position.y, 8, 8, bodyType::DYNAMIC);
-	pbody->body->SetFixedRotation(true);
-
-
-	pbody->listener = this;
-
-	pbody->ctype = ColliderType::PLAYER;
-
-	moveState = MS_IDLE;
+	
 
 	return true;
 }
@@ -90,6 +83,14 @@ bool Player::Start() {
 bool Player::SetPosition(int x, int y) 
 {
 	bool ret = true;
+
+	b2Vec2 transform;
+	transform.x = PIXEL_TO_METERS(x);
+	transform.y = PIXEL_TO_METERS(y);
+	pbody->body->SetTransform(transform, 0);
+	position.x = METERS_TO_PIXELS(transform.x);
+	position.y = METERS_TO_PIXELS(transform.y);
+
 	return ret;
 }
 
@@ -102,6 +103,29 @@ void Player::Jump() {
 
 		jump++;
 	}
+}
+
+void Player::ResetPlayer()
+{	
+	jump = 0;
+	moveState = MS_IDLE;
+	pbody->body->SetLinearVelocity(b2Vec2(0,0));
+
+	SetPosition(startPosition.x, startPosition.y);
+	LOG("load player");
+}
+
+void Player::SummonPlayer()
+{
+	pbody = app->physics->CreateRectangle(position.x, position.y, 8, 8, bodyType::DYNAMIC);
+	pbody->body->SetFixedRotation(true);
+	pbody->listener = this;
+
+	pbody->ctype = ColliderType::PLAYER;
+
+	moveState = MS_IDLE;
+
+	jump = 0;
 }
 
 bool Player::Update()
@@ -156,7 +180,7 @@ bool Player::Update()
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) {
-		SetPosition(150,320);
+		ResetPlayer();
 	}
 
 	Move();

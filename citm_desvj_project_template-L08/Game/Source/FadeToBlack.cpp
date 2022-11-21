@@ -66,6 +66,7 @@ bool FadeToBlack::Update(float dt)
 		{
 			if (!sceneSwitch)
 			{
+				//app->scene->player->ResetPlayer();
 			}
 			else
 			{
