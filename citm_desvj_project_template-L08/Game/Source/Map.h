@@ -94,6 +94,21 @@ struct MapLayer
 	}
 };
 
+struct Object 
+{
+	int id;
+	SString name;
+	PhysBody* pBody;
+};
+
+struct ObjectGroup
+{
+	int id;
+	SString name;
+	Object* objects;
+	int objectsSize;
+};
+
 // L04: DONE 1: Create a struct needed to hold the information to Map node
 struct MapData
 {
@@ -102,6 +117,7 @@ struct MapData
 	int	tileWidth;
 	int	tileHeight;
 	List<TileSet*> tilesets;
+	List<ObjectGroup*> objectGroups;
 	MapTypes type;
 
 	// L05: DONE 2: Add a list/array of layers to the map
@@ -127,7 +143,7 @@ public:
     bool CleanUp();
 
     // Load new map
-    bool Load();
+    bool Load(const char* path);
 
 	// L05: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
@@ -143,9 +159,9 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadAllLayers(pugi::xml_node mapNode);
 
-	bool LoadCollisions(pugi::xml_node& node);
+	bool LoadCollisions(pugi::xml_node& node, ObjectGroup* group);
 	bool LoadEntities(pugi::xml_node& node);
-	bool LoadObjectGroup(pugi::xml_node& node);
+	bool LoadObjectGroup(pugi::xml_node& node, ObjectGroup* group);
 	bool LoadAllObjectGroups(pugi::xml_node mapNode);
 
 	// L06: DONE 2

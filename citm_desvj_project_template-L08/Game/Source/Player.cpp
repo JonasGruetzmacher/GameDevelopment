@@ -38,8 +38,8 @@ bool Player::Awake() {
 	idle.PushBack({ 24,56,8,8 });
 	idleleft.PushBack({ 0,64,8,8 });
 	idleleft.PushBack({ 8,64,8,8 });
-	idleleft.PushBack({ 16,65,8,8 });
-	idleleft.PushBack({ 24,65,8,8 });
+	idleleft.PushBack({ 16,64,8,8 });
+	idleleft.PushBack({ 24,64,8,8 });
 	runright.PushBack({ 0,8,8,8 });
 	runright.PushBack({ 8,8,8,8 });
 	runright.PushBack({ 16,8,8,8 });
@@ -90,10 +90,6 @@ bool Player::Start() {
 bool Player::SetPosition(int x, int y) 
 {
 	bool ret = true;
-
-	LOG("TESTEST");
-
-
 	return ret;
 }
 

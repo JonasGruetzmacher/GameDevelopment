@@ -29,6 +29,15 @@ bool Scene::Awake(pugi::xml_node& config)
 	LOG("Loading Scene");
 	bool ret = true;
 
+	currentLevel = config.child("currentlevel").attribute("value").as_int();
+	for (pugi::xml_node levelNode = config.child("level"); levelNode; levelNode = levelNode.next_sibling("level"))
+	{
+		Level* level = new Level();
+		level->id = levelNode.attribute("id").as_int();
+		level->name = levelNode.attribute("name").as_string();
+		levels.Add(level);
+	}
+
 	// iterate all objects in the scene
 	// Check https://pugixml.org/docs/quickstart.html#access
 	for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
@@ -47,9 +56,9 @@ bool Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool Scene::Start()
 {
-	
+	bool ret = true;
 	// L03: DONE: Load map
-	app->map->Load();
+	ret = SetUp(currentLevel);
 
 	// L04: DONE 7: Set the window title with map/tileset info
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
@@ -61,7 +70,7 @@ bool Scene::Start()
 
 	app->win->SetTitle(title.GetString());
 
-	return true;
+	return ret;
 }
 
 // Called each loop iteration
@@ -86,8 +95,6 @@ bool Scene::Update(float dt)
 		app->audio->IncreaseVolume();
 	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		app->audio->DecreaseVolume();
-	
-	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
 	// Draw map
 	app->map->Draw();
@@ -112,4 +119,29 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+bool Scene::SetUp(int level) 
+{
+	bool ret = true;
+
+	LOG("SetUp Level = %d", level);
+
+	switch (level)
+	{
+	case 1:
+		currentLevel = 1;
+		ret = app->map->Load(levels.At(currentLevel-1)->data->name.GetString());
+		break;
+
+	case 2:
+		currentLevel = 2;
+		ret = app->map->Load("Assets/Maps/NewMap.tmx");
+		break;
+
+	default:
+		break;
+	}
+
+	return ret;
 }

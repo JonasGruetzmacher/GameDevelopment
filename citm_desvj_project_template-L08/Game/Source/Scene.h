@@ -5,6 +5,11 @@
 #include "Player.h"
 #include "Item.h"
 
+struct Level {
+	int id;
+	SString name;
+};
+
 struct SDL_Texture;
 
 class Scene : public Module
@@ -36,11 +41,17 @@ public:
 
 public:
 
+	bool SetUp(int level);
+
+public:
+
 	//L02: DONE 3: Declare a Player attribute 
 	Player* player;
+	int currentLevel;
 
 private:
 	SDL_Texture* img;
+	List<Level*> levels;
 
 };
 
