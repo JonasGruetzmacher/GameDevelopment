@@ -191,8 +191,8 @@ bool Player::Update()
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 4;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 4;
 
-	app->render->camera.x = -position.x * 1.5 - 100;
-	app->render->camera.y = -position.y * 3 + 350;
+	app->render->camera.x = -position.x * 3 + app->render->camera.w / 2;
+	app->render->camera.y = -position.y * 3 + app->render->camera.h / 2 + 50;
 
 	currentAnimation->Update();
 	app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());

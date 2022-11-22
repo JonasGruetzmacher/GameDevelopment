@@ -107,8 +107,8 @@ bool Scene::Update(float dt)
 	//Debug
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x - app->map->mapData.tileWidth / 2,
-		mouseY - app->render->camera.y - app->map->mapData.tileHeight / 2);
+	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x / 3, //- app->map->mapData.tileWidth / 2,
+		mouseY - app->render->camera.y / 3);// -app->map->mapData.tileHeight / 2);
 	//LOG("X: %d Y:  %d", mouseX, mouseY);
 	
 	//Convert again the tile coordinates to world coordinates to render the texture of the tile
