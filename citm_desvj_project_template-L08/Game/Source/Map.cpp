@@ -91,8 +91,6 @@ iPoint Map::WorldToMap(int x, int y)
     {
         ret.x = x / mapData.tileWidth;
         ret.y = y / mapData.tileHeight;
-        //ret.x -= app->render->camera.x / mapData.tileWidth;
-        //ret.y -= app->render->camera.y / mapData.tileHeight;
     }
     else if (mapData.type == MAPTYPE_ISOMETRIC)
     {

@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "EntityManager.h"
+#include "PathFinding.h"
 #include "Map.h"
 
 #include "Defs.h"
@@ -107,14 +108,45 @@ bool Scene::Update(float dt)
 	//Debug
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x / 3, //- app->map->mapData.tileWidth / 2,
-		mouseY - app->render->camera.y / 3);// -app->map->mapData.tileHeight / 2);
-	//LOG("X: %d Y:  %d", mouseX, mouseY);
-	
+	LOG("X: %d Y: %d", app->render->camera.x, app->render->camera.y);
+	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x / app->win->GetScale()- app->map->mapData.tileWidth / 6,
+		mouseY - app->render->camera.y / app->win->GetScale() - app->map->mapData.tileHeight);
+
 	//Convert again the tile coordinates to world coordinates to render the texture of the tile
 	iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
-	LOG("X: %d Y: %d", highlightedTileWorld.x, highlightedTileWorld.y);
+	//LOG("X: %d Y: %d", highlightedTileWorld.x, highlightedTileWorld.y);
 	app->render->DrawTexture(mouseTileTex, highlightedTileWorld.x, highlightedTileWorld.y);
+
+	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (originSelected == true)
+		{
+			app->pathfinding->CreatePath(origin, mouseTile);
+			LOG("X: %d Y: %d", origin.x, origin.y);
+			originSelected = false;
+		}
+		else
+		{
+			origin = mouseTile;
+			originSelected = true;
+			
+			app->pathfinding->ClearLastPath();
+		}
+	}
+	const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
+	//LOG("%d",path == NULL);
+	for (uint i = 0; i < path->Count(); ++i)
+	{
+		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+		LOG("X: %d Y: %d", pos.x, pos.y);
+		app->render->DrawTexture(mouseTileTex, pos.x * 3, pos.y * 3);
+	}
+
+	// L12: Debug pathfinding
+	iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
+	app->render->DrawTexture(originTex, originScreen.x, originScreen.y);
+
+
 	
 	return true;
 }

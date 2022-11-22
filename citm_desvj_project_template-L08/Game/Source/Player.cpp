@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Render.h"
 #include "Scene.h"
+#include "Window.h"
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
@@ -191,8 +192,8 @@ bool Player::Update()
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 4;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 4;
 
-	app->render->camera.x = -position.x * 3 + app->render->camera.w / 2;
-	app->render->camera.y = -position.y * 3 + app->render->camera.h / 2 + 50;
+	app->render->camera.x = -position.x * app->win->GetScale() + app->render->camera.w / 2;
+	app->render->camera.y = -position.y * app->win->GetScale() + app->render->camera.h / 2 + 50;
 
 	currentAnimation->Update();
 	app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
