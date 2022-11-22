@@ -51,7 +51,14 @@ public:
 
 private:
 	SDL_Texture* img;
+	SDL_Texture* mouseTileTex = nullptr;
+	SDL_Texture* originTex = nullptr;
+
 	List<Level*> levels;
+
+	//Debug
+	iPoint origin;
+	bool originSelected = false;
 
 };
 

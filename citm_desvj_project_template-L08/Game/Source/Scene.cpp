@@ -70,6 +70,11 @@ bool Scene::Start()
 
 	app->win->SetTitle(title.GetString());
 
+	// Texture to highligh mouse position 
+	mouseTileTex = app->tex->Load("Assets/Textures/path.png");
+	// Texture to show path origin 
+	originTex = app->tex->Load("Assets/Textures/x.png");
+
 	return ret;
 }
 
@@ -98,7 +103,19 @@ bool Scene::Update(float dt)
 
 	// Draw map
 	app->map->Draw();
-
+	
+	//Debug
+	int mouseX, mouseY;
+	app->input->GetMousePosition(mouseX, mouseY);
+	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x - app->map->mapData.tileWidth / 2,
+		mouseY - app->render->camera.y - app->map->mapData.tileHeight / 2);
+	//LOG("X: %d Y:  %d", mouseX, mouseY);
+	
+	//Convert again the tile coordinates to world coordinates to render the texture of the tile
+	iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
+	LOG("X: %d Y: %d", highlightedTileWorld.x, highlightedTileWorld.y);
+	app->render->DrawTexture(mouseTileTex, highlightedTileWorld.x, highlightedTileWorld.y);
+	
 	return true;
 }
 
