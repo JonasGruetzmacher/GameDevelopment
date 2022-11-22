@@ -136,7 +136,7 @@ bool Scene::SetUp(int level)
 
 	case 2:
 		currentLevel = 2;
-		ret = app->map->Load("Assets/Maps/NewMap.tmx");
+		ret = app->map->Load(levels.At(currentLevel - 1)->data->name.GetString());
 		break;
 
 	default:

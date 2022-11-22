@@ -23,6 +23,7 @@
     <ClCompile Include="Source\LogoScene.cpp" />
     <ClCompile Include="Source\FadeToBlack.cpp" />
     <ClCompile Include="Source\TitleScene.cpp" />
+    <ClCompile Include="Source\PathFinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -70,6 +71,7 @@
     <ClInclude Include="Source\LogoScene.h" />
     <ClInclude Include="Source\FadeToBlack.h" />
     <ClInclude Include="Source\TitleScene.h" />
+    <ClInclude Include="Source\PathFinding.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
