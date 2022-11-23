@@ -134,12 +134,10 @@ bool Scene::Update(float dt)
 		}
 	}
 	const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
-	//LOG("%d",path == NULL);
 	for (uint i = 0; i < path->Count(); ++i)
 	{
 		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		LOG("X: %d Y: %d", pos.x, pos.y);
-		app->render->DrawTexture(mouseTileTex, pos.x * 3, pos.y * 3);
+		app->render->DrawTexture(mouseTileTex, pos.x, pos.y);
 	}
 
 	// L12: Debug pathfinding
@@ -190,6 +188,15 @@ bool Scene::SetUp(int level)
 
 	default:
 		break;
+	}
+
+	if (ret) 
+	{
+		int w, h;
+		uchar* data = NULL;
+
+		bool retWalkMap = app->map->CreateWalkabilityMap(w, h, &data);
+		if (retWalkMap) app->pathfinding->SetMap(w, h, data);
 	}
 
 	return ret;

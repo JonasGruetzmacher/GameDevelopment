@@ -149,6 +149,8 @@ public:
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y);
 
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+
 private:
 
 	bool LoadMap(pugi::xml_node mapFile);
