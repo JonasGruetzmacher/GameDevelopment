@@ -108,9 +108,8 @@ bool Scene::Update(float dt)
 	//Debug
 	int mouseX, mouseY;
 	app->input->GetMousePosition(mouseX, mouseY);
-	LOG("X: %d Y: %d", app->render->camera.x, app->render->camera.y);
-	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x / app->win->GetScale()- app->map->mapData.tileWidth / 6,
-		mouseY - app->render->camera.y / app->win->GetScale() - app->map->mapData.tileHeight);
+	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x / (int)app->win->GetScale(),
+		mouseY - app->render->camera.y / (int)app->win->GetScale());
 
 	//Convert again the tile coordinates to world coordinates to render the texture of the tile
 	iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
@@ -122,12 +121,13 @@ bool Scene::Update(float dt)
 		if (originSelected == true)
 		{
 			app->pathfinding->CreatePath(origin, mouseTile);
-			LOG("X: %d Y: %d", origin.x, origin.y);
+			LOG("X: %d Y: %d", mouseTile.x, mouseTile.y);
 			originSelected = false;
 		}
 		else
 		{
 			origin = mouseTile;
+			LOG("X: %d Y: %d", origin.x, origin.y);
 			originSelected = true;
 			
 			app->pathfinding->ClearLastPath();
