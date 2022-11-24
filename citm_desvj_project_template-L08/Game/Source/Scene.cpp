@@ -101,50 +101,54 @@ bool Scene::Update(float dt)
 		app->audio->IncreaseVolume();
 	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		app->audio->DecreaseVolume();
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+		debugMode = !debugMode;
 
 	// Draw map
 	app->map->Draw();
 	
 	//Debug
-	int mouseX, mouseY;
-	app->input->GetMousePosition(mouseX, mouseY);
-	iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x / (int)app->win->GetScale(),
-		mouseY - app->render->camera.y / (int)app->win->GetScale());
-
-	//Convert again the tile coordinates to world coordinates to render the texture of the tile
-	iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
-	//LOG("X: %d Y: %d", highlightedTileWorld.x, highlightedTileWorld.y);
-	app->render->DrawTexture(mouseTileTex, highlightedTileWorld.x, highlightedTileWorld.y);
-
-	if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (debugMode)
 	{
-		if (originSelected == true)
+		int mouseX, mouseY;
+		app->input->GetMousePosition(mouseX, mouseY);
+		iPoint mouseTile = app->map->WorldToMap(mouseX - app->render->camera.x / (int)app->win->GetScale(),
+			mouseY - app->render->camera.y / (int)app->win->GetScale());
+
+		//Convert again the tile coordinates to world coordinates to render the texture of the tile
+		iPoint highlightedTileWorld = app->map->MapToWorld(mouseTile.x, mouseTile.y);
+		//LOG("X: %d Y: %d", highlightedTileWorld.x, highlightedTileWorld.y);
+		app->render->DrawTexture(mouseTileTex, highlightedTileWorld.x, highlightedTileWorld.y);
+
+		if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
-			app->pathfinding->CreatePath(origin, mouseTile);
-			LOG("X: %d Y: %d", mouseTile.x, mouseTile.y);
-			originSelected = false;
+			if (originSelected == true)
+			{
+				app->pathfinding->CreatePath(origin, mouseTile);
+				LOG("X: %d Y: %d", mouseTile.x, mouseTile.y);
+				originSelected = false;
+			}
+			else
+			{
+				origin = mouseTile;
+				LOG("X: %d Y: %d", origin.x, origin.y);
+				originSelected = true;
+
+				app->pathfinding->ClearLastPath();
+			}
 		}
-		else
+		const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
+		for (uint i = 0; i < path->Count(); ++i)
 		{
-			origin = mouseTile;
-			LOG("X: %d Y: %d", origin.x, origin.y);
-			originSelected = true;
-			
-			app->pathfinding->ClearLastPath();
+			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			app->render->DrawTexture(mouseTileTex, pos.x, pos.y);
 		}
+
+		// L12: Debug pathfinding
+		iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
+		app->render->DrawTexture(originTex, originScreen.x, originScreen.y);
+
 	}
-	const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
-	for (uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		app->render->DrawTexture(mouseTileTex, pos.x, pos.y);
-	}
-
-	// L12: Debug pathfinding
-	iPoint originScreen = app->map->MapToWorld(origin.x, origin.y);
-	app->render->DrawTexture(originTex, originScreen.x, originScreen.y);
-
-
 	
 	return true;
 }

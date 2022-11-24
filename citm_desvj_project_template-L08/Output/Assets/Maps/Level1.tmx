@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="89" height="49" tilewidth="8" tileheight="8" infinite="0" nextlayerid="8" nextobjectid="29">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="89" height="49" tilewidth="8" tileheight="8" infinite="0" nextlayerid="9" nextobjectid="33">
  <tileset firstgid="1" name="tmw_desert_spacing" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="48" columns="8">
   <image source="tmw_desert_spacing.png" width="265" height="199"/>
   <wangsets>
@@ -13,6 +13,12 @@
  </tileset>
  <tileset firstgid="51" name="Tiles" tilewidth="8" tileheight="8" tilecount="1476" columns="18">
   <image source="../Textures/Paper-Pixels-8x8/Tiles.png" width="144" height="656"/>
+ </tileset>
+ <tileset firstgid="1527" name="Enemies" tilewidth="8" tileheight="8" tilecount="448" columns="28">
+  <image source="../Textures/Paper-Pixels-8x8/Enemies.png" width="224" height="128"/>
+ </tileset>
+ <tileset firstgid="1975" name="Player" tilewidth="8" tileheight="8" tilecount="221" columns="13">
+  <image source="../Textures/Paper-Pixels-8x8/Player.png" width="104" height="136"/>
  </tileset>
  <layer id="1" name="Map" width="89" height="49">
   <properties>
@@ -13141,5 +13147,10 @@
   <object id="26" class="Wall" x="98.6667" y="0" width="3.33333" height="392"/>
   <object id="27" class="Water" x="101.818" y="385.455" width="588.909" height="2.90909"/>
   <object id="28" class="Wall" x="689.455" y="0.363636" width="4.18182" height="387.091"/>
+ </objectgroup>
+ <objectgroup id="8" name="Entities">
+  <object id="29" class="Eye" gid="1835" x="298.727" y="307.091" width="8" height="8"/>
+  <object id="31" class="Eye" gid="1835" x="203.455" y="291.455" width="8" height="8"/>
+  <object id="32" name="Player" gid="1988" x="150" y="283.667" width="8" height="8"/>
  </objectgroup>
 </map>

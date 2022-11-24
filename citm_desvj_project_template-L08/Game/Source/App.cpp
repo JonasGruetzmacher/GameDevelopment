@@ -36,8 +36,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	logoScene = new LogoScene();
 	titleScene = new TitleScene();
 	scene = new Scene();
-	entityManager = new EntityManager();
 	map = new Map();
+	entityManager = new EntityManager();
+	
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -49,9 +50,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(physics);
 	AddModule(pathfinding);
 	AddModule(scene);	
-	
-	AddModule(entityManager);
 	AddModule(map);
+	AddModule(entityManager);
+	
 	AddModule(titleScene);
 	AddModule(logoScene);
 	

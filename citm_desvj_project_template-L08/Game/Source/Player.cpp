@@ -23,15 +23,17 @@ Player::~Player() {
 bool Player::Awake() {
 
 	//L02: DONE 1: Initialize Player parameters
-
 	//L02: DONE 5: Get Player parameters from XML
+	LOG("%s", *parameters);
+	LOG("TEST: %s", parameters.attribute("x").as_string());
 	position.x = round(parameters.attribute("x").as_float());
-	position.y = round(parameters.attribute("y").as_int());
+	position.y = round(parameters.attribute("y").as_float());
 	startPosition = position;
 	SString name = parameters.attribute("name").as_string();
 	LOG(name.GetString());
 	//texturePath = parameters.child("properties").child("property").attribute("texturepath").as_string();
 	texturePath = parameters.attribute("texturepath").as_string();
+	//texturePath = "Assets/Textures/Player.png";
 
 	idle.PushBack({ 0,56,8,8 });
 	idle.PushBack({ 8,56,8,8 });

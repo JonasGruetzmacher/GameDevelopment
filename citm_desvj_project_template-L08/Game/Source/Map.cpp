@@ -445,17 +445,11 @@ bool Map::LoadEntities(pugi::xml_node& node)
 
     for (pugi::xml_node objectNode = node.child("object"); objectNode; objectNode = objectNode.next_sibling("object"))
     {
+
         SString name = objectNode.attribute("name").as_string();
         if (name == "Player") {
-            int x = objectNode.attribute("x").as_int();
-            int y = objectNode.attribute("y").as_int();
-            int width = objectNode.attribute("width").as_int();
-            int height = objectNode.attribute("height").as_int();
-            //app->scene->player->parameters = objectNode;
-            app->scene->player->position.x = x;
-            app->scene->player->position.y = y;
-           
-           //app->scene->player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+            //app->scene->player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+            //LOG("%s", objectNode.attribute("x").as_string());
             //app->scene->player->parameters = objectNode;
         }
     }

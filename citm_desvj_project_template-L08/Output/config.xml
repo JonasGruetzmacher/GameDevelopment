@@ -31,7 +31,7 @@
 	  <level path="Assets/Maps/Level1.tmx" id="1" name="Level1"/>
 	  <level path="Assets/Maps/Level2.tmx" id="2" name="Level2"/>	
 	<currentlevel value ="1"/>
-   <!-- <item x="256" y="515" texturepath="Assets/Textures/goldCoin.png"/> -->
+   <!--<item x="256" y="515" texturepath="Assets/Textures/goldCoin.png"/> -->
 
   </scene>
 
