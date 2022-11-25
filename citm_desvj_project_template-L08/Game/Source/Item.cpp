@@ -9,9 +9,10 @@
 #include "Point.h"
 #include "Physics.h"
 
-Item::Item() : Entity(EntityType::ITEM)
+Item::Item(pugi::xml_node params) : Entity(EntityType::ITEM)
 {
 	name.Create("item");
+	parameters = params;
 }
 
 Item::~Item() {}

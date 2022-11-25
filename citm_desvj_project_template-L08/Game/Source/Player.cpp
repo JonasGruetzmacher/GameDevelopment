@@ -11,9 +11,17 @@
 #include "Physics.h"
 
 
-Player::Player() : Entity(EntityType::PLAYER)
+Player::Player(pugi::xml_node params) : Entity(EntityType::PLAYER)
 {
 	name.Create("Player");
+	startPosition.x = round(params.attribute("x").as_float());
+	startPosition.y = round(params.attribute("y").as_float());
+	texturePath = params.attribute("texturepath").as_string();
+	texturePath = "Assets/Textures/Player.png";
+
+	SString name = params.attribute("name").as_string();
+
+	parameters = params;
 }
 
 Player::~Player() {
@@ -24,15 +32,12 @@ bool Player::Awake() {
 
 	//L02: DONE 1: Initialize Player parameters
 	//L02: DONE 5: Get Player parameters from XML
-	LOG("%s", *parameters);
-	LOG("TEST: %s", parameters.attribute("x").as_string());
-	position.x = round(parameters.attribute("x").as_float());
-	position.y = round(parameters.attribute("y").as_float());
-	startPosition = position;
-	SString name = parameters.attribute("name").as_string();
+	//LOG("%s", *parameters);
+
+	position = startPosition;
 	LOG(name.GetString());
 	//texturePath = parameters.child("properties").child("property").attribute("texturepath").as_string();
-	texturePath = parameters.attribute("texturepath").as_string();
+	
 	//texturePath = "Assets/Textures/Player.png";
 
 	idle.PushBack({ 0,56,8,8 });

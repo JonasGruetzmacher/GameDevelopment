@@ -155,6 +155,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->physics->active = false;
 			app->logoScene->active = true;
 			app->titleScene->active = false;
+			app->entityManager->active = false;
 		}
 		if (scene == "TitleScene")
 		{
@@ -171,6 +172,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->map->active = true;
 			app->physics->active = true;
 			app->titleScene->active = false;
+			app->entityManager->active = true;
 		}
 
 		activeScene = scene;

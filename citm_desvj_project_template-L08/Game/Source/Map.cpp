@@ -226,6 +226,7 @@ bool Map::Load(const char* fileName)
     if (ret == true)
     {
         ret = LoadAllObjectGroups(mapFileXML.child("map"));
+        //pugi::xml_node test = app->scene->player->parameters;
     }
 
     if(ret == true)
@@ -436,7 +437,9 @@ bool Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* group)
     if (group->name == "Entities") {
         LoadEntities(node);
     }
+    
     return ret;
+    
 }
 
 bool Map::LoadEntities(pugi::xml_node& node)
@@ -448,11 +451,17 @@ bool Map::LoadEntities(pugi::xml_node& node)
 
         SString name = objectNode.attribute("name").as_string();
         if (name == "Player") {
-            //app->scene->player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
+            app->scene->player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER, objectNode);
             //LOG("%s", objectNode.attribute("x").as_string());
             //app->scene->player->parameters = objectNode;
+
+        }
+        else {
+            //app->entityManager->CreateEntity(EntityType::ITEM, objectNode);
         }
     }
+
+    //pugi::xml_node test = app->scene->player->parameters;
 
     return ret;
 }
@@ -466,13 +475,14 @@ bool Map::LoadAllObjectGroups(pugi::xml_node mapNode)
         //Load the layer
         ObjectGroup* objectGroup = new ObjectGroup();
         ret = LoadObjectGroup(groupNode, objectGroup);
-
+        
         mapData.objectGroups.Add(objectGroup);
 
         //add the objectgroup to the map
         //mapData.maplayers.Add(mapLayer);
     }
 
+    pugi::xml_node test = app->scene->player->parameters;
     return ret;
 
 }

@@ -43,13 +43,13 @@ bool Scene::Awake(pugi::xml_node& config)
 	// Check https://pugixml.org/docs/quickstart.html#access
 	for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
 	{
-		Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM);
-		item->parameters = itemNode;
+		Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM, itemNode);
+		//item->parameters = itemNode;
 	}
 
 	//L02: DONE 3: Instantiate the player using the entity manager
-	player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER);
-	player->parameters = config.child("player");
+	//player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER, config.child("player"));
+	//player->parameters = config.child("player");
 
 	return ret;
 }
