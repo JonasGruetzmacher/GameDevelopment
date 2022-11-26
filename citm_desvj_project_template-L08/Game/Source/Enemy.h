@@ -1,7 +1,5 @@
-
-
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
+#ifndef __ENEMY_H__
+#define __ENEMY_H__
 
 #include "Entity.h"
 #include "Point.h"
@@ -9,19 +7,14 @@
 #include "Animation.h"
 
 struct SDL_Texture;
-enum _moveState {
-	MS_LEFT,
-	MS_RIGHT,
-	MS_IDLE,
-	MS_JUMP
-};
-class Player : public Entity
+
+class Enemy : public Entity
 {
 public:
 
-	Player(pugi::xml_node parameters);
+	Enemy(pugi::xml_node parameters);
 
-	virtual ~Player();
+	virtual ~Enemy();
 
 	bool Awake();
 
@@ -40,40 +33,35 @@ public:
 
 	bool SetPosition(int x, int y);
 
-	bool godMode = false;
-
 public:
 
 private:
 
 	//L02: DONE 1: Declare player parameters
-	
+
 	const char* texturePath;
 	Animation* currentAnimation = nullptr;
 	Animation idle;
 	Animation idleleft;
 	Animation runright;
 	Animation runleft;
-	Animation jumpright;
-	Animation jumpleft;
+	//Animation jumpright;
+	//Animation jumpleft;
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
-	_moveState moveState;
-	int jump = 0;
-	int pickCoinFxId;
+	//_moveState moveState;
 	int speed = 15;
-	int jumpPower = 30;
 	int direction = 0;
 
 
 	void Move();
 
 	void Jump();
-	void ResetPlayer();
-	void SummonPlayer();
+	void ResetEnemy();
+	void SummonEnemy();
 
 };
 
 
 
-#endif // __PLAYER_H__
+#endif // __Enemy_H__

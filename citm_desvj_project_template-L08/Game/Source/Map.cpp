@@ -450,14 +450,14 @@ bool Map::LoadEntities(pugi::xml_node& node)
     {
 
         SString name = objectNode.attribute("name").as_string();
+
+        //Load Player
         if (name == "Player") {
             app->scene->player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER, objectNode);
-            //LOG("%s", objectNode.attribute("x").as_string());
-            //app->scene->player->parameters = objectNode;
 
         }
         else {
-            //app->entityManager->CreateEntity(EntityType::ITEM, objectNode);
+            app->entityManager->CreateEntity(EntityType::ENEMY, objectNode);
         }
     }
 

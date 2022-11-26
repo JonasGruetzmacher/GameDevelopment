@@ -4,6 +4,7 @@
 #include "App.h"
 #include "Textures.h"
 #include "Scene.h"
+#include "Enemy.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -95,7 +96,9 @@ Entity* EntityManager::CreateEntity(EntityType type, pugi::xml_node parameters)
 	case EntityType::ITEM:
 		entity = new Item(parameters);
 		break;
-
+	case EntityType::ENEMY:
+		entity = new Enemy(parameters);
+		break;
 	default: break;
 	}
 

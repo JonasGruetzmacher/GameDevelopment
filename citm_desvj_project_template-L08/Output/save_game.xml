@@ -5,16 +5,26 @@
 	<textures />
 	<audio />
 	<:anonymous />
+	<pathfinding />
 	<scene />
+	<map />
 	<entitymanager>
 		<entities>
-			<Player x="40.0176697" y="64.8850174" jump="0">
+			<Enemy x="59.7999992" y="64.7850189">
+				<velocity x="0" y="0" />
+			</Enemy>
+			<Enemy x="40.6000023" y="64.7850189">
+				<velocity x="0" y="0" />
+			</Enemy>
+			<Player x="30" y="64.7850189" jump="0">
 				<velocity x="0" y="0" />
 			</Player>
 		</entities>
 	</entitymanager>
-	<map />
+	<titleScene />
+	<logoScene />
+	<fade />
 	<renderer>
-		<camera x="-394" y="-610" />
+		<camera x="62" y="-607" />
 	</renderer>
 </save_state>

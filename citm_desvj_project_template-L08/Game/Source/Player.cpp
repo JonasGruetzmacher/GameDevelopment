@@ -16,8 +16,8 @@ Player::Player(pugi::xml_node params) : Entity(EntityType::PLAYER)
 	name.Create("Player");
 	startPosition.x = round(params.attribute("x").as_float());
 	startPosition.y = round(params.attribute("y").as_float());
-	texturePath = params.attribute("texturepath").as_string();
-	texturePath = "Assets/Textures/Player.png";
+	gid = params.attribute("gid").as_uint();
+	GetTextureWithGid();
 
 	SString name = params.attribute("name").as_string();
 
@@ -32,14 +32,10 @@ bool Player::Awake() {
 
 	//L02: DONE 1: Initialize Player parameters
 	//L02: DONE 5: Get Player parameters from XML
-	//LOG("%s", *parameters);
 
 	position = startPosition;
 	LOG(name.GetString());
-	//texturePath = parameters.child("properties").child("property").attribute("texturepath").as_string();
-	
-	//texturePath = "Assets/Textures/Player.png";
-
+	idle.PushBack(GetTileSetWithGid()->GetTileRect(gid));
 	idle.PushBack({ 0,56,8,8 });
 	idle.PushBack({ 8,56,8,8 });
 	idle.PushBack({ 16,56,8,8 });
@@ -79,7 +75,7 @@ bool Player::Awake() {
 bool Player::Start() {
 
 	//initilize textures
-	texture = app->tex->Load(texturePath);
+	//texture = app->tex->Load(texturePath);
 
 	SummonPlayer();
 	// L07 DONE 5: Add physics to the player - initialize physics body
@@ -204,6 +200,7 @@ bool Player::Update()
 
 	currentAnimation->Update();
 	app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
+	//app->map
 	//currentAnimation->Update();
 	return true;
 }
@@ -263,7 +260,12 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		if (!godMode) {
 			Die();
 		}
-
+		break;
+	case ColliderType::ENEMY:
+		LOG("Collision ENEMY");
+		if (!godMode) {
+			Die();
+		}
 		break;
 	}
 }

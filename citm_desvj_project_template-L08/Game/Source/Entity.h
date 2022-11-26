@@ -5,6 +5,8 @@
 #include "SString.h"
 #include "Input.h"
 #include "Render.h"
+#include "Map.h"
+#include "App.h"
 
 class PhysBody;
 
@@ -12,6 +14,7 @@ enum class EntityType
 {
 	PLAYER,
 	ITEM,
+	ENEMY,
 	UNKNOWN
 };
 
@@ -71,6 +74,15 @@ public:
 
 	virtual void OnCollision(PhysBody* physA, PhysBody* physB) {
 	
+	}
+
+	void Entity::GetTextureWithGid() {
+		TileSet* tileset = app->map->GetTilesetFromTileId(gid);
+		texture = tileset->texture;
+	}
+
+	TileSet* Entity::GetTileSetWithGid() {
+		return (app->map->GetTilesetFromTileId(gid));
 	};
 
 public:
@@ -84,6 +96,8 @@ public:
 	// want our Entity class, maybe it's not renderable...
 	iPoint position;
 	iPoint startPosition;
+	uint gid;
+	SDL_Texture* texture;
 	bool renderable = true;
 };
 
