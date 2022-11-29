@@ -5,8 +5,15 @@
 #include "Point.h"
 #include "SDL/include/SDL.h"
 #include "Animation.h"
+#include "DynArray.h"
 
 struct SDL_Texture;
+
+enum BehaviourState 
+{
+	IDLE,
+	CHASE
+};
 
 class Enemy : public Entity
 {
@@ -50,12 +57,14 @@ private:
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
 	//_moveState moveState;
-	int speed = 15;
+	int speed = 5;
 	int direction = 0;
+	BehaviourState behaviourState = IDLE;
 
+	const DynArray<iPoint>* path;
 
 	void Move();
-
+	void FindPath();
 	void Jump();
 	void ResetEnemy();
 	void SummonEnemy();

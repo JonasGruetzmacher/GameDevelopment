@@ -9,6 +9,8 @@
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
+#include "Map.h"
+#include "PathFinding.h"
 
 Enemy::Enemy(pugi::xml_node params) : Entity(EntityType::ENEMY)
 {
@@ -76,6 +78,7 @@ void Enemy::SummonEnemy()
 	pbody->listener = this;
 
 	pbody->ctype = ColliderType::ENEMY;
+	pbody->body->SetGravityScale(0);
 
 
 	//moveState = MS_IDLE;
@@ -83,6 +86,10 @@ void Enemy::SummonEnemy()
 
 bool Enemy::Update()
 {
+	FindPath();
+
+
+	Move();
 
 	if (direction == 0) {
 		currentAnimation = &idle;
@@ -97,6 +104,52 @@ bool Enemy::Update()
 	app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
 
 	return true;
+}
+
+void Enemy::FindPath()
+{
+	iPoint playerTile = app->map->WorldToMap(app->scene->player->position.x, app->scene->player->position.y);
+	iPoint enemyTile = app->map->WorldToMap(position.x, position.y);
+	int distanceToPlayer = playerTile.DistanceTo(enemyTile);
+	if (distanceToPlayer > 10) 
+	{
+		behaviourState = IDLE;
+	}
+	else {
+		behaviourState = CHASE;
+		app->pathfinding->CreatePath(enemyTile, playerTile);
+		path = app->pathfinding->GetLastPath();
+	}
+}
+
+void Enemy::Move() 
+{
+	b2Vec2 vel = pbody->body->GetLinearVelocity();
+	b2Vec2 desiredVel = { 0,0 };
+	b2Vec2 impulse;
+	
+	if (behaviourState == CHASE) {
+		if (path->Count() > 1) {
+			const iPoint* tile = path->At(0);
+			const iPoint* nextTile = path->At(1);
+
+			b2Vec2 dif = { (float)nextTile->x - tile->x , (float)nextTile->y - tile->y };
+			dif.Normalize();
+			desiredVel.x = dif.x * speed;
+			desiredVel.y = dif.y * speed;
+		}
+	}
+	else
+	{
+		desiredVel = { 0,0 };
+	}
+
+
+
+	impulse = desiredVel - vel;
+	LOG("X: %f, Y: %f", impulse.x, impulse.y);
+	float mass = pbody->body->GetMass();
+	pbody->body->ApplyLinearImpulse(impulse, pbody->body->GetWorldCenter(), true);
 }
 
 bool Enemy::CleanUp()
