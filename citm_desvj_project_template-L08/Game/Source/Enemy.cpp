@@ -21,8 +21,6 @@ Enemy::Enemy(pugi::xml_node params) : Entity(EntityType::ENEMY)
 	GetTextureWithGid();
 
 	SString name = params.attribute("name").as_string();
-
-	parameters = params;
 }
 
 Enemy::~Enemy() {
@@ -36,7 +34,12 @@ bool Enemy::Awake() {
 
 	position = startPosition;
 	LOG(name.GetString());
+	currentAnimation = GetTileSetWithGid()->GetAnimation(gid);
+	
 	idle.PushBack(GetTileSetWithGid()->GetTileRect(gid));
+	if (currentAnimation == nullptr) {
+		currentAnimation = &idle;
+	}
 
 	return true;
 }
@@ -92,10 +95,10 @@ bool Enemy::Update()
 	Move();
 
 	if (direction == 0) {
-		currentAnimation = &idle;
+		//currentAnimation = &idle;
 	}
 	if (direction == 1) {
-		currentAnimation = &idleleft;
+		//currentAnimation = &idleleft;
 	}
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 4;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 4;
@@ -147,7 +150,6 @@ void Enemy::Move()
 
 
 	impulse = desiredVel - vel;
-	LOG("X: %f, Y: %f", impulse.x, impulse.y);
 	float mass = pbody->body->GetMass();
 	pbody->body->ApplyLinearImpulse(impulse, pbody->body->GetWorldCenter(), true);
 }

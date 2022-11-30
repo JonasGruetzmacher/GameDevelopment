@@ -123,6 +123,21 @@ SDL_Rect TileSet::GetTileRect(int gid) const
     return rect;
 }
 
+Animation* TileSet::GetAnimation(int gid) const
+{
+    int relativeIndex = gid - firstgid;
+    ListItem<Tile*>* item = extraTileInformation.start;
+    Tile* tile = NULL;
+    while (item)
+    {
+        if (item->data->gid == relativeIndex && item->data->isAnimated)
+        {
+            return (&item->data->animation);
+        }
+        item = item->next;
+    }
+    return nullptr;
+}
 
 // L06: DONE 2: Pick the right Tileset based on a tile id
 TileSet* Map::GetTilesetFromTileId(int gid) const
@@ -323,10 +338,53 @@ bool Map::LoadTileSet(pugi::xml_node mapFile){
         SString tmp("%s%s", mapFolder.GetString(), tileset.child("image").attribute("source").as_string());
         set->texture = app->tex->Load(tmp.GetString());
 
+        ret = LoadTileExtraInformation(tileset, set);
+
         mapData.tilesets.Add(set);
     }
 
     return ret;
+}
+
+bool Map::LoadTileExtraInformation(pugi::xml_node& node, TileSet* set) 
+{
+    bool ret = true;
+
+    pugi::xml_node tileNode;
+    for (tileNode = node.child("tile"); tileNode && ret; tileNode = tileNode.next_sibling("tile"))
+    {
+        Tile* tile = new Tile();
+
+        set->extraTileInformation.Add(tile);
+        tile->gid = tileNode.attribute("id").as_int();
+
+        // Load collider information
+        pugi::xml_node groupNode = tileNode.child("objectgroup").child("object");
+        tile->colliderPos = { groupNode.attribute("x").as_float(), groupNode.attribute("y").as_float() };
+        tile->height = groupNode.attribute("height").as_float();
+        tile->width = groupNode.attribute("width").as_float();
+
+
+        ret = LoadAnimation(tileNode.child("animation"), tile, set);
+
+    }
+
+    return ret;
+}
+
+bool Map::LoadAnimation(pugi::xml_node& node, Tile* tile, TileSet* set)
+{
+    bool ret = true;
+
+    pugi::xml_node animNode;
+    for (animNode = node.child("frame"); animNode && ret; animNode = animNode.next_sibling("frame"))
+    {
+        tile->isAnimated = true;
+        tile->animation.PushBack(set->GetTileRect(animNode.attribute("tileid").as_int() + set->firstgid));
+    }
+
+
+    return true;
 }
 
 // L05: DONE 3: Implement a function that loads a single layer layer

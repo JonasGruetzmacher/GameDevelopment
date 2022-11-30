@@ -4,9 +4,20 @@
 #include "Module.h"
 #include "List.h"
 #include "Point.h"
+#include "Animation.h"
 
 
 #include "PugiXml\src\pugixml.hpp"
+
+struct Tile
+{
+	int gid;
+	fPoint colliderPos;
+	float width;
+	float height;
+	bool isAnimated = false;
+	Animation animation;
+};
 
 // L04: DONE 2: Create a struct to hold information for a TileSet
 // Ignore Terrain Types and Tile Types for now, but we want the image!
@@ -21,10 +32,13 @@ struct TileSet
 	int columns;
 	int tilecount;
 
+	List<Tile*> extraTileInformation;
+
 	SDL_Texture* texture;
 
 	// L05: DONE 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
 	SDL_Rect GetTileRect(int gid) const;
+	Animation* GetAnimation(int gid) const;
 };
 
 //  We create an enum for map type, just for convenience,
@@ -159,6 +173,8 @@ private:
 
 	// L04: DONE 4: Create and call a private function to load a tileset
 	bool LoadTileSet(pugi::xml_node mapFile);
+	bool LoadTileExtraInformation(pugi::xml_node& node, TileSet* set);
+	bool LoadAnimation(pugi::xml_node& node, Tile* tile, TileSet* set);
 
 	// L05
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);

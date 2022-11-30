@@ -94,6 +94,9 @@ public:
 
 	// Possible properties, it depends on how generic we
 	// want our Entity class, maybe it's not renderable...
+	fPoint colliderPos;
+	float colliderWidth;
+	float collderHeight;
 	iPoint position;
 	iPoint startPosition;
 	uint gid;
