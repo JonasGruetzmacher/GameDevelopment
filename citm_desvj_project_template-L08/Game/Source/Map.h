@@ -38,7 +38,7 @@ struct TileSet
 
 	// L05: DONE 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
 	SDL_Rect GetTileRect(int gid) const;
-	Animation* GetAnimation(int gid) const;
+	Tile* GetTile(int gid) const;
 };
 
 //  We create an enum for map type, just for convenience,

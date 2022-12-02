@@ -34,11 +34,22 @@ bool Enemy::Awake() {
 
 	position = startPosition;
 	LOG(name.GetString());
-	currentAnimation = GetTileSetWithGid()->GetAnimation(gid);
 	
-	idle.PushBack(GetTileSetWithGid()->GetTileRect(gid));
-	if (currentAnimation == nullptr) {
+	tile =  GetTileSetWithGid()->GetTile(gid);
+	if (tile != NULL)
+	{
+		colliderPos = tile->colliderPos;
+		colliderHeight = tile->height;
+		colliderWidth = tile->width;
+		currentAnimation = &tile->animation;
+	}
+	else
+	{
 		currentAnimation = &idle;
+		idle.PushBack(GetTileSetWithGid()->GetTileRect(gid));
+		colliderHeight = 8;
+		colliderWidth = 8;
+		colliderPos = { 0,0 };
 	}
 
 	return true;
@@ -76,7 +87,7 @@ void Enemy::ResetEnemy()
 
 void Enemy::SummonEnemy()
 {
-	pbody = app->physics->CreateRectangle(position.x, position.y, 8, 8, bodyType::DYNAMIC);
+	pbody = app->physics->CreateRectangle(position.x + colliderPos.x, position.y + colliderPos.y, colliderWidth, colliderHeight, bodyType::DYNAMIC);
 	pbody->body->SetFixedRotation(true);
 	pbody->listener = this;
 

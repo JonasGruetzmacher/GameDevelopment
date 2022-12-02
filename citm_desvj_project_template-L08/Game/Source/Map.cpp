@@ -123,7 +123,7 @@ SDL_Rect TileSet::GetTileRect(int gid) const
     return rect;
 }
 
-Animation* TileSet::GetAnimation(int gid) const
+Tile* TileSet::GetTile(int gid) const
 {
     int relativeIndex = gid - firstgid;
     ListItem<Tile*>* item = extraTileInformation.start;
@@ -132,11 +132,11 @@ Animation* TileSet::GetAnimation(int gid) const
     {
         if (item->data->gid == relativeIndex && item->data->isAnimated)
         {
-            return (&item->data->animation);
+            tile = item->data;
         }
         item = item->next;
     }
-    return nullptr;
+    return tile;
 }
 
 // L06: DONE 2: Pick the right Tileset based on a tile id
@@ -360,10 +360,18 @@ bool Map::LoadTileExtraInformation(pugi::xml_node& node, TileSet* set)
 
         // Load collider information
         pugi::xml_node groupNode = tileNode.child("objectgroup").child("object");
-        tile->colliderPos = { groupNode.attribute("x").as_float(), groupNode.attribute("y").as_float() };
-        tile->height = groupNode.attribute("height").as_float();
-        tile->width = groupNode.attribute("width").as_float();
-
+        if (false)
+        {
+            tile->colliderPos = { groupNode.attribute("x").as_float(), groupNode.attribute("y").as_float() };
+            tile->height = groupNode.attribute("height").as_float();
+            tile->width = groupNode.attribute("width").as_float();
+        }
+        else
+        {
+            tile->colliderPos = { 0,0 };
+            tile->height = 8;
+            tile->width = 8;
+        }
 
         ret = LoadAnimation(tileNode.child("animation"), tile, set);
 

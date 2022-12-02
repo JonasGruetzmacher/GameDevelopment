@@ -94,9 +94,10 @@ public:
 
 	// Possible properties, it depends on how generic we
 	// want our Entity class, maybe it's not renderable...
+	Tile* tile;
 	fPoint colliderPos;
 	float colliderWidth;
-	float collderHeight;
+	float colliderHeight;
 	iPoint position;
 	iPoint startPosition;
 	uint gid;
