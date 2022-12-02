@@ -58,7 +58,7 @@ private:
 	PhysBody* pbody;
 	//_moveState moveState;
 	int speed = 5;
-	int direction = 0;
+	bool right = true;
 	BehaviourState behaviourState = IDLE;
 
 	const DynArray<iPoint>* path;

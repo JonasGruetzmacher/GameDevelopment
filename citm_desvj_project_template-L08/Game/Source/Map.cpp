@@ -360,6 +360,7 @@ bool Map::LoadTileExtraInformation(pugi::xml_node& node, TileSet* set)
 
         // Load collider information
         pugi::xml_node groupNode = tileNode.child("objectgroup").child("object");
+        //problems with collider
         if (false)
         {
             tile->colliderPos = { groupNode.attribute("x").as_float(), groupNode.attribute("y").as_float() };

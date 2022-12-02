@@ -105,17 +105,11 @@ bool Enemy::Update()
 
 	Move();
 
-	if (direction == 0) {
-		//currentAnimation = &idle;
-	}
-	if (direction == 1) {
-		//currentAnimation = &idleleft;
-	}
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 4;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 4;
 
 	currentAnimation->Update();
-	app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
+	app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame(), !right);
 
 	return true;
 }
@@ -151,13 +145,21 @@ void Enemy::Move()
 			dif.Normalize();
 			desiredVel.x = dif.x * speed;
 			desiredVel.y = dif.y * speed;
+			
 		}
 	}
 	else
 	{
 		desiredVel = { 0,0 };
 	}
-
+	if (desiredVel.x > 0)
+	{
+		right = true;
+	}
+	else if (desiredVel.x < 0)
+	{
+		right = false;
+	}
 
 
 	impulse = desiredVel - vel;
