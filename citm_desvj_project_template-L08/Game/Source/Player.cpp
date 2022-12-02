@@ -127,6 +127,16 @@ void Player::SummonPlayer()
 
 	pbody->ctype = ColliderType::PLAYER;
 
+
+	b2PolygonShape polygonShape;
+	polygonShape.SetAsBox(1.1, 0.3, b2Vec2(-0.05, 1), 0);
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &polygonShape;
+	fixtureDef.density = 1;
+	fixtureDef.isSensor = true;
+	//b2Fixture* footSensorFixture = pbody->body->CreateFixture(&fixtureDef);
+	//footSensorFixture->SetUserData((void*)3);
+
 	moveState = MS_IDLE;
 
 	jump = 0;
