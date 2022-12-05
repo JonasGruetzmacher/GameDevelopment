@@ -19,7 +19,7 @@ Enemy::Enemy(pugi::xml_node params) : Entity(EntityType::ENEMY)
 	startPosition.y = round(params.attribute("y").as_float());
 	gid = params.attribute("gid").as_uint();
 	GetTextureWithGid();
-
+	moveClass = params.attribute("class").as_string();
 	SString name = params.attribute("name").as_string();
 }
 
@@ -56,8 +56,13 @@ bool Enemy::Awake() {
 }
 
 bool Enemy::Start() {
-	SummonEnemy();
-
+	if (moveClass == "Walking") {
+		SummonWalkingEnemy();
+	}
+	else {
+		SummonFlyingEnemy();
+	}
+	
 	return true;
 }
 
@@ -85,7 +90,7 @@ void Enemy::ResetEnemy()
 	LOG("load Enemy");
 }
 
-void Enemy::SummonEnemy()
+void Enemy::SummonFlyingEnemy()
 {
 	pbody = app->physics->CreateRectangle(position.x + colliderPos.x, position.y + colliderPos.y, colliderWidth, colliderHeight, bodyType::DYNAMIC);
 	pbody->body->SetFixedRotation(true);
@@ -98,13 +103,22 @@ void Enemy::SummonEnemy()
 	//moveState = MS_IDLE;
 }
 
+void Enemy::SummonWalkingEnemy()
+{
+	pbody = app->physics->CreateRectangle(position.x + colliderPos.x, position.y + colliderPos.y, colliderWidth, colliderHeight, bodyType::DYNAMIC);
+	pbody->body->SetFixedRotation(true);
+	pbody->listener = this;
+
+	pbody->ctype = ColliderType::ENEMY;
+
+
+	//moveState = MS_IDLE;
+}
+
 bool Enemy::Update()
 {
 	FindPath();
-
-
 	Move();
-
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 4;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 4;
 
@@ -124,9 +138,24 @@ void Enemy::FindPath()
 		behaviourState = IDLE;
 	}
 	else {
-		behaviourState = CHASE;
-		app->pathfinding->CreatePath(enemyTile, playerTile);
-		path = app->pathfinding->GetLastPath();
+		
+		if (app->pathfinding->CreatePath(enemyTile, playerTile) != -1) {
+			behaviourState = CHASE;
+			path = app->pathfinding->GetLastPath();
+		}
+		else {
+			behaviourState = IDLE;
+		}
+	}
+}
+
+void Enemy::Jump() {
+	if (!isJumping) {
+		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+		float mass = pbody->body->GetMass();
+		pbody->body->ApplyLinearImpulse(b2Vec2(0, -30 * mass), pbody->body->GetWorldCenter(), true);
+
+		isJumping = true;
 	}
 }
 
@@ -144,7 +173,12 @@ void Enemy::Move()
 			b2Vec2 dif = { (float)nextTile->x - tile->x , (float)nextTile->y - tile->y };
 			dif.Normalize();
 			desiredVel.x = dif.x * speed;
-			desiredVel.y = dif.y * speed;
+			if (moveClass == "Flying") {
+				desiredVel.y = dif.y * speed;
+			}
+			else if(dif.y < 0) {
+				Jump();
+			}
 			
 		}
 	}
@@ -163,6 +197,9 @@ void Enemy::Move()
 
 
 	impulse = desiredVel - vel;
+	if (moveClass == "Walking") {
+		impulse.y = 0;
+	}
 	float mass = pbody->body->GetMass();
 	pbody->body->ApplyLinearImpulse(impulse, pbody->body->GetWorldCenter(), true);
 }
@@ -215,15 +252,18 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
+		isJumping = false;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
+		isJumping = false;
 		break;
 	case ColliderType::WALL:
 		LOG("Collision WALL");
 		break;
 	case ColliderType::WATER:
 		LOG("Collision WATER");
+		isJumping = false;
 		break;
 	}
 }

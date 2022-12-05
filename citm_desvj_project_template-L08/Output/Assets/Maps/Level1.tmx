@@ -130,6 +130,14 @@
     <frame tileid="398" duration="150"/>
    </animation>
   </tile>
+  <wangsets>
+   <wangset name="Unbenannter Satz" type="mixed" tile="-1">
+    <wangcolor name="Wall" color="#ff0000" tile="-1" probability="1"/>
+    <wangcolor name="Air" color="#00ff00" tile="-1" probability="1"/>
+    <wangtile tileid="352" wangid="1,1,1,1,1,1,1,1"/>
+    <wangtile tileid="381" wangid="2,2,2,2,2,2,2,2"/>
+   </wangset>
+  </wangsets>
  </tileset>
  <tileset firstgid="1975" name="Player" tilewidth="8" tileheight="8" tilecount="221" columns="13">
   <image source="../Textures/Paper-Pixels-8x8/Player.png" width="104" height="136"/>
@@ -11833,7 +11841,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="1908"/>
    <tile/>
    <tile/>
    <tile/>
@@ -13263,12 +13271,10 @@
   <object id="28" class="Wall" x="689.455" y="0.363636" width="4.18182" height="387.091"/>
  </objectgroup>
  <objectgroup id="8" name="Entities">
-  <object id="29" class="Eye" gid="1835" x="298.727" y="307.091" width="8" height="8"/>
-  <object id="31" class="Eye" gid="1835" x="203.455" y="291.455" width="8" height="8"/>
   <object id="32" name="Player" gid="1988" x="150" y="283.667" width="8" height="8"/>
-  <object id="33" gid="1839" x="241.333" y="289.333" width="8" height="8"/>
-  <object id="34" gid="1667" x="224.333" y="327" width="8" height="8"/>
-  <object id="36" gid="1587" x="194.333" y="265" width="8" height="8"/>
+  <object id="33" gid="1839" x="269" y="294.333" width="8" height="8"/>
+  <object id="34" class="Walking" gid="1667" x="224.333" y="327" width="8" height="8"/>
+  <object id="36" class="Flying" gid="1587" x="265.666" y="263.667" width="8" height="8"/>
   <object id="37" gid="1923" x="274" y="283.333" width="8" height="8"/>
  </objectgroup>
 </map>

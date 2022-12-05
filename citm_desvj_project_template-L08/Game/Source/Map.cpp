@@ -370,8 +370,8 @@ bool Map::LoadTileExtraInformation(pugi::xml_node& node, TileSet* set)
         else
         {
             tile->colliderPos = { 0,0 };
-            tile->height = 8;
-            tile->width = 8;
+            tile->height = 7;
+            tile->width = 7;
         }
 
         ret = LoadAnimation(tileNode.child("animation"), tile, set);

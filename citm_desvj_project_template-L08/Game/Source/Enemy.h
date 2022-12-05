@@ -60,14 +60,18 @@ private:
 	int speed = 5;
 	bool right = true;
 	BehaviourState behaviourState = IDLE;
-
+	SString moveClass;
+	bool isJumping = false;
 	const DynArray<iPoint>* path;
 
 	void Move();
 	void FindPath();
 	void Jump();
 	void ResetEnemy();
-	void SummonEnemy();
+	void SummonFlyingEnemy();
+	void SummonWalkingEnemy();
+
+	
 
 };
 
