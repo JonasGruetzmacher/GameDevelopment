@@ -9,7 +9,7 @@
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
-
+#include "EntityManager.h"
 
 Player::Player(pugi::xml_node params) : Entity(EntityType::PLAYER)
 {
@@ -273,7 +273,14 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::ENEMY:
 		LOG("Collision ENEMY");
-		if (!godMode) {
+		if (physA->body->GetPosition().y + 1 < physB->body->GetPosition().y) {
+			app->entityManager->DestroyEntity(physB->listener);
+			pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+			float mass = pbody->body->GetMass();
+			pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpPower * mass), pbody->body->GetWorldCenter(), true);
+			
+		}
+		else if (!godMode) {
 			Die();
 		}
 		break;

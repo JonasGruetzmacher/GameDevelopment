@@ -24,7 +24,7 @@ Enemy::Enemy(pugi::xml_node params) : Entity(EntityType::ENEMY)
 }
 
 Enemy::~Enemy() {
-
+	
 }
 
 bool Enemy::Awake() {
@@ -206,6 +206,8 @@ void Enemy::Move()
 
 bool Enemy::CleanUp()
 {
+	pbody->body->GetWorld()->DestroyBody(pbody->body);
+	delete pbody;
 	return true;
 }
 

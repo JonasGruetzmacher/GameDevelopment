@@ -103,6 +103,7 @@ public:
 	uint gid;
 	SDL_Texture* texture;
 	bool renderable = true;
+	bool toDestroy;
 };
 
 #endif // __ENTITY_H__
