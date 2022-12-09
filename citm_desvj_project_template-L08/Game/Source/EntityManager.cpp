@@ -5,6 +5,7 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "Enemy.h"
+#include "Bullet.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -108,6 +109,11 @@ Entity* EntityManager::CreateEntity(EntityType type, pugi::xml_node parameters)
 	return entity;
 }
 
+void EntityManager::CreateBullet(Entity* shootingEntity) 
+{
+	//Entity* entity = new Bullet(shootingEntity->position, shootingEntity)
+}
+
 void EntityManager::DestroyEntity(Entity* entity)
 {
 	ListItem<Entity*>* item;
@@ -117,7 +123,6 @@ void EntityManager::DestroyEntity(Entity* entity)
 		if (item->data == entity) {
 			
 			item->data->toDestroy = true;
-			//delte item->data;
 		}
 	}
 }

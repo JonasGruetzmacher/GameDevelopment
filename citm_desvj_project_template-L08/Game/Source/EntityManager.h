@@ -32,6 +32,7 @@ public:
 	void DestroyEntity(Entity* entity);
 
 	void AddEntity(Entity* entity);
+	void CreateBullet(Entity* shootingEntity);
 
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&);

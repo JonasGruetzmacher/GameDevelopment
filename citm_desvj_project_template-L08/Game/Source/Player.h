@@ -43,7 +43,7 @@ public:
 	bool godMode = false;
 
 public:
-
+	int direction = 0;
 private:
 
 	//L02: DONE 1: Declare player parameters
@@ -63,7 +63,7 @@ private:
 	int pickCoinFxId;
 	int speed = 15;
 	int jumpPower = 30;
-	int direction = 0;
+	
 
 
 	void Move();
@@ -71,6 +71,7 @@ private:
 	void Jump();
 	void ResetPlayer();
 	void SummonPlayer();
+	void Shoot();
 
 };
 

@@ -193,8 +193,8 @@ bool Player::Update()
 		}
 
 	}
-	if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) {
-		ResetPlayer();
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
+		Shoot();
 	}
 
 	Move();
@@ -213,6 +213,11 @@ bool Player::Update()
 	//app->map
 	//currentAnimation->Update();
 	return true;
+}
+
+void Player::Shoot() 
+{
+	app->entityManager->CreateBullet(this);
 }
 
 bool Player::CleanUp()
