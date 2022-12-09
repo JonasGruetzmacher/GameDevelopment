@@ -22,9 +22,9 @@ public:
 
 	bool CleanUp();
 
-public:
+	void OnCollision(PhysBody* physA, PhysBody* physB);
 
-	bool isPicked = false;
+public:
 
 private:
 
@@ -33,6 +33,9 @@ private:
 
 	//DONE 4: Add a physics to an item
 	PhysBody* pbody;
+	float speed = 30;
+
+	void Move();
 };
 
 #endif // __BULLET_H__

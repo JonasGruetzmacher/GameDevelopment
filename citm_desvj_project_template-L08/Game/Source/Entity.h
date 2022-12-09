@@ -99,6 +99,7 @@ public:
 	fPoint colliderPos;
 	float colliderWidth;
 	float colliderHeight;
+	bool lookDirection;
 	iPoint position;
 	iPoint startPosition;
 	uint gid;

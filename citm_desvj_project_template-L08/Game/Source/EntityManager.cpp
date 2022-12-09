@@ -109,9 +109,12 @@ Entity* EntityManager::CreateEntity(EntityType type, pugi::xml_node parameters)
 	return entity;
 }
 
-void EntityManager::CreateBullet(Entity* shootingEntity) 
+void EntityManager::CreateBullet(Entity* shootingEntity)
 {
-	//Entity* entity = new Bullet(shootingEntity->position, shootingEntity)
+	Entity* entity = new Bullet(shootingEntity->position, shootingEntity->lookDirection);
+	entity->Awake();
+	entity->Start();
+	AddEntity(entity);
 }
 
 void EntityManager::DestroyEntity(Entity* entity)

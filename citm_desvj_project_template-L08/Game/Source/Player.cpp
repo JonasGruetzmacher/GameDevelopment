@@ -72,14 +72,9 @@ bool Player::Awake() {
 	return true;
 }
 
-bool Player::Start() {
-
-	//initilize textures
-	//texture = app->tex->Load(texturePath);
-
+bool Player::Start() 
+{
 	SummonPlayer();
-	// L07 DONE 5: Add physics to the player - initialize physics body
-	
 
 	return true;
 }
@@ -121,6 +116,7 @@ void Player::ResetPlayer()
 
 void Player::SummonPlayer()
 {
+	lookDirection = true;
 	pbody = app->physics->CreateRectangle(position.x, position.y, 8, 8, bodyType::DYNAMIC);
 	pbody->body->SetFixedRotation(true);
 	pbody->listener = this;
@@ -158,30 +154,31 @@ bool Player::Update()
 		moveState = MS_LEFT;
 		currentAnimation = &runleft;
 		direction = 1;
+		lookDirection = false;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveState = MS_IDLE;
 		currentAnimation = &jumpright;
 		direction = 0;
-
+		lookDirection = true;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveState = MS_IDLE;
 		currentAnimation = &jumpleft;
 		direction = 1;
-
+		lookDirection = false;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		moveState = MS_RIGHT;
 		currentAnimation = &runright;
 		direction = 0;
-
+		lookDirection = true;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		currentAnimation = &jumpright;
 		moveState = MS_IDLE;
 		direction = 0;
-
+		lookDirection = true;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		Jump();
