@@ -14,13 +14,15 @@
 
 Enemy::Enemy(pugi::xml_node params) : Entity(EntityType::ENEMY)
 {
-	name.Create("Enemy");
+	SString nameID = "Enemy";
+	nameID += params.attribute("id").as_string();
+	name.Create(nameID.GetString());
 	startPosition.x = round(params.attribute("x").as_float());
 	startPosition.y = round(params.attribute("y").as_float());
 	gid = params.attribute("gid").as_uint();
 	GetTextureWithGid();
 	moveClass = params.attribute("class").as_string();
-	SString name = params.attribute("name").as_string();
+	
 }
 
 Enemy::~Enemy() {

@@ -10,27 +10,25 @@
 	<map />
 	<entitymanager>
 		<entities>
-			<Player x="35.5723038" y="64.7850189" jump="0">
-				<velocity x="14.6359777" y="0" />
+			<Player x="28.3320141" y="64.7850189" jump="0">
+				<velocity x="0" y="0" />
 			</Player>
-			<Enemy x="53" y="58.9021606">
+			<Enemy33 x="53" y="58">
 				<velocity x="0" y="0" />
-			</Enemy>
-			<Enemy x="53" y="64.885025">
+			</Enemy33>
+			<Enemy36 x="53" y="52">
 				<velocity x="0" y="0" />
-			</Enemy>
-			<Enemy x="53" y="57.487175">
+			</Enemy36>
+			<Enemy37 x="54" y="56">
 				<velocity x="0" y="0" />
-			</Enemy>
-			<Enemy x="53" y="56.0721855">
-				<velocity x="0" y="0" />
-			</Enemy>
+			</Enemy37>
+			<bullet />
 		</entities>
 	</entitymanager>
 	<titleScene />
 	<logoScene />
 	<fade />
 	<renderer>
-		<camera x="-19" y="-607" />
+		<camera x="89" y="-607" />
 	</renderer>
 </save_state>
