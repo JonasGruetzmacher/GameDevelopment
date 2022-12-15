@@ -58,12 +58,7 @@ bool Enemy::Awake() {
 }
 
 bool Enemy::Start() {
-	if (moveClass == "Walking") {
-		SummonWalkingEnemy();
-	}
-	else {
-		SummonFlyingEnemy();
-	}
+	SummonEnemy();
 	
 	return true;
 }
@@ -82,15 +77,6 @@ bool Enemy::SetPosition(int x, int y)
 	return ret;
 }
 
-void Enemy::ResetEnemy()
-{
-	//jump = 0;
-	//moveState = MS_IDLE;
-	pbody->body->SetLinearVelocity(b2Vec2(0, 0));
-
-	SetPosition(startPosition.x, startPosition.y);
-	LOG("load Enemy");
-}
 
 void Enemy::SummonFlyingEnemy()
 {
@@ -103,6 +89,22 @@ void Enemy::SummonFlyingEnemy()
 
 
 	//moveState = MS_IDLE;
+}
+
+void Enemy::SummonEnemy() 
+{
+	if (moveClass == "Walking") 
+	{
+		SummonWalkingEnemy();
+	}
+	else if (moveClass == "Flying")
+	{
+		SummonFlyingEnemy();
+	} else 
+	{
+		LOG("No Enemy Class assigned. Problems might occur!");
+		SummonFlyingEnemy();
+	}
 }
 
 void Enemy::SummonWalkingEnemy()
@@ -215,12 +217,11 @@ bool Enemy::CleanUp()
 
 bool Enemy::LoadState(pugi::xml_node& data)
 {
-	b2Vec2 transform;
-	transform.x = data.attribute("x").as_int();
-	transform.y = data.attribute("y").as_int();
-	pbody->body->SetTransform(transform, 0);
-	position.x = METERS_TO_PIXELS(transform.x);
-	position.y = METERS_TO_PIXELS(transform.y);
+	position.x = data.attribute("x").as_int();
+	position.y = data.attribute("y").as_int();	
+	
+	active = true;
+	SummonEnemy();
 
 	b2Vec2 vel;
 	vel.x = data.child("velocity").attribute("x").as_int();
@@ -236,8 +237,8 @@ bool Enemy::SaveState(pugi::xml_node& data)
 {
 	//pugi::xml_node Enemy = data.append_child("Enemy");
 
-	data.append_attribute("x") = pbody->body->GetTransform().p.x;
-	data.append_attribute("y") = pbody->body->GetTransform().p.y;
+	data.append_attribute("x") = position.x;
+	data.append_attribute("y") = position.y;
 	data.append_child("velocity");
 	data.child("velocity").append_attribute("x") = pbody->body->GetLinearVelocity().x;
 	data.child("velocity").append_attribute("y") = pbody->body->GetLinearVelocity().y;

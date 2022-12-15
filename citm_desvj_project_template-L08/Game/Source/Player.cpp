@@ -219,6 +219,7 @@ void Player::Shoot()
 
 bool Player::CleanUp()
 {
+	pbody->body->GetWorld()->DestroyBody(pbody->body);
 	return true;
 }
 
@@ -300,14 +301,13 @@ bool Player::Die() {
 
 bool Player::LoadState(pugi::xml_node& data)
 {
-	b2Vec2 transform;
-	transform.x = data.attribute("x").as_int();
-	transform.y = data.attribute("y").as_int();
-	pbody->body->SetTransform(transform, 0);
-	position.x = METERS_TO_PIXELS(transform.x);
-	position.y = METERS_TO_PIXELS(transform.y);
+	position.x = data.attribute("x").as_int();
+	position.y = data.attribute("y").as_int();
 
 	jump = data.attribute("jump").as_int();
+	
+	active = true;
+	SummonPlayer();
 
 	b2Vec2 vel;
 	vel.x = data.child("velocity").attribute("x").as_int();
@@ -323,8 +323,8 @@ bool Player::SaveState(pugi::xml_node& data)
 {
 	//pugi::xml_node player = data.append_child("player");
 
-	data.append_attribute("x") = pbody->body->GetTransform().p.x;
-	data.append_attribute("y") = pbody->body->GetTransform().p.y;
+	data.append_attribute("x") = position.x;
+	data.append_attribute("y") = position.y;
 	data.append_attribute("jump") = jump;
 	data.append_child("velocity");
 	data.child("velocity").append_attribute("x") = pbody->body->GetLinearVelocity().x;

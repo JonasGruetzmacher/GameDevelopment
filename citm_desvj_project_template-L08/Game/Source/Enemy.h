@@ -67,7 +67,7 @@ private:
 	void Move();
 	void FindPath();
 	void Jump();
-	void ResetEnemy();
+	void SummonEnemy();
 	void SummonFlyingEnemy();
 	void SummonWalkingEnemy();
 

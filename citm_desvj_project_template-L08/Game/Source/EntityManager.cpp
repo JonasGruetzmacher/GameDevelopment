@@ -72,7 +72,7 @@ bool EntityManager::CleanUp()
 
 	while (item != NULL && ret == true)
 	{
-		ret = item->data->CleanUp();
+		if(item->data->active) ret = item->data->CleanUp();
 		item = item->prev;
 	}
 
@@ -147,7 +147,9 @@ bool EntityManager::Update(float dt)
 
 		if (pEntity->active == false) continue;
 		if (pEntity->toDestroy == true) {
-			entities.Del(item);
+			//entities.Del(item);
+			pEntity->toDestroy = false;
+			pEntity->active = false;
 			item->data->CleanUp();
 		}
 		ret = item->data->Update();
@@ -167,7 +169,10 @@ bool EntityManager::SaveState(pugi::xml_node& data) {
 	
 	while (item != NULL)
 	{
-		ret = item->data->SaveState(data.child("entities").append_child(item->data->name.GetString()));
+		if (item->data->active)
+		{
+			ret = item->data->SaveState(data.child("entities").append_child(item->data->name.GetString()));
+		}
 		item = item->next;
 	}
 
@@ -182,6 +187,9 @@ bool EntityManager::LoadState(pugi::xml_node& data) {
 
 	while (item != NULL && ret == true)
 	{
+		
+		if (item->data->active) item->data->CleanUp();
+		item->data->active = false;
 		ret = item->data->LoadState(data.child("entities").child(item->data->name.GetString()));
 		item = item->next;
 	}
