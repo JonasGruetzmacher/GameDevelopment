@@ -181,7 +181,7 @@ void Enemy::Move()
 				desiredVel.y = dif.y * speed;
 			}
 			else if(dif.y < 0) {
-				Jump();
+				//Jump();
 			}
 			
 		}
