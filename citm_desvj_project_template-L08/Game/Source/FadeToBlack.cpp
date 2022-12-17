@@ -45,6 +45,14 @@ bool FadeToBlack::Start()
 	sceneSwitch = false;
 	wantToSwitchScene = "LogoScene";
 
+	app->scene->CleanUp();
+	app->scene->active = false;
+	app->map->active = false;
+	app->physics->active = false;
+	app->logoScene->active = true;
+	app->titleScene->active = false;
+	app->entityManager->active = false;
+
 	return true;
 }
 
@@ -110,6 +118,8 @@ bool FadeToBlack::DoFadeToBlack(int level, float time)
 		totalTime = (Uint32)(time * 0.5f * 1000.0f);
 		ret = true;
 
+		app->scene->player->active = true;
+
 	}
 
 	return ret;
@@ -149,6 +159,8 @@ bool FadeToBlack::SwitchScenes(char* scene)
 		
 		if (scene == "LogoScene")
 		{
+			
+			app->entityManager->CleanUp();
 			app->scene->CleanUp();
 			app->scene->active = false;
 			app->map->active = false;

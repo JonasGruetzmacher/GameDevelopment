@@ -147,7 +147,6 @@ bool EntityManager::Update(float dt)
 
 		if (pEntity->active == false) continue;
 		if (pEntity->toDestroy == true) {
-			//entities.Del(item);
 			pEntity->toDestroy = false;
 			pEntity->active = false;
 			item->data->CleanUp();
@@ -190,7 +189,11 @@ bool EntityManager::LoadState(pugi::xml_node& data) {
 		
 		if (item->data->active) item->data->CleanUp();
 		item->data->active = false;
-		ret = item->data->LoadState(data.child("entities").child(item->data->name.GetString()));
+		
+		if (!data.child("entities").child(item->data->name.GetString()).empty())
+		{
+			ret = item->data->LoadState(data.child("entities").child(item->data->name.GetString()));
+		}
 		item = item->next;
 	}
 
