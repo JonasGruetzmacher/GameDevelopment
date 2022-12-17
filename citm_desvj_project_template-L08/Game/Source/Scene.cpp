@@ -8,6 +8,7 @@
 #include "EntityManager.h"
 #include "PathFinding.h"
 #include "Map.h"
+#include "FadeToBlack.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -91,8 +92,6 @@ bool Scene::Update(float dt)
 		app->SaveGameRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-		app->LoadGameRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		player->godMode = !player->godMode;
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
@@ -101,6 +100,8 @@ bool Scene::Update(float dt)
 		app->audio->DecreaseVolume();
 	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		debugMode = !debugMode;
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+		app->fadeToBlack->SwitchMap(1);
 
 	// Draw map
 	app->map->Draw();

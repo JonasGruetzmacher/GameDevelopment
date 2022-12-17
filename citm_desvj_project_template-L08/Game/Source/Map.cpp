@@ -238,6 +238,8 @@ bool Map::Load(const char* fileName)
     
     // L07 DONE 3: Create colliders
     // Later you can create a function here to load and create the colliders from the map
+
+
     if (ret == true)
     {
         ret = LoadAllObjectGroups(mapFileXML.child("map"));
@@ -427,6 +429,7 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 }
 
 // L05: DONE 4: Iterate all layers and load each of them
+
 bool Map::LoadAllLayers(pugi::xml_node mapNode) {
     bool ret = true;
 
@@ -535,6 +538,7 @@ bool Map::LoadEntities(pugi::xml_node& node)
 
 bool Map::LoadAllObjectGroups(pugi::xml_node mapNode)
 {
+
     bool ret = true;
 
     for (pugi::xml_node groupNode = mapNode.child("objectgroup"); groupNode && ret; groupNode = groupNode.next_sibling("objectgroup"))

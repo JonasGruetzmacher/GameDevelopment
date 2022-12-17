@@ -210,8 +210,9 @@ void Enemy::Move()
 
 bool Enemy::CleanUp()
 {
+	app->physics->world;
 	pbody->body->GetWorld()->DestroyBody(pbody->body);
-	delete pbody;
+	//delete pbody;
 	return true;
 }
 
