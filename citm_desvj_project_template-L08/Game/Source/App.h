@@ -57,8 +57,8 @@ public:
 	const char* GetOrganization() const;
 
 	// L03: DONE 1: Create methods to control that the real Load and Save happens at the end of the frame
-	void LoadGameRequest();
-	void SaveGameRequest() ;
+	void LoadGameRequest(bool levelstart=false);
+	void SaveGameRequest(bool levelstart=false) ;
 	bool LoadFromFile();
 	bool SaveToFile() ;
 
@@ -119,6 +119,7 @@ private:
 	float dt;
 
 	// L03: DONE 1: Create control variables to control that the real Load and Save happens at the end of the frame
+	bool requestLevelstart = false;
     bool saveGameRequested;
 	bool loadGameRequested;
 };

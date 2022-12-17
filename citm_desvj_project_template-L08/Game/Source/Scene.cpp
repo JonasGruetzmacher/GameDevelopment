@@ -74,7 +74,7 @@ bool Scene::Start()
 	mouseTileTex = app->tex->Load("Assets/Textures/path.png");
 	// Texture to show path origin 
 	originTex = app->tex->Load("Assets/Textures/x.png");
-
+	
 	return ret;
 }
 
@@ -201,6 +201,8 @@ bool Scene::SetUp(int level)
 		bool retWalkMap = app->map->CreateWalkabilityMap(w, h, &data);
 		if (retWalkMap) app->pathfinding->SetMap(w, h, data);
 	}
+
+	app->SaveGameRequest(true);
 
 	return ret;
 }

@@ -293,8 +293,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 bool Player::Die() {
 	LOG("Player died");
 	app->audio->PlayFx(2);
-	//SetPosition(startPosition.x, startPosition.y);
-	app->LoadGameRequest();
+	app->LoadGameRequest(true);
 
 	return true;
 }

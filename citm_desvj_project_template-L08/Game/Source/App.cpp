@@ -293,16 +293,18 @@ const char* App::GetOrganization() const
 
 // L02: DONE 1: Implement methods to request load / save and methods 
 // for the real execution of load / save (to be implemented in TODO 5 and 7)
-void App::LoadGameRequest()
+void App::LoadGameRequest(bool levelstart)
 {
 	// NOTE: We should check if SAVE_STATE_FILENAME actually exist
+	requestLevelstart = levelstart;
 	loadGameRequested = true;
 }
 
 // ---------------------------------------
-void App::SaveGameRequest() 
+void App::SaveGameRequest(bool levelstart) 
 {
 	// NOTE: We should check if SAVE_STATE_FILENAME actually exist and... should we overwriten
+	requestLevelstart = levelstart;
 	saveGameRequested = true;
 }
 
@@ -314,7 +316,11 @@ bool App::LoadFromFile()
 	bool ret = true;
 
 	pugi::xml_document gameStateFile;
-	pugi::xml_parse_result result = gameStateFile.load_file("save_game.xml");
+	pugi::xml_parse_result result;
+	if(requestLevelstart)
+		result = gameStateFile.load_file("level_start.xml");
+	else
+		result = gameStateFile.load_file("save_game.xml");
 
 	if (result == NULL)
 	{
@@ -356,7 +362,10 @@ bool App::SaveToFile()
 		item = item->next;
 	}
 
-	ret = saveDoc->save_file("save_game.xml");
+	if(requestLevelstart)
+		ret = saveDoc->save_file("level_start.xml");
+	else
+		ret = saveDoc->save_file("save_game.xml");
 
 	saveGameRequested = false;
 
