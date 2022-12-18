@@ -112,6 +112,10 @@ bool Scene::Update(float dt)
 		restartLevel = false;
 		app->fadeToBlack->SwitchMap(currentLevel);
 	}
+	if (nextLevel) {
+		nextLevel = false;
+		app->fadeToBlack->SwitchMap(currentLevel + 1);
+	}
 
 	// Draw map
 	app->map->Draw();

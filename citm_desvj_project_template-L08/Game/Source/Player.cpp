@@ -273,6 +273,10 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			Die();
 		}
 		break;
+	case ColliderType::GOAL:
+		LOG("Goal Reached");
+		app->scene->nextLevel = true;
+		break;
 	case ColliderType::ENEMY:
 		LOG("Collision ENEMY");
 		if (physA->body->GetPosition().y + 1 < physB->body->GetPosition().y) {

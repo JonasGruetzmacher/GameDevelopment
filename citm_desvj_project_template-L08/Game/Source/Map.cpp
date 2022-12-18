@@ -475,6 +475,9 @@ bool Map::LoadCollisions(pugi::xml_node& node, ObjectGroup* group)
         {
             pBody->ctype = ColliderType::WALL;
         }
+        else if (type == "Goal") {
+            pBody->ctype = ColliderType::GOAL;
+        }
         else
         {
             pBody->ctype = ColliderType::UNKNOWN;

@@ -49,6 +49,7 @@ public:
 	Player* player;
 	int currentLevel;
 	bool restartLevel = false;
+	bool nextLevel = false;
 	bool debugMode = false;
 
 private:
