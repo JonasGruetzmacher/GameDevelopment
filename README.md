@@ -1,4 +1,4 @@
-# 8-bit platformer (working title)
+# Group_10_8-bit platformer (working title)
 
 ## Description
 
