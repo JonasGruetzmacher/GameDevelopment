@@ -26,6 +26,7 @@
     <ClCompile Include="Source\PathFinding.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\Bullet.cpp" />
+    <ClCompile Include="Source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -76,6 +77,7 @@
     <ClInclude Include="Source\PathFinding.h" />
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\Bullet.h" />
+    <ClInclude Include="Source\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

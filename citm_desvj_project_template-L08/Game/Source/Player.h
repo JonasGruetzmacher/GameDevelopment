@@ -7,6 +7,7 @@
 #include "Point.h"
 #include "SDL/include/SDL.h"
 #include "Animation.h"
+#include "Timer.h"
 
 struct SDL_Texture;
 enum _moveState {
@@ -72,6 +73,7 @@ private:
 	void ResetPlayer();
 	void SummonPlayer();
 	void Shoot();
+	Timer shootTimer;
 
 };
 

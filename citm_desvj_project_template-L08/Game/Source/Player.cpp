@@ -11,6 +11,7 @@
 #include "Physics.h"
 #include "EntityManager.h"
 #include "FadeToBlack.h"
+#include "Timer.h"
 
 Player::Player(pugi::xml_node params) : Entity(EntityType::PLAYER)
 {
@@ -33,7 +34,8 @@ bool Player::Awake() {
 
 	//L02: DONE 1: Initialize Player parameters
 	//L02: DONE 5: Get Player parameters from XML
-
+	shootTimer = Timer();
+	shootTimer.Start();
 	position = startPosition;
 	LOG(name.GetString());
 	idle.PushBack(GetTileSetWithGid()->GetTileRect(gid));
@@ -96,7 +98,7 @@ bool Player::SetPosition(int x, int y)
 
 void Player::Jump() {
 	if (jump < 2 || godMode) {
-		app->audio->PlayFx(1);
+		app->audio->PlayFx(3);
 		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 		float mass = pbody->body->GetMass();
 		pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpPower * mass), pbody->body->GetWorldCenter(), true);
@@ -123,16 +125,6 @@ void Player::SummonPlayer()
 	pbody->listener = this;
 
 	pbody->ctype = ColliderType::PLAYER;
-
-
-	b2PolygonShape polygonShape;
-	polygonShape.SetAsBox(1.1, 0.3, b2Vec2(-0.05, 1), 0);
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &polygonShape;
-	fixtureDef.density = 1;
-	fixtureDef.isSensor = true;
-	//b2Fixture* footSensorFixture = pbody->body->CreateFixture(&fixtureDef);
-	//footSensorFixture->SetUserData((void*)3);
 
 	moveState = MS_IDLE;
 
@@ -192,7 +184,11 @@ bool Player::Update()
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
-		Shoot();
+		
+		if (shootTimer.ReadMSec() > 300)
+		{
+			Shoot();
+		}
 	}
 
 	Move();
@@ -215,6 +211,8 @@ bool Player::Update()
 
 void Player::Shoot() 
 {
+	app->audio->PlayFx(4);
+	shootTimer.Start();
 	app->entityManager->CreateBullet(this);
 }
 
@@ -278,6 +276,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::ENEMY:
 		LOG("Collision ENEMY");
 		if (physA->body->GetPosition().y + 1 < physB->body->GetPosition().y) {
+			app->audio->PlayFx(1);
 			app->entityManager->DestroyEntity(physB->listener);
 			pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 			float mass = pbody->body->GetMass();

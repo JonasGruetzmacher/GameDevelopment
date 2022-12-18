@@ -236,7 +236,6 @@ bool Enemy::CleanUp()
 {
 	app->physics->world;
 	pbody->body->GetWorld()->DestroyBody(pbody->body);
-	//delete pbody;
 	return true;
 }
 

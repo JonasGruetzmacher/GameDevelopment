@@ -18,10 +18,12 @@
 
   <audio>
     <music volume="10" path="Assets/Audio/Music/GameDevMusic.mp3"/>
-    <fx volume="0"/>
+    <fx volume="10"/>
 	<sounds>
         <fx name="jump" path="Assets/Audio/Fx/jump.wav"/>
 		<fx name="death" path="Assets/Audio/Fx/death.wav"/>
+		<fx name="kill" path="Assets/Audio/Fx/kill.wav"/>
+		<fx name="shot" path="Assets/Audio/Fx/shot.wav"/>
 	</sounds>
   </audio>
 
