@@ -1,4 +1,4 @@
-# {Project Name}
+# {8-bit platformer (working title)}
 
 ## Description
 
@@ -14,12 +14,15 @@
 ## Controls
 
  - {A- move left
-    D- move right}
+    D- move right
+    SPACE- jump
+    SPACE(while jumping)- double jump
+    K- shoot a bullet}
 
 ## Developers
 
- - {Jonas} - {Role(s)}
- - {Oscar} - {Role(s)}
+ - {Jonas} - {Developer}
+ - {Oscar} - {Developer}
  
 
 ## License
