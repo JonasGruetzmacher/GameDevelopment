@@ -10,6 +10,7 @@
 #include "Point.h"
 #include "Physics.h"
 #include "EntityManager.h"
+#include "FadeToBlack.h"
 
 Player::Player(pugi::xml_node params) : Entity(EntityType::PLAYER)
 {
@@ -281,6 +282,9 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 			float mass = pbody->body->GetMass();
 			pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpPower * mass), pbody->body->GetWorldCenter(), true);
+			jump -= 1;
+			if (jump < 0)
+				jump = 0;
 			
 		}
 		else if (!godMode) {
@@ -293,7 +297,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 bool Player::Die() {
 	LOG("Player died");
 	app->audio->PlayFx(2);
-	app->LoadGameRequest(true);
+	app->scene->restartLevel = true;
 
 	return true;
 }

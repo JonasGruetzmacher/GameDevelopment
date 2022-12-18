@@ -48,6 +48,7 @@ public:
 	//L02: DONE 3: Declare a Player attribute 
 	Player* player;
 	int currentLevel;
+	bool restartLevel = false;
 	bool debugMode = false;
 
 private:
