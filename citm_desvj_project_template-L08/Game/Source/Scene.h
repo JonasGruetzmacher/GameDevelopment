@@ -5,6 +5,11 @@
 #include "Player.h"
 #include "Item.h"
 
+struct Level {
+	int id;
+	SString name;
+};
+
 struct SDL_Texture;
 
 class Scene : public Module
@@ -36,11 +41,26 @@ public:
 
 public:
 
+	bool SetUp(int level);
+
+public:
+
 	//L02: DONE 3: Declare a Player attribute 
 	Player* player;
+	int currentLevel;
+	bool restartLevel = false;
+	bool debugMode = false;
 
 private:
 	SDL_Texture* img;
+	SDL_Texture* mouseTileTex = nullptr;
+	SDL_Texture* originTex = nullptr;
+
+	List<Level*> levels;
+
+	//Debug
+	iPoint origin;
+	bool originSelected = false;
 
 };
 

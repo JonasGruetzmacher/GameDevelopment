@@ -54,10 +54,17 @@ bool Audio::Awake(pugi::xml_node& config)
 		active = false;
 		ret = true;
 	}
-
+	
 	PlayMusic(config.child("music").attribute("path").as_string());
 
+	
 	LoadAllFx(config.child("sounds"));
+
+	musicVolume = config.child("music").attribute("volume").as_int();
+	fxVolume = config.child("fx").attribute("volume").as_int();
+
+	Mix_VolumeMusic(musicVolume);
+	Mix_Volume(-1, fxVolume);
 
 	return ret;
 }
@@ -86,6 +93,32 @@ bool Audio::CleanUp()
 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
 
 	return true;
+}
+
+void Audio::IncreaseVolume()
+{
+	fxVolume += 16;
+	musicVolume += 16;
+	if (fxVolume > 128)
+		fxVolume = 128;
+	if (musicVolume > 128)
+		musicVolume = 128;
+
+	Mix_VolumeMusic(musicVolume);
+	Mix_Volume(-1, fxVolume);
+}
+
+void Audio::DecreaseVolume()
+{
+	fxVolume -= 16;
+	musicVolume -= 16;
+	if (fxVolume < 0)
+		fxVolume = 0;
+	if (musicVolume < 0)
+		musicVolume < 0;
+
+	Mix_VolumeMusic(musicVolume);
+	Mix_Volume(-1, fxVolume);
 }
 
 // Play a music file

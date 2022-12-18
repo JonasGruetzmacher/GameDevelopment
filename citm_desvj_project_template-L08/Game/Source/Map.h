@@ -4,8 +4,20 @@
 #include "Module.h"
 #include "List.h"
 #include "Point.h"
+#include "Animation.h"
+
 
 #include "PugiXml\src\pugixml.hpp"
+
+struct Tile
+{
+	int gid;
+	fPoint colliderPos;
+	float width;
+	float height;
+	bool isAnimated = false;
+	Animation animation;
+};
 
 // L04: DONE 2: Create a struct to hold information for a TileSet
 // Ignore Terrain Types and Tile Types for now, but we want the image!
@@ -20,10 +32,13 @@ struct TileSet
 	int columns;
 	int tilecount;
 
+	List<Tile*> extraTileInformation;
+
 	SDL_Texture* texture;
 
 	// L05: DONE 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
 	SDL_Rect GetTileRect(int gid) const;
+	Tile* GetTile(int gid) const;
 };
 
 //  We create an enum for map type, just for convenience,
@@ -93,6 +108,21 @@ struct MapLayer
 	}
 };
 
+struct Object 
+{
+	int id;
+	SString name;
+	PhysBody* pBody;
+};
+
+struct ObjectGroup
+{
+	int id;
+	SString name;
+	Object* objects;
+	int objectsSize;
+};
+
 // L04: DONE 1: Create a struct needed to hold the information to Map node
 struct MapData
 {
@@ -101,6 +131,7 @@ struct MapData
 	int	tileWidth;
 	int	tileHeight;
 	List<TileSet*> tilesets;
+	List<ObjectGroup*> objectGroups;
 	MapTypes type;
 
 	// L05: DONE 2: Add a list/array of layers to the map
@@ -112,7 +143,7 @@ class Map : public Module
 public:
 
     Map();
-
+	
     // Destructor
     virtual ~Map();
 
@@ -126,10 +157,15 @@ public:
     bool CleanUp();
 
     // Load new map
-    bool Load();
+    bool Load(const char* path);
 
 	// L05: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
+	iPoint WorldToMap(int x, int y);
+
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
+
+	TileSet* GetTilesetFromTileId(int gid) const;
 
 private:
 
@@ -137,17 +173,20 @@ private:
 
 	// L04: DONE 4: Create and call a private function to load a tileset
 	bool LoadTileSet(pugi::xml_node mapFile);
+	bool LoadTileExtraInformation(pugi::xml_node& node, TileSet* set);
+	bool LoadAnimation(pugi::xml_node& node, Tile* tile, TileSet* set);
 
 	// L05
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadAllLayers(pugi::xml_node mapNode);
 
-	bool LoadCollisions(pugi::xml_node& node);
-	bool LoadObjectGroup(pugi::xml_node& node);
+	bool LoadCollisions(pugi::xml_node& node, ObjectGroup* group);
+	bool LoadEntities(pugi::xml_node& node);
+	bool LoadObjectGroup(pugi::xml_node& node, ObjectGroup* group);
 	bool LoadAllObjectGroups(pugi::xml_node mapNode);
 
 	// L06: DONE 2
-	TileSet* GetTilesetFromTileId(int gid) const;
+	
 
 	// L06: DONE 6: Load a group of properties 
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);

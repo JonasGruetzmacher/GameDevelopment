@@ -5,10 +5,13 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Scene.h"
-#include "Scene.h"
+#include "LogoScene.h"
+#include "TitleScene.h"
 #include "EntityManager.h"
 #include "Map.h"
 #include "Physics.h"
+#include "FadeToBlack.h"
+#include "PathFinding.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -24,13 +27,18 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	input = new Input();
 	win = new Window();
 	render = new Render();
+	fadeToBlack = new FadeToBlack();
 	tex = new Textures();
 	audio = new Audio();
 	//L07 DONE 2: Add Physics module
 	physics = new Physics();
+	pathfinding = new PathFinding();
+	logoScene = new LogoScene();
+	titleScene = new TitleScene();
 	scene = new Scene();
-	entityManager = new EntityManager();
 	map = new Map();
+	entityManager = new EntityManager();
+	
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -40,10 +48,15 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	//L07 DONE 2: Add Physics module
 	AddModule(physics);
-	AddModule(scene);
-	AddModule(entityManager);
+	AddModule(pathfinding);
+	AddModule(scene);	
 	AddModule(map);
-
+	AddModule(entityManager);
+	
+	AddModule(titleScene);
+	AddModule(logoScene);
+	
+	AddModule(fadeToBlack);
 	// Render last to swap buffer
 	AddModule(render);
 }
@@ -303,6 +316,7 @@ bool App::LoadFromFile()
 	pugi::xml_document gameStateFile;
 	pugi::xml_parse_result result = gameStateFile.load_file("save_game.xml");
 
+	fadeToBlack->SwitchMap(gameStateFile.child("save_state").attribute("level").as_int());
 	if (result == NULL)
 	{
 		LOG("Could not load xml file savegame.xml. pugi error: %s", result.description());
@@ -336,7 +350,7 @@ bool App::SaveToFile()
 
 	ListItem<Module*>* item;
 	item = modules.start;
-
+	saveStateNode.append_attribute("level") = scene->currentLevel;
 	while (item != NULL)
 	{
 		ret = item->data->SaveState(saveStateNode.append_child(item->data->name.GetString()));

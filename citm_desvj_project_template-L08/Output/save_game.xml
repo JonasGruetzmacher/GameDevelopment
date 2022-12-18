@@ -1,20 +1,36 @@
 <?xml version="1.0"?>
-<save_state>
+<save_state level="1">
 	<input />
 	<window />
 	<textures />
 	<audio />
 	<:anonymous />
+	<pathfinding />
 	<scene />
+	<map />
 	<entitymanager>
 		<entities>
-			<Player x="13.1350031" y="11.1350012" jump="0">
+			<Player x="146" y="319" jump="0">
 				<velocity x="0" y="0" />
 			</Player>
+			<Enemy33 x="265" y="290">
+				<velocity x="0" y="0" />
+			</Enemy33>
+			<Enemy34 x="289" y="320">
+				<velocity x="0" y="0" />
+			</Enemy34>
+			<Enemy37 x="270" y="279">
+				<velocity x="0" y="0" />
+			</Enemy37>
+			<Enemy40 x="296" y="250">
+				<velocity x="0" y="0" />
+			</Enemy40>
 		</entities>
 	</entitymanager>
-	<map />
+	<titleScene />
+	<logoScene />
+	<fade />
 	<renderer>
-		<camera x="-284" y="41" />
+		<camera x="62" y="-607" />
 	</renderer>
 </save_state>

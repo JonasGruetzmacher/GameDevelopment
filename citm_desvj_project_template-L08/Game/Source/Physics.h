@@ -5,10 +5,10 @@
 #include "Box2D/Box2D/Box2D.h"
 
 #define GRAVITY_X 0.0f
-#define GRAVITY_Y -30.0f
+#define GRAVITY_Y -70.0f
 
-#define PIXELS_PER_METER 10.0f // if touched change METER_PER_PIXEL too
-#define METER_PER_PIXEL 0.10f // this is 1 / PIXELS_PER_METER !
+#define PIXELS_PER_METER 5.0f // if touched change METER_PER_PIXEL too
+#define METER_PER_PIXEL 0.2f // this is 1 / PIXELS_PER_METER !
 
 #define METERS_TO_PIXELS(m) ((int) floor(PIXELS_PER_METER * m))
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
@@ -29,6 +29,8 @@ enum class ColliderType {
 	PLATFORM,
 	WALL,
 	WATER,
+	ENEMY,
+	BULLET,
 	UNKNOWN
 	// ..
 };
@@ -78,11 +80,13 @@ public:
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact);
 
+	b2World* world;
+
 private:
 
 	// Debug mode
 	bool debug;
 
 	// Box2D World
-	b2World* world;
+	
 };

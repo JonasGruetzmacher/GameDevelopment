@@ -5,13 +5,25 @@
 #include "Input.h"
 #include "Render.h"
 #include "Scene.h"
+#include "Window.h"
 #include "Log.h"
 #include "Point.h"
 #include "Physics.h"
+#include "EntityManager.h"
+#include "FadeToBlack.h"
+#include "Timer.h"
 
-Player::Player() : Entity(EntityType::PLAYER)
+Player::Player(pugi::xml_node params) : Entity(EntityType::PLAYER)
 {
 	name.Create("Player");
+	startPosition.x = round(params.attribute("x").as_float());
+	startPosition.y = round(params.attribute("y").as_float());
+	gid = params.attribute("gid").as_uint();
+	GetTextureWithGid();
+
+	SString name = params.attribute("name").as_string();
+
+	parameters = params;
 }
 
 Player::~Player() {
@@ -21,22 +33,20 @@ Player::~Player() {
 bool Player::Awake() {
 
 	//L02: DONE 1: Initialize Player parameters
-	//pos = position;
-	//texturePath = "Assets/Textures/player/idle1.png";
-
 	//L02: DONE 5: Get Player parameters from XML
-	position.x = parameters.attribute("x").as_int();
-	position.y = parameters.attribute("y").as_int();
-	texturePath = parameters.attribute("texturepath").as_string();
-
+	shootTimer = Timer();
+	shootTimer.Start();
+	position = startPosition;
+	LOG(name.GetString());
+	idle.PushBack(GetTileSetWithGid()->GetTileRect(gid));
 	idle.PushBack({ 0,56,8,8 });
 	idle.PushBack({ 8,56,8,8 });
-	idle.PushBack({ 16,57,8,8 });
-	idle.PushBack({ 24,57,8,8 });
+	idle.PushBack({ 16,56,8,8 });
+	idle.PushBack({ 24,56,8,8 });
 	idleleft.PushBack({ 0,64,8,8 });
 	idleleft.PushBack({ 8,64,8,8 });
-	idleleft.PushBack({ 16,65,8,8 });
-	idleleft.PushBack({ 24,65,8,8 });
+	idleleft.PushBack({ 16,64,8,8 });
+	idleleft.PushBack({ 24,64,8,8 });
 	runright.PushBack({ 0,8,8,8 });
 	runright.PushBack({ 8,8,8,8 });
 	runright.PushBack({ 16,8,8,8 });
@@ -53,107 +63,132 @@ bool Player::Awake() {
 	runleft.PushBack({ 40,16,8,8 });
 	runleft.PushBack({ 48,16,8,8 });
 	runleft.PushBack({ 56,16,8,8 });
+	jumpright.PushBack({ 0,32,8,8 });
+	jumpright.PushBack({ 8,32,8,8 });
+	jumpright.PushBack({ 16,32,8,8 });
+	jumpright.PushBack({ 24,32,8,8 });
+	jumpleft.PushBack({ 0,40,8,8 });
+	jumpleft.PushBack({ 8,40,8,8 });
+	jumpleft.PushBack({ 16,40,8,8 });
+	jumpleft.PushBack({ 24,40,8,8 });
 	
 	return true;
 }
 
-bool Player::Start() {
+bool Player::Start() 
+{
+	SummonPlayer();
 
-	//initilize textures
-	texture = app->tex->Load(texturePath);
+	return true;
+}
 
-	// L07 DONE 5: Add physics to the player - initialize physics body
+bool Player::SetPosition(int x, int y) 
+{
+	bool ret = true;
+
+	b2Vec2 transform;
+	transform.x = PIXEL_TO_METERS(x);
+	transform.y = PIXEL_TO_METERS(y);
+	pbody->body->SetTransform(transform, 0);
+	position.x = METERS_TO_PIXELS(transform.x);
+	position.y = METERS_TO_PIXELS(transform.y);
+
+	return ret;
+}
+
+void Player::Jump() {
+	if (jump < 2 || godMode) {
+		app->audio->PlayFx(3);
+		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+		float mass = pbody->body->GetMass();
+		pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpPower * mass), pbody->body->GetWorldCenter(), true);
+
+		jump++;
+	}
+}
+
+void Player::ResetPlayer()
+{	
+	jump = 0;
+	moveState = MS_IDLE;
+	pbody->body->SetLinearVelocity(b2Vec2(0,0));
+
+	SetPosition(startPosition.x, startPosition.y);
+	LOG("load player");
+}
+
+void Player::SummonPlayer()
+{
+	lookDirection = true;
 	pbody = app->physics->CreateRectangle(position.x, position.y, 8, 8, bodyType::DYNAMIC);
 	pbody->body->SetFixedRotation(true);
-
-
 	pbody->listener = this;
 
 	pbody->ctype = ColliderType::PLAYER;
 
 	moveState = MS_IDLE;
 
-	return true;
-}
-
-void Player::Jump(float jumpImpulse = 15) {
-	if (jump < 2 || godMode) {
-		app->audio->PlayFx(1);
-		pbody->body->SetLinearVelocity(b2Vec2(0, 0));
-		float mass = pbody->body->GetMass();
-		pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpImpulse * mass), pbody->body->GetWorldCenter(), true);
-
-		jump++;
-	}
-
-
+	jump = 0;
 }
 
 bool Player::Update()
 {
 
-	if (direction == 1) {
+	if (direction == 0) {
 		currentAnimation = &idle;
 	}
-	else {
+	if (direction == 1) {
 		currentAnimation = &idleleft;
 	}
-	
 
 
 	// L07 DONE 5: Add physics to the player - updated player position using physics	
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		moveState = MS_LEFT;
 		currentAnimation = &runleft;
-		direction = -1;
-
-
+		direction = 1;
+		lookDirection = false;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
 		moveState = MS_IDLE;
-		currentAnimation = &runright;
-		direction = 1;
-
-
+		currentAnimation = &jumpright;
+		direction = 0;
+		lookDirection = true;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
 		moveState = MS_IDLE;
-		currentAnimation = &runleft;
-		direction = -1;
-
-
-
+		currentAnimation = &jumpleft;
+		direction = 1;
+		lookDirection = false;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		moveState = MS_RIGHT;
 		currentAnimation = &runright;
-		direction = 1;
-
-
-
+		direction = 0;
+		lookDirection = true;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		currentAnimation = &runright;
+		currentAnimation = &jumpright;
 		moveState = MS_IDLE;
-		direction = 1;
-
-
-
+		direction = 0;
+		lookDirection = true;
 	}
 	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
 		Jump();
+		if (direction == 0) {
+			currentAnimation = &jumpright;
+		}
 		if (direction == 1) {
-			currentAnimation = &idle;
+			currentAnimation = &jumpleft;
 		}
-		else {
-			currentAnimation = &idleleft;
-		}
-	}
-	if (app->input->GetKey(SDL_SCANCODE_U) == KEY_DOWN) {
-		b2Fixture* test = (pbody->body->GetFixtureList());
 
-		SString tests = SString(test->GetDensity());
-		LOG(tests.GetString());
+	}
+	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
+		
+		if (shootTimer.ReadMSec() > 300)
+		{
+			Shoot();
+		}
 	}
 
 	Move();
@@ -164,18 +199,26 @@ bool Player::Update()
 	position.x = METERS_TO_PIXELS(pbody->body->GetTransform().p.x) - 4;
 	position.y = METERS_TO_PIXELS(pbody->body->GetTransform().p.y) - 4;
 
-	app->render->camera.x = -position.x * 1.5 - 100;
-	app->render->camera.y = -position.y * 3 + 350;
+	app->render->camera.x = -position.x * app->win->GetScale() + app->render->camera.w / 2;
+	app->render->camera.y = -position.y * app->win->GetScale() + app->render->camera.h / 2 + 50;
 
 	currentAnimation->Update();
 	app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
+	//app->map
 	//currentAnimation->Update();
 	return true;
 }
 
+void Player::Shoot() 
+{
+	app->audio->PlayFx(4);
+	shootTimer.Start();
+	app->entityManager->CreateBullet(this);
+}
+
 bool Player::CleanUp()
 {
-
+	pbody->body->GetWorld()->DestroyBody(pbody->body);
 	return true;
 }
 
@@ -229,7 +272,23 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		if (!godMode) {
 			Die();
 		}
-
+		break;
+	case ColliderType::ENEMY:
+		LOG("Collision ENEMY");
+		if (physA->body->GetPosition().y + 1 < physB->body->GetPosition().y) {
+			app->audio->PlayFx(1);
+			app->entityManager->DestroyEntity(physB->listener);
+			pbody->body->SetLinearVelocity(b2Vec2(0, 0));
+			float mass = pbody->body->GetMass();
+			pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpPower * mass), pbody->body->GetWorldCenter(), true);
+			jump -= 1;
+			if (jump < 0)
+				jump = 0;
+			
+		}
+		else if (!godMode) {
+			Die();
+		}
 		break;
 	}
 }
@@ -237,21 +296,20 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 bool Player::Die() {
 	LOG("Player died");
 	app->audio->PlayFx(2);
-	app->LoadGameRequest();
+	app->scene->restartLevel = true;
 
 	return true;
 }
 
 bool Player::LoadState(pugi::xml_node& data)
 {
-	b2Vec2 transform;
-	transform.x = data.attribute("x").as_int() + 0.2;
-	transform.y = data.attribute("y").as_int() + 1;
-	pbody->body->SetTransform(transform, 0);
-	position.x = METERS_TO_PIXELS(transform.x);
-	position.y = METERS_TO_PIXELS(transform.y);
+	position.x = data.attribute("x").as_int();
+	position.y = data.attribute("y").as_int();
 
 	jump = data.attribute("jump").as_int();
+	
+	active = true;
+	SummonPlayer();
 
 	b2Vec2 vel;
 	vel.x = data.child("velocity").attribute("x").as_int();
@@ -267,8 +325,8 @@ bool Player::SaveState(pugi::xml_node& data)
 {
 	//pugi::xml_node player = data.append_child("player");
 
-	data.append_attribute("x") = pbody->body->GetTransform().p.x;
-	data.append_attribute("y") = pbody->body->GetTransform().p.y;
+	data.append_attribute("x") = position.x;
+	data.append_attribute("y") = position.y;
 	data.append_attribute("jump") = jump;
 	data.append_child("velocity");
 	data.child("velocity").append_attribute("x") = pbody->body->GetLinearVelocity().x;

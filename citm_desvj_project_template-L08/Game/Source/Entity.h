@@ -5,6 +5,8 @@
 #include "SString.h"
 #include "Input.h"
 #include "Render.h"
+#include "Map.h"
+#include "App.h"
 
 class PhysBody;
 
@@ -12,6 +14,8 @@ enum class EntityType
 {
 	PLAYER,
 	ITEM,
+	ENEMY,
+	BULLET,
 	UNKNOWN
 };
 
@@ -71,6 +75,15 @@ public:
 
 	virtual void OnCollision(PhysBody* physA, PhysBody* physB) {
 	
+	}
+
+	void Entity::GetTextureWithGid() {
+		TileSet* tileset = app->map->GetTilesetFromTileId(gid);
+		texture = tileset->texture;
+	}
+
+	TileSet* Entity::GetTileSetWithGid() {
+		return (app->map->GetTilesetFromTileId(gid));
 	};
 
 public:
@@ -82,8 +95,17 @@ public:
 
 	// Possible properties, it depends on how generic we
 	// want our Entity class, maybe it's not renderable...
-	iPoint position;       
+	Tile* tile;
+	fPoint colliderPos;
+	float colliderWidth;
+	float colliderHeight;
+	bool lookDirection;
+	iPoint position;
+	iPoint startPosition;
+	uint gid;
+	SDL_Texture* texture;
 	bool renderable = true;
+	bool toDestroy;
 };
 
 #endif // __ENTITY_H__

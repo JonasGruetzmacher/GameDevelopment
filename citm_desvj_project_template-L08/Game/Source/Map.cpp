@@ -4,6 +4,8 @@
 #include "Textures.h"
 #include "Map.h"
 #include "Physics.h"
+#include "Scene.h"
+#include "EntityManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -26,7 +28,7 @@ bool Map::Awake(pugi::xml_node& config)
     LOG("Loading Map Parser");
     bool ret = true;
 
-    mapFileName = config.child("mapfile").attribute("path").as_string();
+    //mapFileName = config.child("mapfile").attribute("path").as_string();
     mapFolder = config.child("mapfolder").attribute("path").as_string();
 
     return ret;
@@ -36,21 +38,6 @@ void Map::Draw()
 {
     if(mapLoaded == false)
         return;
-
-    /*
-    // L04: DONE 6: Iterate all tilesets and draw all their 
-    // images in 0,0 (you should have only one tileset for now)
-
-    ListItem<TileSet*>* tileset;
-    tileset = mapData.tilesets.start;
-
-    while (tileset != NULL) {
-        app->render->DrawTexture(tileset->data->texture,0,0);
-        tileset = tileset->next;
-    }
-    */
-
-    // L05: DONE 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
 
     ListItem<MapLayer*>* mapLayerItem;
     mapLayerItem = mapData.maplayers.start;
@@ -96,6 +83,31 @@ iPoint Map::MapToWorld(int x, int y) const
     return ret;
 }
 
+iPoint Map::WorldToMap(int x, int y)
+{
+    iPoint ret(0, 0);
+
+    if (mapData.type == MAPTYPE_ORTHOGONAL)
+    {
+        ret.x = x / mapData.tileWidth;
+        ret.y = y / mapData.tileHeight;
+    }
+    else if (mapData.type == MAPTYPE_ISOMETRIC)
+    {
+        float halfWidth = mapData.tileWidth * 0.5f;
+        float halfHeight = mapData.tileHeight * 0.5f;
+        ret.x = int((x / halfWidth + y / halfHeight) / 2);
+        ret.y = int((y / halfHeight - x / halfWidth) / 2);
+    }
+    else
+    {
+        LOG("Unknown map type");
+        ret.x = x; ret.y = y;
+    }
+
+    return ret;
+}
+
 // Get relative Tile rectangle
 SDL_Rect TileSet::GetTileRect(int gid) const
 {
@@ -111,6 +123,21 @@ SDL_Rect TileSet::GetTileRect(int gid) const
     return rect;
 }
 
+Tile* TileSet::GetTile(int gid) const
+{
+    int relativeIndex = gid - firstgid;
+    ListItem<Tile*>* item = extraTileInformation.start;
+    Tile* tile = NULL;
+    while (item)
+    {
+        if (item->data->gid == relativeIndex && item->data->isAnimated)
+        {
+            tile = item->data;
+        }
+        item = item->next;
+    }
+    return tile;
+}
 
 // L06: DONE 2: Pick the right Tileset based on a tile id
 TileSet* Map::GetTilesetFromTileId(int gid) const
@@ -157,17 +184,39 @@ bool Map::CleanUp()
         RELEASE(layerItem->data);
         layerItem = layerItem->next;
     }
+    mapData.maplayers.Clear();
+
+    ListItem<ObjectGroup*>* groupItem;
+    groupItem = mapData.objectGroups.start;
+
+    while (groupItem != NULL)
+    {
+        
+        RELEASE(groupItem->data);
+        /*if (groupItem->data->objects != NULL)
+            delete[] groupItem->data->objects;
+
+        delete groupItem->data;*/
+
+        groupItem = groupItem->next;
+    }
+    mapData.objectGroups.Clear();
 
     return true;
 }
 
 // Load new map
-bool Map::Load()
+bool Map::Load(const char* fileName)
 {
     bool ret = true;
 
+    mapFileName = fileName;
+
+
+    SString path("%s%s.tmx", mapFolder.GetString(), mapFileName.GetString());
+
     pugi::xml_document mapFileXML;
-    pugi::xml_parse_result result = mapFileXML.load_file(mapFileName.GetString());
+    pugi::xml_parse_result result = mapFileXML.load_file(path.GetString());
 
     if(result == NULL)
     {
@@ -193,9 +242,12 @@ bool Map::Load()
     
     // L07 DONE 3: Create colliders
     // Later you can create a function here to load and create the colliders from the map
+
+
     if (ret == true)
     {
         ret = LoadAllObjectGroups(mapFileXML.child("map"));
+        //pugi::xml_node test = app->scene->player->parameters;
     }
 
     if(ret == true)
@@ -254,8 +306,17 @@ bool Map::LoadMap(pugi::xml_node mapFile)
         mapData.width = map.attribute("width").as_int();
         mapData.tileHeight = map.attribute("tileheight").as_int();
         mapData.tileWidth = map.attribute("tilewidth").as_int();
+        // L08: DONE 2: Read the prientation of the map
+        mapData.type = MAPTYPE_UNKNOWN;
+        if (strcmp(map.attribute("orientation").as_string(), "isometric") == 0)
+        {
+            mapData.type = MAPTYPE_ISOMETRIC;
+        }
+        if (strcmp(map.attribute("orientation").as_string(), "orthogonal") == 0)
+        {
+            mapData.type = MAPTYPE_ORTHOGONAL;
+        }
     }
-
     return ret;
 }
 
@@ -283,10 +344,62 @@ bool Map::LoadTileSet(pugi::xml_node mapFile){
         SString tmp("%s%s", mapFolder.GetString(), tileset.child("image").attribute("source").as_string());
         set->texture = app->tex->Load(tmp.GetString());
 
+        ret = LoadTileExtraInformation(tileset, set);
+
         mapData.tilesets.Add(set);
     }
 
     return ret;
+}
+
+bool Map::LoadTileExtraInformation(pugi::xml_node& node, TileSet* set) 
+{
+    bool ret = true;
+
+    pugi::xml_node tileNode;
+    for (tileNode = node.child("tile"); tileNode && ret; tileNode = tileNode.next_sibling("tile"))
+    {
+        Tile* tile = new Tile();
+
+        set->extraTileInformation.Add(tile);
+        tile->gid = tileNode.attribute("id").as_int();
+
+        // Load collider information
+        pugi::xml_node groupNode = tileNode.child("objectgroup").child("object");
+        //problems with collider
+        if (false)
+        {
+            tile->colliderPos = { groupNode.attribute("x").as_float(), groupNode.attribute("y").as_float() };
+            tile->height = groupNode.attribute("height").as_float();
+            tile->width = groupNode.attribute("width").as_float();
+        }
+        else
+        {
+            tile->colliderPos = { 0,0 };
+            tile->height = 7;
+            tile->width = 7;
+        }
+
+        ret = LoadAnimation(tileNode.child("animation"), tile, set);
+
+    }
+
+    return ret;
+}
+
+bool Map::LoadAnimation(pugi::xml_node& node, Tile* tile, TileSet* set)
+{
+    bool ret = true;
+
+    pugi::xml_node animNode;
+    for (animNode = node.child("frame"); animNode && ret; animNode = animNode.next_sibling("frame"))
+    {
+        tile->isAnimated = true;
+        tile->animation.PushBack(set->GetTileRect(animNode.attribute("tileid").as_int() + set->firstgid));
+    }
+
+
+    return true;
 }
 
 // L05: DONE 3: Implement a function that loads a single layer layer
@@ -320,6 +433,7 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 }
 
 // L05: DONE 4: Iterate all layers and load each of them
+
 bool Map::LoadAllLayers(pugi::xml_node mapNode) {
     bool ret = true;
 
@@ -336,72 +450,159 @@ bool Map::LoadAllLayers(pugi::xml_node mapNode) {
     return ret;
 }
 
-bool Map::LoadCollisions(pugi::xml_node& node)
+bool Map::LoadCollisions(pugi::xml_node& node, ObjectGroup* group)
+{
+    bool ret = true;
+
+    int i = 0;
+    for (pugi::xml_node objectNode = node.child("object"); objectNode; objectNode = objectNode.next_sibling("object"), i++)
+    {
+        group->objects[i].name = node.attribute("name").as_string();
+        group->objects[i].id = node.attribute("id").as_int();
+
+        float x = round(objectNode.attribute("x").as_float());
+        float y = round(objectNode.attribute("y").as_float());
+        float width = round(objectNode.attribute("width").as_float());
+        float height = round(objectNode.attribute("height").as_float());
+        SString shape = objectNode.first_child().name();
+        SString type = objectNode.attribute("class").as_string();
+        
+        PhysBody* pBody = app->physics->CreateRectangle(x + round(width / 2), y +round(height / 2), width, height, STATIC);
+
+        if (type == "Platform")
+        {
+            pBody->ctype = ColliderType::PLATFORM;
+        }
+        else if (type == "Water") 
+        {
+            pBody->ctype = ColliderType::WATER;
+        }
+        else if (type == "Wall")
+        {
+            pBody->ctype = ColliderType::WALL;
+        }
+        else
+        {
+            pBody->ctype = ColliderType::UNKNOWN;
+        }
+        group->objects[0].pBody = pBody;
+    }
+
+    return ret;
+}
+
+bool Map::LoadObjectGroup(pugi::xml_node& node, ObjectGroup* group)
+{
+    bool ret = true;
+    group->name = node.attribute("name").as_string();
+
+    int amountObjects = 0;
+    for (pugi::xml_node iteratorNode = node.child("object"); iteratorNode; iteratorNode = iteratorNode.next_sibling("object"), amountObjects++) {}
+
+    group->objectsSize = amountObjects;
+    group->objects = new Object[amountObjects];
+    memset(group->objects, 0, amountObjects * sizeof(Object));
+
+
+    if (group->name == "Collisions")
+    {
+        LoadCollisions(node, group);
+    }
+    if (group->name == "Entities") {
+        LoadEntities(node);
+    }
+    
+    return ret;
+    
+}
+
+bool Map::LoadEntities(pugi::xml_node& node)
 {
     bool ret = true;
 
     for (pugi::xml_node objectNode = node.child("object"); objectNode; objectNode = objectNode.next_sibling("object"))
     {
-        int x = objectNode.attribute("x").as_int();
-        int y = objectNode.attribute("y").as_int();
-        int width = objectNode.attribute("width").as_int();
-        int height = objectNode.attribute("height").as_int();
-        SString shape = objectNode.first_child().name();
-        SString type = objectNode.attribute("class").as_string();
 
-        PhysBody* pbody = app->physics->CreateRectangle(x + width / 2, y + height / 2, width, height, STATIC);
-        
-        if (type == "Platform")
-        {
-            pbody->ctype = ColliderType::PLATFORM;
-        }
-        else if (type == "Water") 
-        {
-            pbody->ctype = ColliderType::WATER;
-        }
-        else if (type == "Wall")
-        {
-            pbody->ctype = ColliderType::WALL;
-        }
-        else
-        {
-            pbody->ctype = ColliderType::UNKNOWN;
-        }
+        SString name = objectNode.attribute("name").as_string();
 
-        
+        //Load Player
+        if (name == "Player") {
+            app->scene->player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER, objectNode);
+
+        }
+        else {
+            app->entityManager->CreateEntity(EntityType::ENEMY, objectNode);
+        }
     }
 
-    return ret;
-}
+    //pugi::xml_node test = app->scene->player->parameters;
 
-bool Map::LoadObjectGroup(pugi::xml_node& node)
-{
-    bool ret = true;
-    SString name = node.attribute("name").as_string();
-    bool isColliders = name == "Collisions";
-    if (isColliders)
-    {
-        LoadCollisions(node);
-    }
     return ret;
 }
 
 bool Map::LoadAllObjectGroups(pugi::xml_node mapNode)
 {
+
     bool ret = true;
 
     for (pugi::xml_node groupNode = mapNode.child("objectgroup"); groupNode && ret; groupNode = groupNode.next_sibling("objectgroup"))
     {
         //Load the layer
-        //MapLayer* mapLayer = new MapLayer();
-        ret = LoadObjectGroup(groupNode);
+        ObjectGroup* objectGroup = new ObjectGroup();
+        ret = LoadObjectGroup(groupNode, objectGroup);
+        
+        mapData.objectGroups.Add(objectGroup);
 
         //add the objectgroup to the map
         //mapData.maplayers.Add(mapLayer);
     }
 
+    pugi::xml_node test = app->scene->player->parameters;
     return ret;
 
+}
+
+bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+{
+    bool ret = false;
+    ListItem<MapLayer*>* item;
+    item = mapData.maplayers.start;
+
+    for (item = mapData.maplayers.start; item != NULL; item = item->next)
+    {
+        MapLayer* layer = item->data;
+
+        if (!layer->properties.GetProperty("Navigation")->value)
+            continue;
+
+        uchar* map = new uchar[layer->width * layer->height];
+        memset(map, 1, layer->width * layer->height);
+
+        for (int y = 0; y < mapData.height; ++y)
+        {
+            for (int x = 0; x < mapData.width; ++x)
+            {
+                int i = (y * layer->width) + x;
+
+                int tileId = layer->Get(x, y);
+                TileSet* tileset = (tileId > 0) ? GetTilesetFromTileId(tileId) : NULL;
+
+                if (tileset != NULL)
+                {
+                    map[i] = (tileId - tileset->firstgid) > 0 ? 0 : 1;
+                }
+            }
+        }
+
+        *buffer = map;
+        width = mapData.width;
+        height = mapData.height;
+        ret = true;
+
+        break;
+    }
+
+    return ret;
 }
 
 // L06: DONE 6: Load a group of properties from a node and fill a list with it

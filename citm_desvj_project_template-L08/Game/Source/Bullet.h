@@ -1,5 +1,5 @@
-#ifndef __ITEM_H__
-#define __ITEM_H__
+#ifndef __BULLET_H__
+#define __BULLET_H__
 
 #include "Entity.h"
 #include "Point.h"
@@ -7,12 +7,12 @@
 
 struct SDL_Texture;
 
-class Item : public Entity
+class Bullet : public Entity
 {
 public:
 
-	Item(pugi::xml_node parameters);
-	virtual ~Item();
+	Bullet(iPoint position, bool rightDirection);
+	virtual ~Bullet();
 
 	bool Awake();
 
@@ -22,9 +22,9 @@ public:
 
 	bool CleanUp();
 
-public:
+	void OnCollision(PhysBody* physA, PhysBody* physB);
 
-	bool isPicked = false;
+public:
 
 private:
 
@@ -33,6 +33,9 @@ private:
 
 	//DONE 4: Add a physics to an item
 	PhysBody* pbody;
+	float speed = 30;
+
+	void Move();
 };
 
-#endif // __ITEM_H__
+#endif // __BULLET_H__

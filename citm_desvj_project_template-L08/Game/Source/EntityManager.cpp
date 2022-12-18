@@ -4,6 +4,8 @@
 #include "App.h"
 #include "Textures.h"
 #include "Scene.h"
+#include "Enemy.h"
+#include "Bullet.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -23,6 +25,17 @@ bool EntityManager::Awake(pugi::xml_node& config)
 	LOG("Loading Entity Manager");
 	bool ret = true;
 
+	
+
+	return ret;
+
+}
+
+bool EntityManager::Start() {
+
+
+	bool ret = true; 
+
 	//Iterates over the entities and calls the Awake
 	ListItem<Entity*>* item;
 	Entity* pEntity = NULL;
@@ -35,17 +48,9 @@ bool EntityManager::Awake(pugi::xml_node& config)
 		ret = item->data->Awake();
 	}
 
-	return ret;
-
-}
-
-bool EntityManager::Start() {
-
-	bool ret = true; 
-
 	//Iterates over the entities and calls Start
-	ListItem<Entity*>* item;
-	Entity* pEntity = NULL;
+	//ListItem<Entity*>* item;
+	//Entity* pEntity = NULL;
 
 	for (item = entities.start; item != NULL && ret == true; item = item->next)
 	{
@@ -67,7 +72,7 @@ bool EntityManager::CleanUp()
 
 	while (item != NULL && ret == true)
 	{
-		ret = item->data->CleanUp();
+		if(item->data->active) ret = item->data->CleanUp();
 		item = item->prev;
 	}
 
@@ -76,7 +81,7 @@ bool EntityManager::CleanUp()
 	return ret;
 }
 
-Entity* EntityManager::CreateEntity(EntityType type)
+Entity* EntityManager::CreateEntity(EntityType type, pugi::xml_node parameters)
 {
 	Entity* entity = nullptr; 
 
@@ -86,13 +91,15 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	{
 
 	case EntityType::PLAYER:
-		entity = new Player();
+		entity = new Player(parameters);
 		break;
 
 	case EntityType::ITEM:
-		entity = new Item();
+		entity = new Item(parameters);
 		break;
-
+	case EntityType::ENEMY:
+		entity = new Enemy(parameters);
+		break;
 	default: break;
 	}
 
@@ -102,13 +109,24 @@ Entity* EntityManager::CreateEntity(EntityType type)
 	return entity;
 }
 
+void EntityManager::CreateBullet(Entity* shootingEntity)
+{
+	Entity* entity = new Bullet(shootingEntity->position, shootingEntity->lookDirection);
+	entity->Awake();
+	entity->Start();
+	AddEntity(entity);
+}
+
 void EntityManager::DestroyEntity(Entity* entity)
 {
 	ListItem<Entity*>* item;
 
 	for (item = entities.start; item != NULL; item = item->next)
 	{
-		if (item->data == entity) entities.Del(item);
+		if (item->data == entity) {
+			
+			item->data->toDestroy = true;
+		}
 	}
 }
 
@@ -128,6 +146,11 @@ bool EntityManager::Update(float dt)
 		pEntity = item->data;
 
 		if (pEntity->active == false) continue;
+		if (pEntity->toDestroy == true) {
+			pEntity->toDestroy = false;
+			pEntity->active = false;
+			item->data->CleanUp();
+		}
 		ret = item->data->Update();
 	}
 
@@ -145,7 +168,10 @@ bool EntityManager::SaveState(pugi::xml_node& data) {
 	
 	while (item != NULL)
 	{
-		ret = item->data->SaveState(data.child("entities").append_child(item->data->name.GetString()));
+		if (item->data->active)
+		{
+			ret = item->data->SaveState(data.child("entities").append_child(item->data->name.GetString()));
+		}
 		item = item->next;
 	}
 
@@ -160,7 +186,14 @@ bool EntityManager::LoadState(pugi::xml_node& data) {
 
 	while (item != NULL && ret == true)
 	{
-		ret = item->data->LoadState(data.child("entities").child(item->data->name.GetString()));
+		
+		if (item->data->active) item->data->CleanUp();
+		item->data->active = false;
+		
+		if (!data.child("entities").child(item->data->name.GetString()).empty())
+		{
+			ret = item->data->LoadState(data.child("entities").child(item->data->name.GetString()));
+		}
 		item = item->next;
 	}
 
