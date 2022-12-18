@@ -17,11 +17,11 @@ In this update of our plataformer we introduced ground and flying enemies, both 
  
 ## Controls
 
- - A- move left
-    D- move right
-    SPACE- jump
-    SPACE(while jumping)- double jump
-    K- shoot a bullet   
+ - A - move left
+ - D - move right
+ - SPACE - jump
+ - SPACE(while jumping) - double jump
+ - K - Shoot  
     
 ## Debug Keys
 - F1/F2 Start from the first/second level
