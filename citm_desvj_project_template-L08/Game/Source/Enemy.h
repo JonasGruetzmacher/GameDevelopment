@@ -70,9 +70,7 @@ private:
 	void SummonEnemy();
 	void SummonFlyingEnemy();
 	void SummonWalkingEnemy();
-
-	
-
+	void Unstuck(float posX, float posY);
 };
 
 

@@ -206,6 +206,30 @@ void Enemy::Move()
 	}
 	float mass = pbody->body->GetMass();
 	pbody->body->ApplyLinearImpulse(impulse, pbody->body->GetWorldCenter(), true);
+
+}
+
+void Enemy::Unstuck(float otherX, float otherY) 
+{
+	if (moveClass == "Flying")
+	{
+		if (otherX < position.x)
+		{
+			pbody->body->ApplyLinearImpulse(b2Vec2{ -50, 0 }, pbody->body->GetWorldCenter(), true);
+		}
+		else
+		{
+			pbody->body->ApplyLinearImpulse(b2Vec2{ 50, 0 }, pbody->body->GetWorldCenter(), true);
+		}
+		if (otherY > position.y)
+		{
+			pbody->body->ApplyLinearImpulse(b2Vec2{ 0, 50 }, pbody->body->GetWorldCenter(), true);
+		}
+		else
+		{
+			pbody->body->ApplyLinearImpulse(b2Vec2{ 0, -50 }, pbody->body->GetWorldCenter(), true);
+		}
+	}
 }
 
 bool Enemy::CleanUp()
@@ -258,17 +282,21 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::PLATFORM:
 		LOG("Collision PLATFORM");
+		Unstuck(physB->body->GetPosition().x, physB->body->GetPosition().y);
 		isJumping = false;
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
+		Unstuck(physB->body->GetPosition().x, physB->body->GetPosition().y);
 		isJumping = false;
 		break;
 	case ColliderType::WALL:
 		LOG("Collision WALL");
+		Unstuck(physB->body->GetPosition().x, physB->body->GetPosition().y);
 		break;
 	case ColliderType::WATER:
 		LOG("Collision WATER");
+		Unstuck(physB->body->GetPosition().x, physB->body->GetPosition().y);
 		isJumping = false;
 		break;
 	}
