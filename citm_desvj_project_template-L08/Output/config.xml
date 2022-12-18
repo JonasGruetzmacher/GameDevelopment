@@ -30,7 +30,7 @@
     <player x="150" y="300" texturepath="Assets/Textures/Player.png"/>
 	  <level path="Assets/Maps/Level1.tmx" id="1" name="Level1"/>
 	  <level path="Assets/Maps/Level2.tmx" id="2" name="Level2"/>	
-	<currentlevel value ="2"/>
+	<currentlevel value ="1"/>
 
   </scene>
 
