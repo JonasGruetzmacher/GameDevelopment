@@ -21927,8 +21927,8 @@
   <object id="75" class="Walking" gid="2088" x="343.515" y="192.364" width="8" height="8"/>
   <object id="95" class="Flying" gid="1808" x="426.083" y="229.25" width="8" height="8"/>
   <object id="96" class="Flying" gid="1808" x="439.083" y="265" width="8" height="8"/>
-  <object id="98" gid="2144" x="271.333" y="307.5" width="8" height="8"/>
-  <object id="99" gid="2144" x="271.333" y="290" width="8" height="8"/>
+  <object id="98" class="Flying" gid="2144" x="271.333" y="307.5" width="8" height="8"/>
+  <object id="99" class="Flying" gid="2144" x="271.333" y="290" width="8" height="8"/>
  </objectgroup>
  <objectgroup id="5" name="Collisions">
   <object id="21" class="Platform" x="128.333" y="328.333" width="119" height="1.25">
