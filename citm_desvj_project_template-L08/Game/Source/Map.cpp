@@ -184,19 +184,23 @@ bool Map::CleanUp()
         RELEASE(layerItem->data);
         layerItem = layerItem->next;
     }
+    mapData.maplayers.Clear();
 
     ListItem<ObjectGroup*>* groupItem;
     groupItem = mapData.objectGroups.start;
 
     while (groupItem != NULL)
     {
-        if (groupItem->data->objects != NULL)
+        
+        RELEASE(groupItem->data);
+        /*if (groupItem->data->objects != NULL)
             delete[] groupItem->data->objects;
 
-        delete groupItem->data;
+        delete groupItem->data;*/
 
         groupItem = groupItem->next;
     }
+    mapData.objectGroups.Clear();
 
     return true;
 }

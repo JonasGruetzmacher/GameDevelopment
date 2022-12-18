@@ -154,10 +154,11 @@ bool FadeToBlack::SwitchMap(int level)
 
 	
 	app->map->CleanUp();
-	
+	app->scene->CleanUp();
 	app->entityManager->CleanUp();
 	//app->physics->world->~b2World(); //Clear colliders
-	//app->scene->SetUp(level);
+	app->scene->SetUp(level);
+	app->entityManager->Start();
 
 	return ret;
 }
