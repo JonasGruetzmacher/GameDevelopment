@@ -156,7 +156,13 @@ bool FadeToBlack::SwitchMap(int level)
 	app->map->CleanUp();
 	app->scene->CleanUp();
 	app->entityManager->CleanUp();
-	//app->physics->world->~b2World(); //Clear colliders
+	
+	b2Body* body = app->physics->world->GetBodyList();
+	while (body != NULL)
+	{
+		app->physics->world->DestroyBody(app->physics->world->GetBodyList());
+		body = body->GetNext();
+	}
 	app->scene->SetUp(level);
 	app->entityManager->Start();
 

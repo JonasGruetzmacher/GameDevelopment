@@ -106,7 +106,8 @@ bool Scene::Update(float dt)
 		app->fadeToBlack->SwitchMap(2);
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 		app->fadeToBlack->SwitchMap(currentLevel);
-	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	//if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+		
 	if (restartLevel) {
 		restartLevel = false;
 		app->fadeToBlack->SwitchMap(currentLevel);

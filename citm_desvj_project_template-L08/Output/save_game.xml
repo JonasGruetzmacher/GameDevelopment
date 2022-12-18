@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<save_state level="1">
+<save_state level="2">
 	<input />
 	<window />
 	<textures />
@@ -10,27 +10,42 @@
 	<map />
 	<entitymanager>
 		<entities>
-			<Player x="146" y="319" jump="0">
+			<Player x="144" y="319" jump="0">
 				<velocity x="0" y="0" />
 			</Player>
-			<Enemy33 x="265" y="290">
+			<Enemy71 x="337" y="377">
 				<velocity x="0" y="0" />
-			</Enemy33>
-			<Enemy34 x="289" y="320">
+			</Enemy71>
+			<Enemy72 x="364" y="280">
 				<velocity x="0" y="0" />
-			</Enemy34>
-			<Enemy37 x="270" y="279">
+			</Enemy72>
+			<Enemy73 x="509" y="225">
 				<velocity x="0" y="0" />
-			</Enemy37>
-			<Enemy40 x="296" y="250">
+			</Enemy73>
+			<Enemy74 x="326" y="184">
 				<velocity x="0" y="0" />
-			</Enemy40>
+			</Enemy74>
+			<Enemy75 x="340" y="184">
+				<velocity x="0" y="0" />
+			</Enemy75>
+			<Enemy95 x="422" y="225">
+				<velocity x="0" y="0" />
+			</Enemy95>
+			<Enemy96 x="435" y="261">
+				<velocity x="0" y="0" />
+			</Enemy96>
+			<Enemy98 x="267" y="304">
+				<velocity x="0" y="0" />
+			</Enemy98>
+			<Enemy99 x="267" y="286">
+				<velocity x="0" y="0" />
+			</Enemy99>
 		</entities>
 	</entitymanager>
 	<titleScene />
 	<logoScene />
 	<fade />
 	<renderer>
-		<camera x="62" y="-607" />
+		<camera x="68" y="-607" />
 	</renderer>
 </save_state>

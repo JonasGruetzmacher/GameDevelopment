@@ -185,7 +185,7 @@ bool Player::Update()
 	}
 	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
 		
-		if (shootTimer.ReadMSec() > 300)
+		if (shootTimer.ReadMSec() > 100)
 		{
 			Shoot();
 		}

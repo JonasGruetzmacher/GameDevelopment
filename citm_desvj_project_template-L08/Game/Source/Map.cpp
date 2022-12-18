@@ -191,13 +191,7 @@ bool Map::CleanUp()
 
     while (groupItem != NULL)
     {
-        
         RELEASE(groupItem->data);
-        /*if (groupItem->data->objects != NULL)
-            delete[] groupItem->data->objects;
-
-        delete groupItem->data;*/
-
         groupItem = groupItem->next;
     }
     mapData.objectGroups.Clear();
