@@ -13287,7 +13287,7 @@
   <object id="32" name="Player" gid="1988" x="150" y="323.667" width="8" height="8"/>
   <object id="33" class="Flying" gid="1839" x="464" y="177" width="8" height="8"/>
   <object id="34" class="Walking" gid="1667" x="293.06" y="325.909" width="8" height="8"/>
-  <object id="37" class="Flying" gid="1923" x="337.667" y="345.333" width="8" height="8"/>
+  <object id="37" class="Flying" gid="1923" x="337.417" y="319.833" width="8" height="8"/>
   <object id="40" class="Flying" gid="1587" x="393.333" y="248.636" width="8" height="8"/>
   <object id="54" class="Walking" gid="1867" x="501.667" y="230" width="8" height="8"/>
   <object id="55" class="Walking" gid="1615" x="421" y="189" width="8" height="8"/>
