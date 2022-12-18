@@ -2,7 +2,7 @@
 
 ## Description
 
-{In this update of our plataformer we introduced the intended enemies, with one ground enemy and a flying enemy with 3 variations, both have a pathfinding implemented and they will chase the player if he gets close to them, the player can kill these enemies by jumping on them or shooting by pressing k}
+{In this update of our plataformer we introduced the intended enemies, with one ground enemy and a flying enemy with 3 variations, both have a pathfinding implemented and they will chase the player if he gets close to them, the player can kill these enemies by jumping on them or shooting by pressing k. Some bugs and problems on the game have also been sold and we've improved the loading screen}
 
 ## Key Features
 
@@ -13,7 +13,8 @@
  
 ## Controls
 
- - {ControlsScheme}
+ - {A- move left
+    D- move right}
 
 ## Developers
 
