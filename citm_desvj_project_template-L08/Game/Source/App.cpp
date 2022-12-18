@@ -316,6 +316,7 @@ bool App::LoadFromFile()
 	pugi::xml_document gameStateFile;
 	pugi::xml_parse_result result = gameStateFile.load_file("save_game.xml");
 
+	fadeToBlack->SwitchMap(gameStateFile.child("save_state").attribute("level").as_int());
 	if (result == NULL)
 	{
 		LOG("Could not load xml file savegame.xml. pugi error: %s", result.description());
@@ -349,7 +350,7 @@ bool App::SaveToFile()
 
 	ListItem<Module*>* item;
 	item = modules.start;
-
+	saveStateNode.append_attribute("level") = scene->currentLevel;
 	while (item != NULL)
 	{
 		ret = item->data->SaveState(saveStateNode.append_child(item->data->name.GetString()));
