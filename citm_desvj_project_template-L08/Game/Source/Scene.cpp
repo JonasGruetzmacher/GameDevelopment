@@ -94,9 +94,9 @@ bool Scene::Update(float dt)
 		app->LoadGameRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		player->godMode = !player->godMode;
-	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 		app->audio->IncreaseVolume();
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 		app->audio->DecreaseVolume();
 	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 		debugMode = !debugMode;
@@ -104,6 +104,9 @@ bool Scene::Update(float dt)
 		app->fadeToBlack->SwitchMap(1);
 	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 		app->fadeToBlack->SwitchMap(2);
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+		app->fadeToBlack->SwitchMap(currentLevel);
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	if (restartLevel) {
 		restartLevel = false;
 		app->fadeToBlack->SwitchMap(currentLevel);
