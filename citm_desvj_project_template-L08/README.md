@@ -2,14 +2,14 @@
 
 ## Description
 
-{project description}
+{In this update of our plataformer we introduced the intended enemies, with one ground enemy and a flying enemy with 3 variations, both have a pathfinding implemented and they will chase the player if he gets close to them, the player can kill these enemies by jumping on them or shooting by pressing k}
 
 ## Key Features
 
- - {Feature01}
- - {Feature02}
- - {Feature03}
- - {Feature04}
+ - {Introduction of enemies}
+ - {Improved player animations and loading screen}
+ - {Fixed bugs}
+ - {The player can shoot bullets}
  
 ## Controls
 
@@ -17,10 +17,9 @@
 
 ## Developers
 
- - {Dev01} - {Role(s)}
- - {Dev02} - {Role(s)}
- - {Dev03} - {Role(s)}
- - {Dev04} - {Role(s)}
+ - {Jonas} - {Role(s)}
+ - {Oscar} - {Role(s)}
+ 
 
 ## License
 
