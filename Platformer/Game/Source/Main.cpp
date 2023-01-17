@@ -11,6 +11,7 @@
 //#pragma comment(lib, "../Game/Source/External/SDL/libx86/SDL2main.lib")
 
 #include <stdlib.h>
+#include "Optick/include/optick.h"
 
 enum MainState
 {
@@ -31,9 +32,10 @@ int main(int argc, char* args[])
 
 	MainState state = CREATE;
 	int result = EXIT_FAILURE;
-
+	
 	while(state != EXIT)
 	{
+		OPTICK_FRAME("MainThread");
 		switch(state)
 		{
 			// Allocate the engine --------------------------------------------
@@ -78,6 +80,8 @@ int main(int argc, char* args[])
 			break;
 
 			// Loop all modules until we are asked to leave ---------------------
+
+			
 			case LOOP:
 			if(app->Update() == false)
 				state = CLEAN;

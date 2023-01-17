@@ -9,6 +9,7 @@
 
 #include "Defs.h"
 #include "Log.h"
+#include "Optick/include/optick.h"
 
 #include <math.h>
 #include "SDL_image/include/SDL_image.h"
@@ -36,6 +37,7 @@ bool Map::Awake(pugi::xml_node& config)
 
 void Map::Draw()
 {
+    OPTICK_EVENT();
     if(mapLoaded == false)
         return;
 
@@ -202,6 +204,7 @@ bool Map::CleanUp()
 // Load new map
 bool Map::Load(const char* fileName)
 {
+    OPTICK_EVENT();
     bool ret = true;
 
     mapFileName = fileName;
