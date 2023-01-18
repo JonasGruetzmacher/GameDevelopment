@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Player.h"
 #include "Item.h"
+#include "GuiButton.h"
 
 struct Level {
 	int id;
@@ -39,6 +40,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	// Define multiple Gui Event methods
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 public:
 
 	bool SetUp(int level);
@@ -62,6 +66,9 @@ private:
 	//Debug
 	iPoint origin;
 	bool originSelected = false;
+
+	GuiButton* button1;
+	GuiButton* button2;
 
 };
 

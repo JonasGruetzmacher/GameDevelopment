@@ -24,6 +24,7 @@ class Map;
 //L07 DONE 2: Add Physics module
 class Physics;
 class PathFinding;
+class GuiManager;
 
 class App
 {
@@ -99,6 +100,7 @@ public:
 	Physics* physics;
 	PathFinding* pathfinding;
 	FadeToBlack* fadeToBlack;
+	GuiManager* guiManager;
 
 private:
 
