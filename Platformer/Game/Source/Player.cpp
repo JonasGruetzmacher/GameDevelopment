@@ -230,10 +230,10 @@ void Player::Move() {
 	switch (moveState)
 	{
 	case MS_LEFT:
-		desiredVel = -speed;
+		desiredVel =  -ceil(speed * app->dt * 0.1);
 		break;
 	case MS_RIGHT:
-		desiredVel = speed;
+		desiredVel =ceil( speed * app->dt * 0.1);
 		break;
 	case MS_IDLE:
 		desiredVel = 0;

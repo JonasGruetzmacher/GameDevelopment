@@ -33,7 +33,7 @@ private:
 
 	//DONE 4: Add a physics to an item
 	PhysBody* pbody;
-	float speed = 30;
+	float speed = 20;
 
 	void Move();
 };

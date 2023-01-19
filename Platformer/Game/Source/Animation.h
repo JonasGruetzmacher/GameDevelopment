@@ -2,6 +2,7 @@
 #define ANIMATION_H
 
 #include "SDL/include/SDL_rect.h"
+#include "App.h"
 #define MAX_FRAMES 25
 
 class Animation
@@ -38,7 +39,7 @@ public:
 
     void Update()
     {
-        currentFrame += speed;
+        currentFrame += speed * app->dt * 0.1;
         if (currentFrame >= totalFrames)
         {
             currentFrame = (loop || pingpong) ? 0.0f : totalFrames - 1;

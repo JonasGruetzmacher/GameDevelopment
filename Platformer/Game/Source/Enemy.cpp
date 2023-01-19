@@ -176,9 +176,9 @@ void Enemy::Move()
 
 			b2Vec2 dif = { (float)nextTile->x - tile->x , (float)nextTile->y - tile->y };
 			dif.Normalize();
-			desiredVel.x = dif.x * speed;
+			desiredVel.x = ceil(dif.x * speed * app->dt * 0.1);
 			if (moveClass == "Flying") {
-				desiredVel.y = dif.y * speed;
+				desiredVel.y = ceil(dif.y * speed * app->dt * 0.1);
 			}
 			else if(dif.y < 0) {
 				//Jump();

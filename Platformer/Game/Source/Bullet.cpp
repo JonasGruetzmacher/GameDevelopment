@@ -56,8 +56,8 @@ bool Bullet::Update()
 }
 
 void Bullet::Move() {
-	if(lookDirection) pbody->body->SetLinearVelocity(b2Vec2(speed,0));
-	else pbody->body->SetLinearVelocity(b2Vec2(-speed, 0));
+	if(lookDirection) pbody->body->SetLinearVelocity(b2Vec2(ceil(speed * app->dt * 0.1),0));
+	else pbody->body->SetLinearVelocity(b2Vec2(-ceil(speed * app->dt * 0.1), 0));
 
 }
 

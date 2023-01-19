@@ -48,6 +48,8 @@ public:
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&);
 
+	bool vsync = false;
+
 public:
 
 	SDL_Renderer* renderer;

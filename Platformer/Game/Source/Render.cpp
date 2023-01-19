@@ -6,7 +6,7 @@
 #include "Log.h"
 #include "Optick/include/optick.h"
 
-#define VSYNC true
+#define VSYNC false
 
 Render::Render() : Module()
 {
@@ -31,6 +31,7 @@ bool Render::Awake(pugi::xml_node& config)
 
 	if (config.child("vsync").attribute("value").as_bool(true) == true)
 	{
+		vsync = true;
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 		LOG("Using vsync");
 	}

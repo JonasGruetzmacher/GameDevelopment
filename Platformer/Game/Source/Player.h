@@ -62,10 +62,8 @@ private:
 	_moveState moveState;
 	int jump = 0;
 	int pickCoinFxId;
-	int speed = 15;
+	int speed = 10;
 	int jumpPower = 30;
-	
-
 
 	void Move();
 
