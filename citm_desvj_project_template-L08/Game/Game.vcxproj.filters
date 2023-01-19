@@ -64,7 +64,10 @@
     <ClInclude Include="Source\Item.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\Physics.h" />
+<<<<<<< Updated upstream
     <ClInclude Include="Menu.h" />
+=======
+>>>>>>> Stashed changes
     <ClInclude Include="Animation.h" />
   </ItemGroup>
   <ItemGroup>
