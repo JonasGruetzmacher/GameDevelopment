@@ -2,6 +2,7 @@
 #define __TITLE_SCENE_H__
 
 #include "Module.h"
+#include "GuiButton.h"
 
 struct SDL_Texture;
 
@@ -32,12 +33,19 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	// Define multiple Gui Event methods
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 public:
 
 private:
 	SDL_Rect logoRect;
 	SDL_Texture* logo;
 	const char* texturePath;
+
+	GuiButton* playButton;
+	GuiButton* continueButton;
+	GuiButton* settingsButton;
 
 };
 

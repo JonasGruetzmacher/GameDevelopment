@@ -196,6 +196,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 		}
 		if (scene == "Scene")
 		{
+			app->titleScene->CleanUp();
 			app->scene->active = true;
 			app->logoScene->active = false;
 			app->map->active = true;

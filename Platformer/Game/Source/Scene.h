@@ -66,10 +66,6 @@ private:
 	//Debug
 	iPoint origin;
 	bool originSelected = false;
-
-	GuiButton* button1;
-	GuiButton* button2;
-
 };
 
 #endif // __SCENE_H__

@@ -17,7 +17,7 @@ bool GuiManager::Start()
 	return true;
 }
 
-GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char* text, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds)
+GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char* text, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds, SDL_Texture* tex, int rectX)
 {
 	// L15: TODO1: Create a GUI control and add it to the list of controls
 
@@ -28,7 +28,7 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 	switch (type)
 	{
 	case GuiControlType::BUTTON:
-		guiControl = new GuiButton(id, bounds, text);
+		guiControl = new GuiButton(id, bounds, text, tex, rectX);
 		break;
 		/*
 		case GuiControlType::TOGGLE:
@@ -109,8 +109,5 @@ bool GuiManager::CleanUp()
 	{
 		RELEASE(control);
 	}
-
 	return true;
-
-	return false;
 }

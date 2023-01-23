@@ -26,6 +26,7 @@ enum class GuiControlType
 
 enum class GuiControlState
 {
+	OFF,
 	DISABLED,
 	NORMAL,
 	FOCUSED,

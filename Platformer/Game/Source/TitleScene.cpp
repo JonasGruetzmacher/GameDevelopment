@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Physics.h"
 #include "FadeToBlack.h"
+#include "GuiManager.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -53,6 +54,22 @@ bool TitleScene::Start()
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
 
+	uint w, h;
+	app->win->GetWindowSize(w, h);
+
+	SDL_Texture* playTex = app->tex->Load("Assets/Textures/buttons.png");
+	playButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Play", { (int)w / 2 - 64,(int)h / 2 - 200,64,24 }, this,{0,0,0,0}, playTex, 0);
+	continueButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Continue", { (int)w / 2 - 88,(int)h / 2 - 100,80,24 }, this,{0,0,0,0}, playTex, 72);
+	settingsButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { (int)w / 2 - 88,(int)h / 2,80,24 }, this, {0,0,0,0}, playTex, 160);
+
+	pugi::xml_document gameStateFile;
+	pugi::xml_parse_result result = gameStateFile.load_file("save_game.xml");
+
+	if (result == NULL) 
+	{
+		continueButton->state = GuiControlState::DISABLED;
+	}
+
 	return true;
 }
 
@@ -73,15 +90,14 @@ bool TitleScene::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-
-		
-		
 		app->fadeToBlack->FadeToBlackScene("Scene", 0.1);
 	}
 	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		app->fadeToBlack->DoFadeToBlack(2);
 	}
+
+	app->guiManager->Draw();
 
 	return true;
 }
@@ -102,6 +118,31 @@ bool TitleScene::PostUpdate()
 bool TitleScene::CleanUp()
 {
 	LOG("Freeing TitleScene");
+
+	playButton->state = GuiControlState::OFF;
+	continueButton->state = GuiControlState::OFF;
+	settingsButton->state = GuiControlState::OFF;
+
+	return true;
+}
+
+bool TitleScene::OnGuiMouseClickEvent(GuiControl* control)
+{
+	// L15: DONE 5: Implement the OnGuiMouseClickEvent method
+	LOG("Event by %d ", control->id);
+
+	switch (control->id)
+	{
+	case 1:
+		LOG("Button Play click");
+		app->fadeToBlack->FadeToBlackScene("Scene", 0.2);	
+		break;
+	case 2:
+		LOG("Button Continue click");
+		app->LoadFromFile();
+		app->fadeToBlack->FadeToBlackScene("Scene", 0.2);
+		break;
+	}
 
 	return true;
 }

@@ -5,10 +5,15 @@
 #include "Log.h"
 #include "Window.h"
 
-GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text) : GuiControl(GuiControlType::BUTTON, id)
+#include "App.h"
+#include "Textures.h"
+
+GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, SDL_Texture* tex, int rectX) : GuiControl(GuiControlType::BUTTON, id)
 {
 	this->bounds = bounds;
 	this->text = text;
+	this->tex = tex;
+	this->rectX = rectX;
 
 	canClick = true;
 	drawBasic = false;
@@ -23,7 +28,7 @@ GuiButton::~GuiButton()
 
 bool GuiButton::Update(float dt)
 {
-	if (state != GuiControlState::DISABLED)
+	if (state != GuiControlState::DISABLED && state != GuiControlState::OFF)
 	{
 		// L15: TODO 3: Update the state of the GUiButton according to the mouse position
 		app->input->GetMousePosition(mouseX, mouseY);
@@ -31,8 +36,8 @@ bool GuiButton::Update(float dt)
 		GuiControlState previousState = state;
 
 		// I'm inside the limitis of the button
-		if (mouseX * app->win->GetScale() >= bounds.x && mouseX * app->win->GetScale() <= bounds.x + bounds.w &&
-			mouseY * app->win->GetScale() >= bounds.y && mouseY * app->win->GetScale() <= bounds.y + bounds.h) {
+		if (mouseX * app->win->GetScale()  >= bounds.x && mouseX * app->win->GetScale() <= bounds.x + bounds.w * app->win->GetScale() &&
+			mouseY * app->win->GetScale() >= bounds.y && mouseY * app->win->GetScale() <= bounds.y + bounds.h * app->win->GetScale()) {
 
 			state = GuiControlState::FOCUSED;
 			if (previousState != state) {
@@ -64,20 +69,55 @@ bool GuiButton::Draw(Render* render)
 	switch (state)
 	{
 	case GuiControlState::DISABLED:
-		render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
+
+		//SDL_Rect rect = { 0,0,190,66 };
+		//render->DrawTexture(buttonTex, bounds.x, bounds.y, &rect);
+		if (tex == nullptr)
+		{
+			render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
+		}
+		else 
+		{
+			render->DrawTexture(tex, bounds.x / app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ rectX, (bounds.h + 8) * 1,bounds.w,bounds.h });
+		}
 		break;
 	case GuiControlState::NORMAL:
-		render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
+		if (tex == nullptr)
+		{
+			render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
+		}
+		else
+		{
+			render->DrawTexture(tex, bounds.x/app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ rectX,0,bounds.w,bounds.h});
+		}
 		break;
 	case GuiControlState::FOCUSED:
-		render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
+		if (tex == nullptr)
+		{
+			render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
+		}
+		else
+		{
+			render->DrawTexture(tex, bounds.x / app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ rectX, (bounds.h + 8) * 2,bounds.w,bounds.h });
+		}
 		break;
 	case GuiControlState::PRESSED:
-		render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
+		if (tex == nullptr)
+		{
+			render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
+		}
+		else
+		{
+			render->DrawTexture(tex, bounds.x / app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ rectX, (bounds.h + 8) * 3,bounds.w,bounds.h });
+		}
+		break;
+	case GuiControlState::OFF:
 		break;
 	}
 
-	app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w, bounds.h, { 255,255,255 });
-
+	if (state != GuiControlState::OFF && tex == nullptr)
+	{
+		app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w * app->win->GetScale(), bounds.h * app->win->GetScale(), { 255,255,255 });
+	}
 	return false;
 }
