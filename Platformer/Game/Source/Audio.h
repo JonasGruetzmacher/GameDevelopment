@@ -38,14 +38,22 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	bool SetMusicVolume(int volume);
+	bool SetFxVolume(int volume);
+
+	int GetMusicVolume();
+	int GetFxVolume();
+
 private:
 
 	void LoadAllFx(pugi::xml_node&);
 
 	_Mix_Music* music;
 	List<Mix_Chunk *>	fx;
+
 	int musicVolume;
 	int fxVolume;
+	
 };
 
 #endif // __AUDIO_H__

@@ -4,8 +4,6 @@
 #include "Audio.h"
 #include "Log.h"
 #include "Window.h"
-
-#include "App.h"
 #include "Textures.h"
 
 GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, SDL_Texture* tex, int rectX) : GuiControl(GuiControlType::BUTTON, id)

@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "GuiButton.h"
+#include "GuiSlider.h"
 
 struct SDL_Texture;
 
@@ -46,6 +47,9 @@ private:
 	GuiButton* playButton;
 	GuiButton* continueButton;
 	GuiButton* settingsButton;
+
+	GuiSlider* musicSlider;
+	GuiSlider* fxSlider;
 
 };
 

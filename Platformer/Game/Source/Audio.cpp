@@ -121,6 +121,33 @@ void Audio::DecreaseVolume()
 	Mix_Volume(-1, fxVolume);
 }
 
+bool Audio::SetMusicVolume(int volume)
+{
+	musicVolume = float(volume) / 100 * 128;
+
+	Mix_VolumeMusic(musicVolume);
+	return true;
+}
+
+bool Audio::SetFxVolume(int volume)
+{
+	fxVolume = float(volume) / 100 * 128;
+
+	Mix_Volume(-1, fxVolume);
+
+	return true;
+}
+
+int Audio::GetFxVolume()
+{
+	return float(fxVolume) * 100 / 128;
+}
+
+int Audio::GetMusicVolume()
+{
+	return float(musicVolume) / 128 * 100;
+}
+
 // Play a music file
 bool Audio::PlayMusic(const char* path, float fadeTime)
 {

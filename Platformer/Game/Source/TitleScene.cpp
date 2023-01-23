@@ -61,6 +61,13 @@ bool TitleScene::Start()
 	playButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Play", { (int)w / 2 - 64,(int)h / 2 - 200,64,24 }, this,{0,0,0,0}, playTex, 0);
 	continueButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Continue", { (int)w / 2 - 88,(int)h / 2 - 100,80,24 }, this,{0,0,0,0}, playTex, 72);
 	settingsButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { (int)w / 2 - 88,(int)h / 2,80,24 }, this, {0,0,0,0}, playTex, 160);
+	musicSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 4, "Music Volume", { (int)w / 2 - 300,(int)h / 2 + 160,96,8 }, this, { 8,88,0,0 });
+	fxSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 5, "Fx Volume", { (int)w / 2 + 100,(int)h / 2 + 160,96,8 }, this, { 8,88,0,0 });
+	musicSlider->state = GuiControlState::OFF;
+	fxSlider->state = GuiControlState::OFF;
+	musicSlider->SetValue(app->audio->GetMusicVolume());
+	fxSlider->SetValue(app->audio->GetFxVolume());
+
 
 	pugi::xml_document gameStateFile;
 	pugi::xml_parse_result result = gameStateFile.load_file("save_game.xml");
@@ -135,12 +142,30 @@ bool TitleScene::OnGuiMouseClickEvent(GuiControl* control)
 	{
 	case 1:
 		LOG("Button Play click");
-		app->fadeToBlack->FadeToBlackScene("Scene", 0.2);	
+		app->fadeToBlack->FadeToBlackScene("Scene", 0.2);
 		break;
 	case 2:
 		LOG("Button Continue click");
 		app->LoadFromFile();
 		app->fadeToBlack->FadeToBlackScene("Scene", 0.2);
+		break;
+	case 3:
+		if (musicSlider->state != GuiControlState::OFF)
+		{
+			musicSlider->state = GuiControlState::OFF;
+			fxSlider->state = GuiControlState::OFF;
+		}
+		else
+		{
+			musicSlider->state = GuiControlState::NORMAL;
+			fxSlider->state = GuiControlState::NORMAL;
+		}
+		break;
+	case 4:
+		app->audio->SetMusicVolume(musicSlider->GetValue());
+		break;
+	case 5:
+		app->audio->SetFxVolume(fxSlider->GetValue());
 		break;
 	}
 
