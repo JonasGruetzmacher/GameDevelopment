@@ -31,6 +31,8 @@
     <ClCompile Include="Source\GuiManager.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\GuiSlider.cpp" />
+    <ClCompile Include="Source\GuiToggle.cpp" />
+    <ClCompile Include="Source\GuiCheckBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -87,6 +89,8 @@
     <ClInclude Include="Source\GuiManager.h" />
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\GuiSlider.h" />
+    <ClInclude Include="Source\GuiToggle.h" />
+    <ClInclude Include="Source\GuiCheckBox.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

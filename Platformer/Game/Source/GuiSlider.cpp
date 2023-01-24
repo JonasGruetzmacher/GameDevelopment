@@ -88,7 +88,5 @@ void GuiSlider::SetValue(int value)
 
 int GuiSlider::GetValue()
 {
-    
-    return value;
-    
+    return value; 
 }

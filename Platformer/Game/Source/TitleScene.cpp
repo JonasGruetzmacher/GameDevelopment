@@ -57,17 +57,25 @@ bool TitleScene::Start()
 	uint w, h;
 	app->win->GetWindowSize(w, h);
 
-	SDL_Texture* playTex = app->tex->Load("Assets/Textures/buttons.png");
-	playButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Play", { (int)w / 2 - 64,(int)h / 2 - 200,64,24 }, this,{0,0,0,0}, playTex, 0);
-	continueButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Continue", { (int)w / 2 - 88,(int)h / 2 - 100,80,24 }, this,{0,0,0,0}, playTex, 72);
-	settingsButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { (int)w / 2 - 88,(int)h / 2,80,24 }, this, {0,0,0,0}, playTex, 160);
+	playButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Play", { (int)w / 2 - 64,(int)h / 2 - 200,64,24 }, this,{0,0,0,0}, 0);
+
+	continueButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Continue", { (int)w / 2 - 88,(int)h / 2 - 100,80,24 }, this,{0,0,0,0}, 72);
+
+	settingsButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { (int)w / 2 - 88,(int)h / 2,80,24 }, this, {0,0,0,0}, 160);
+
 	musicSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 4, "Music Volume", { (int)w / 2 - 300,(int)h / 2 + 160,96,8 }, this, { 8,88,0,0 });
 	fxSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 5, "Fx Volume", { (int)w / 2 + 100,(int)h / 2 + 160,96,8 }, this, { 8,88,0,0 });
 	musicSlider->state = GuiControlState::OFF;
 	fxSlider->state = GuiControlState::OFF;
 	musicSlider->SetValue(app->audio->GetMusicVolume());
 	fxSlider->SetValue(app->audio->GetFxVolume());
-
+	
+	fullscreenCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 6, "Fullscreen", { (int)w / 2 - 300,(int)h / 2 + 210,88,16 }, this, { 0,0,0,0 }, 0);
+	vSyncCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 7, "Vsync", { (int)w / 2 + 100,(int)h / 2 + 210,88,16 }, this, { 0,0,0,0 }, 1);
+	fullscreenCheckBox->state = GuiControlState::OFF;
+	vSyncCheckBox->state = GuiControlState::OFF;
+	fullscreenCheckBox->SetValue(app->win->fullscreen);
+	vSyncCheckBox->SetValue(app->render->vsync);
 
 	pugi::xml_document gameStateFile;
 	pugi::xml_parse_result result = gameStateFile.load_file("save_game.xml");
@@ -92,8 +100,9 @@ bool TitleScene::Update(float dt)
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
 		
-	//SDL_SetTextureAlphaMod(logo, accumulatedTime * 10.0f);
-	app->render->DrawTexture(logo, 0, 0);
+	uint w, h;
+	app->win->GetWindowSize(w, h);
+	app->render->DrawTexture(logo, 0, 0, &logoRect);
 
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
@@ -129,6 +138,10 @@ bool TitleScene::CleanUp()
 	playButton->state = GuiControlState::OFF;
 	continueButton->state = GuiControlState::OFF;
 	settingsButton->state = GuiControlState::OFF;
+	musicSlider->state = GuiControlState::OFF;
+	fxSlider->state = GuiControlState::OFF;
+	fullscreenCheckBox->state = GuiControlState::OFF;
+	vSyncCheckBox->state = GuiControlState::OFF;
 
 	return true;
 }
@@ -154,11 +167,15 @@ bool TitleScene::OnGuiMouseClickEvent(GuiControl* control)
 		{
 			musicSlider->state = GuiControlState::OFF;
 			fxSlider->state = GuiControlState::OFF;
+			fullscreenCheckBox->state = GuiControlState::OFF;
+			vSyncCheckBox->state = GuiControlState::OFF;
 		}
 		else
 		{
 			musicSlider->state = GuiControlState::NORMAL;
 			fxSlider->state = GuiControlState::NORMAL;
+			fullscreenCheckBox->state = GuiControlState::NORMAL;
+			vSyncCheckBox->state = GuiControlState::NORMAL;
 		}
 		break;
 	case 4:
@@ -166,6 +183,12 @@ bool TitleScene::OnGuiMouseClickEvent(GuiControl* control)
 		break;
 	case 5:
 		app->audio->SetFxVolume(fxSlider->GetValue());
+		break;
+	case 6:
+		app->win->SetFullscreen(fullscreenCheckBox->toggle);
+		break;
+	case 7:
+		app->render->vsync = vSyncCheckBox->toggle;
 		break;
 	}
 

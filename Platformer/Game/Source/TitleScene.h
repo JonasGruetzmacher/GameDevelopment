@@ -4,6 +4,8 @@
 #include "Module.h"
 #include "GuiButton.h"
 #include "GuiSlider.h"
+#include "GuiToggle.h"
+#include "GuiCheckBox.h"
 
 struct SDL_Texture;
 
@@ -50,6 +52,9 @@ private:
 
 	GuiSlider* musicSlider;
 	GuiSlider* fxSlider;
+
+	GuiCheckBox* fullscreenCheckBox;
+	GuiCheckBox* vSyncCheckBox;
 
 };
 
