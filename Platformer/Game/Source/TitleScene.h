@@ -40,21 +40,29 @@ public:
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 public:
+	bool showSettings = false;
 
 private:
 	SDL_Rect logoRect;
 	SDL_Texture* logo;
+	SDL_Texture* settingsBackground;
+	SDL_Texture* creditsTex;
 	const char* texturePath;
 
 	GuiButton* playButton;
 	GuiButton* continueButton;
 	GuiButton* settingsButton;
+	GuiButton* quitButton;
+	GuiButton* creditsButton;
 
 	GuiSlider* musicSlider;
 	GuiSlider* fxSlider;
 
 	GuiCheckBox* fullscreenCheckBox;
 	GuiCheckBox* vSyncCheckBox;
+
+	bool quit = false;
+	bool showCredits;
 
 };
 

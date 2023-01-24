@@ -50,6 +50,8 @@ bool TitleScene::Start()
 	app->fadeToBlack->activeScene = "TitleScene";
 
 	logo = app->tex->Load(texturePath);
+	settingsBackground = app->tex->Load("Assets/Textures/SettingsBackground.png");
+	creditsTex = app->tex->Load("Assets/Textures/Credits.png");
 
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
@@ -57,14 +59,18 @@ bool TitleScene::Start()
 	uint w, h;
 	app->win->GetWindowSize(w, h);
 
-	playButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Play", { (int)w / 2 - 64,(int)h / 2 - 200,64,24 }, this,{0,0,0,0}, 0);
+	playButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Play", { (int)w / 2 - 280,(int)h / 2 - 160,64,24 }, this,{0,0,0,0}, 0);
 
-	continueButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Continue", { (int)w / 2 - 88,(int)h / 2 - 100,80,24 }, this,{0,0,0,0}, 72);
+	continueButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Continue", { (int)w / 2 - 305,(int)h / 2 - 80,80,24 }, this,{0,0,0,0}, 72);
 
-	settingsButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { (int)w / 2 - 88,(int)h / 2,80,24 }, this, {0,0,0,0}, 160);
+	settingsButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Settings", { (int)w / 2 - 305,(int)h / 2,80,24 }, this, {0,0,0,0}, 160);
 
-	musicSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 4, "Music Volume", { (int)w / 2 - 300,(int)h / 2 + 160,96,8 }, this, { 8,88,0,0 });
-	fxSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 5, "Fx Volume", { (int)w / 2 + 100,(int)h / 2 + 160,96,8 }, this, { 8,88,0,0 });
+	quitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 8, "Quit", { (int)w / 2 - 255,(int)h / 2 - 270,48,24 }, this, { 0,0,0,0 }, 248);
+
+	creditsButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 9, "Credits", { (int)w / 2 + 200,(int)h / 2 - 270,80,24 }, this, { 0,0,0,0 }, 300);
+
+	musicSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 4, "Music Volume", { (int)w / 2 - 320,(int)h / 2 + 160,96,8 }, this, { 8,88,0,0 });
+	fxSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 5, "Fx Volume", { (int)w / 2 + 90,(int)h / 2 + 160,96,8 }, this, { 8,88,0,0 });
 	musicSlider->state = GuiControlState::OFF;
 	fxSlider->state = GuiControlState::OFF;
 	musicSlider->SetValue(app->audio->GetMusicVolume());
@@ -104,6 +110,16 @@ bool TitleScene::Update(float dt)
 	app->win->GetWindowSize(w, h);
 	app->render->DrawTexture(logo, 0, 0, &logoRect);
 
+	
+	if (showSettings) 
+	{
+		app->render->DrawTexture(settingsBackground, int(w)/2 / app->win->GetScale() - 110, int(h) / 2 / app->win->GetScale() + 25);
+	}
+	if (showCredits)
+	{
+		app->render->DrawTexture(creditsTex, int(w) / 2 / app->win->GetScale(), int(h) / 2 / app->win->GetScale() - 50);
+	}
+
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		app->fadeToBlack->FadeToBlackScene("Scene", 0.1);
@@ -123,7 +139,7 @@ bool TitleScene::PostUpdate()
 {
 	bool ret = true;
 
-	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN || quit)
 		ret = false;
 
 
@@ -151,6 +167,7 @@ bool TitleScene::OnGuiMouseClickEvent(GuiControl* control)
 	// L15: DONE 5: Implement the OnGuiMouseClickEvent method
 	LOG("Event by %d ", control->id);
 
+	bool ret = true;
 	switch (control->id)
 	{
 	case 1:
@@ -163,7 +180,9 @@ bool TitleScene::OnGuiMouseClickEvent(GuiControl* control)
 		app->fadeToBlack->FadeToBlackScene("Scene", 0.2);
 		break;
 	case 3:
-		if (musicSlider->state != GuiControlState::OFF)
+		showSettings = !showSettings;
+		showCredits = false;
+		if (!showSettings)
 		{
 			musicSlider->state = GuiControlState::OFF;
 			fxSlider->state = GuiControlState::OFF;
@@ -190,8 +209,19 @@ bool TitleScene::OnGuiMouseClickEvent(GuiControl* control)
 	case 7:
 		app->render->vsync = vSyncCheckBox->toggle;
 		break;
+	case 8:
+		quit = true;
+		break;
+	case 9 :
+		showCredits = !showCredits;
+		showSettings = false;
+		musicSlider->state = GuiControlState::OFF;
+		fxSlider->state = GuiControlState::OFF;
+		fullscreenCheckBox->state = GuiControlState::OFF;
+		vSyncCheckBox->state = GuiControlState::OFF;
+		break;
 	}
 
-	return true;
+	return ret;
 }
 
