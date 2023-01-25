@@ -27,6 +27,7 @@ class Map;
 class Physics;
 class PathFinding;
 class GuiManager;
+class Chars;
 
 class App
 {
@@ -105,6 +106,7 @@ public:
 	PathFinding* pathfinding;
 	FadeToBlack* fadeToBlack;
 	GuiManager* guiManager;
+	Chars* chars;
 
 private:
 

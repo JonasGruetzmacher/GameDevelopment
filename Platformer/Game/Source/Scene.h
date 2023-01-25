@@ -13,6 +13,8 @@ struct Level {
 	SString name;
 };
 
+
+
 struct SDL_Texture;
 
 class Scene : public Module
@@ -53,7 +55,11 @@ private:
 	bool Pause();
 	bool Resume();
 
+	bool DrawGameUI();
+
 public:
+
+	
 
 	//L02: DONE 3: Declare a Player attribute 
 	Player* player;
@@ -65,9 +71,22 @@ public:
 
 private:
 	SDL_Texture* img;
+
+	const char* mouseTilePath;
 	SDL_Texture* mouseTileTex = nullptr;
+	const char* originTilePath;
 	SDL_Texture* originTex = nullptr;
+	const char* settingsBackgroundPath;
 	SDL_Texture* settingsBackground;
+
+	const char* gameUIPath;
+	SDL_Texture* gameUI = nullptr;
+	SDL_Rect uiHeart;
+	SDL_Rect uiCoin;
+	SDL_Rect uiAmmo;
+	SDL_Rect uiBackground;
+
+
 
 	List<Level*> levels;
 

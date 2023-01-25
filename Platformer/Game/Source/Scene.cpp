@@ -11,6 +11,7 @@
 #include "FadeToBlack.h"
 #include "GuiManager.h"
 #include "Physics.h"
+#include "Chars.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -41,14 +42,21 @@ bool Scene::Awake(pugi::xml_node& config)
 		level->name = levelNode.attribute("name").as_string();
 		levels.Add(level);
 	}
+	mouseTilePath = config.child("debug").attribute("mouseTileTex").as_string();
+	originTilePath = config.child("debug").attribute("originTex").as_string();
 
-	// iterate all objects in the scene
-	// Check https://pugixml.org/docs/quickstart.html#access
-	for (pugi::xml_node itemNode = config.child("item"); itemNode; itemNode = itemNode.next_sibling("item"))
-	{
-		Item* item = (Item*)app->entityManager->CreateEntity(EntityType::ITEM, itemNode);
-		//item->parameters = itemNode;
-	}
+	settingsBackgroundPath = config.child("UI").child("settings").attribute("backgroundPath").as_string();
+
+	gameUIPath = config.child("UI").child("gameUI").attribute("path").as_string();
+
+	pugi::xml_node heartUINode = config.child("UI").child("gameUI").child("heart");
+	uiHeart = { heartUINode.attribute("x").as_int(),heartUINode.attribute("y").as_int(),heartUINode.attribute("w").as_int(),heartUINode.attribute("h").as_int() };
+
+	pugi::xml_node coinUINode = config.child("UI").child("gameUI").child("coin");
+	uiCoin = { coinUINode.attribute("x").as_int(),coinUINode.attribute("y").as_int(),coinUINode.attribute("w").as_int(),coinUINode.attribute("h").as_int() };
+
+	pugi::xml_node ammoUINode = config.child("UI").child("gameUI").child("ammo");
+	uiAmmo = { ammoUINode.attribute("x").as_int(),ammoUINode.attribute("y").as_int(),ammoUINode.attribute("w").as_int(),ammoUINode.attribute("h").as_int() };
 
 
 
@@ -63,11 +71,13 @@ bool Scene::Start()
 	ret = SetUp(currentLevel);
 
 	// Texture to highligh mouse position 
-	mouseTileTex = app->tex->Load("Assets/Textures/path.png");
+	mouseTileTex = app->tex->Load(mouseTilePath);
 	// Texture to show path origin 
-	originTex = app->tex->Load("Assets/Textures/x.png");
+	originTex = app->tex->Load(originTilePath);
 
-	settingsBackground = app->tex->Load("Assets/Textures/SettingsBackground.png");
+	settingsBackground = app->tex->Load(settingsBackgroundPath);
+
+	gameUI = app->tex->Load(gameUIPath);
 
 	uint w, h;
 	app->win->GetWindowSize(w, h);
@@ -109,9 +119,9 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN && !showPauseMenu)
 		app->SaveGameRequest();
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN && !showPauseMenu)
 		app->LoadGameRequest();
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		player->godMode = !player->godMode;
@@ -119,13 +129,13 @@ bool Scene::Update(float dt)
 		app->audio->IncreaseVolume();
 	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 		app->audio->DecreaseVolume();
-	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN && !showPauseMenu)
 		debugMode = !debugMode;
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN && !showPauseMenu)
 		app->fadeToBlack->SwitchMap(1);
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN && !showPauseMenu)
 		app->fadeToBlack->SwitchMap(2);
-	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && !showPauseMenu)
 		app->fadeToBlack->SwitchMap(currentLevel);
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
@@ -202,14 +212,10 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	uint w, h;
-	app->win->GetWindowSize(w, h);
+	
 
-	if (showSettings)
-	{
-		app->render->DrawTexture(settingsBackground, (int(w) / 2 - app->render->camera.x) / app->win->GetScale() - 110, (int(h) / 2 - app->render->camera.y) / app->win->GetScale() + 25);
-	}
-
+	
+	ret = DrawGameUI();
 	app->guiManager->Draw();
 
 	if(quit)
@@ -219,6 +225,33 @@ bool Scene::PostUpdate()
 
 	return ret;
 }
+
+bool Scene::DrawGameUI()
+{
+
+	bool ret = true;
+
+	uint w, h;
+	app->win->GetWindowSize(w, h);
+
+	if (showSettings)
+	{
+		ret = app->render->DrawTexture(settingsBackground, (int(w) / 2 - app->render->camera.x) / app->win->GetScale() - 110, (int(h) / 2 - app->render->camera.y) / app->win->GetScale() + 25);
+	}
+
+	for (int i = 0; i < player->health; i++) 
+	{
+		ret = app->render->DrawTexture(gameUI, (int(w) / 2 - app->render->camera.x) / app->win->GetScale() - 160 + 10*i, (int(h) / 2 - app->render->camera.y) / app->win->GetScale() - 95, &uiHeart);
+	}
+	for (int i = 0; i < player->ammo; i++)
+	{
+		ret = app->render->DrawTexture(gameUI, (int(w) / 2 - app->render->camera.x) / app->win->GetScale() + 150 - 10 * i, (int(h) / 2 - app->render->camera.y) / app->win->GetScale() - 95, &uiAmmo);
+	}
+
+	app->chars->DrawText(50, 0, "TEST!9");
+	return ret;
+}
+
 
 
 

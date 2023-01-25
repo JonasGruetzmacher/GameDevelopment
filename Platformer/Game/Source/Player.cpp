@@ -186,7 +186,7 @@ bool Player::Update()
 		}
 		if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
 
-			if (shootTimer.ReadMSec() > 100)
+			if (shootTimer.ReadMSec() > 100 && ammo > 0)
 			{
 				Shoot();
 			}
@@ -214,6 +214,7 @@ bool Player::Update()
 
 void Player::Shoot() 
 {
+	ammo--;
 	app->audio->PlayFx(4);
 	shootTimer.Start();
 	app->entityManager->CreateBullet(this);
@@ -294,16 +295,28 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			
 		}
 		else if (!godMode) {
-			Die();
+			TakeDamage();
 		}
 		break;
 	}
 }
 
+bool Player::TakeDamage()
+{
+	app->audio->PlayFx(2);
+	health--;
+	if (health < 1)
+	{
+		Die();
+	}
+
+	return true;
+}
+
 bool Player::Die() {
 	LOG("Player died");
 	app->audio->PlayFx(2);
-	app->scene->restartLevel = true;
+	app->fadeToBlack->FadeToBlackScene("TitleScene", 0.4);
 
 	return true;
 }
@@ -314,6 +327,10 @@ bool Player::LoadState(pugi::xml_node& data)
 	position.y = data.attribute("y").as_int();
 
 	jump = data.attribute("jump").as_int();
+
+	ammo = data.attribute("ammo").as_int();
+	health = data.attribute("health").as_int();
+	coins = data.attribute("coins").as_int();
 	
 	active = true;
 	SummonPlayer();
@@ -335,6 +352,9 @@ bool Player::SaveState(pugi::xml_node& data)
 	data.append_attribute("x") = position.x;
 	data.append_attribute("y") = position.y;
 	data.append_attribute("jump") = jump;
+	data.append_attribute("health") = health;
+	data.append_attribute("coins") = coins;
+	data.append_attribute("ammo") = ammo;
 	data.append_child("velocity");
 	data.child("velocity").append_attribute("x") = pbody->body->GetLinearVelocity().x;
 	data.child("velocity").append_attribute("y") = pbody->body->GetLinearVelocity().y;

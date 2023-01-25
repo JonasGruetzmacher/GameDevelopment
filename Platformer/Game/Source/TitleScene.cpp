@@ -14,6 +14,7 @@
 #include "Defs.h"
 #include "Log.h"
 #include "TitleScene.h"
+#include "Chars.h"
 
 TitleScene::TitleScene() : Module()
 {

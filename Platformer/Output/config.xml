@@ -34,6 +34,15 @@
 	  <level path="Assets/Maps/Level1.tmx" id="1" name="Level1"/>
 	  <level path="Assets/Maps/Level2.tmx" id="2" name="Level2"/>	
 	<currentlevel value ="1"/>
+	  <debug mouseTileTex = "Assets/Textures/path.png" originTex ="Assets/Textures/x.png" />
+	  <UI>
+		  <settings backgroundPath ="Assets/Textures/SettingsBackground.png"/>
+		  <gameUI path="Assets/Textures/Paper-Pixels-8x8/UI.png">
+			  <heart x="0" y="32" w="8" h="8"/>
+			  <coin x="16" y="32" w="8" h="8"/>
+			  <ammo x="96" y="32" w="8" h="8"/>
+		  </gameUI>
+	  </UI>
 
   </scene>
 
@@ -52,5 +61,53 @@
 		<logorect x="0" y="0" w="400" h="200"/>
 		<path value="Assets/Textures/TitleScreen.png"/>
 	</titleScene>
-  
+
+	<chars path="Assets/Textures/Paper-Pixels-8x8/UI.png">
+		<char c="0" x="0" y="104" w="8" h="8"/>
+		<char c="1" x="8" y="104" w="8" h="8"/>
+		<char c="2" x="16" y="104" w="8" h="8"/>
+		<char c="3" x="24" y="104" w="8" h="8"/>
+		<char c="4" x="32" y="104" w="8" h="8"/>
+		<char c="5" x="40" y="104" w="8" h="8"/>
+		<char c="6" x="48" y="104" w="8" h="8"/>
+		<char c="7" x="56" y="104" w="8" h="8"/>
+		<char c="8" x="64" y="104" w="8" h="8"/>
+		<char c="9" x="72" y="104" w="8" h="8"/>
+		<char c="A" x="0" y="120" w="8" h="8"/>
+		<char c="B" x="8" y="120" w="8" h="8"/>
+		<char c="C" x="16" y="120" w="8" h="8"/>
+		<char c="D" x="24" y="120" w="8" h="8"/>
+		<char c="E" x="32" y="120" w="8" h="8"/>
+		<char c="F" x="40" y="120" w="8" h="8"/>
+		<char c="G" x="48" y="120" w="8" h="8"/>
+		<char c="H" x="56" y="120" w="8" h="8"/>
+		<char c="I" x="64" y="120" w="8" h="8"/>
+		<char c="J" x="72" y="120" w="8" h="8"/>
+		<char c="K" x="80" y="120" w="8" h="8"/>
+		<char c="L" x="88" y="120" w="8" h="8"/>
+		<char c="M" x="96" y="120" w="8" h="8"/>
+		<char c="N" x="0" y="128" w="8" h="8"/>
+		<char c="O" x="8" y="128" w="8" h="8"/>
+		<char c="P" x="16" y="128" w="8" h="8"/>
+		<char c="Q" x="24" y="128" w="8" h="8"/>
+		<char c="R" x="32" y="128" w="8" h="8"/>
+		<char c="S" x="40" y="128" w="8" h="8"/>
+		<char c="T" x="48" y="128" w="8" h="8"/>
+		<char c="U" x="56" y="128" w="8" h="8"/>
+		<char c="V" x="64" y="128" w="8" h="8"/>
+		<char c="W" x="72" y="128" w="8" h="8"/>
+		<char c="X" x="80" y="128" w="8" h="8"/>
+		<char c="Y" x="88" y="128" w="8" h="8"/>
+		<char c="Z" x="96" y="128" w="8" h="8"/>
+		<char c="." x="0" y="112" w="8" h="8"/>
+		<char c="!" x="8" y="112" w="8" h="8"/>
+		<char c="?" x="16" y="112" w="8" h="8"/>
+		<char c="," x="24" y="112" w="8" h="8"/>
+		<char c="'" x="32" y="112" w="8" h="8"/>
+		<char c=":" x="40" y="112" w="8" h="8"/>
+		<char c=";" x="48" y="112" w="8" h="8"/>
+		<char c="+" x="56" y="112" w="8" h="8"/>
+		<char c="-" x="64" y="112" w="8" h="8"/>
+		
+	</chars>
 </config>
