@@ -39,8 +39,10 @@ public:
 	// Define multiple Gui Event methods
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
+	void SetGui(bool guiOn);
+
 public:
-	bool showSettings = false;
+	
 
 private:
 	SDL_Rect logoRect;
@@ -63,6 +65,8 @@ private:
 
 	bool quit = false;
 	bool showCredits;
+
+	bool showSettings = false;
 
 };
 

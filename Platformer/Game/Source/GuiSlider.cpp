@@ -14,6 +14,7 @@ GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds) : GuiControl(GuiControlType::SL
     this->maxValue = (bounds.x + bounds.w) / app->win->GetScale() + 8;
     barTex = app->tex->Load("Assets/Textures/Slider.png");
     knobTex = app->tex->Load("Assets/Textures/Knob.png");
+    audioFxId = app->audio->LoadFx("Assets/Audio/Fx/click2.ogg");
 
     SetValue((bounds.w - 8) / 2);
 }
@@ -50,14 +51,16 @@ bool GuiSlider::Update(float dt)
                 knobX = mouseX - bounds.x / app->win->GetScale() - 4;
                 if (knobX < 0) knobX = 0;
                 if (knobX > bounds.w - 8) knobX = bounds.w - 8;
-                NotifyObserver();
-                
-                
+                NotifyObserver();               
             }
             else {
                 state = GuiControlState::NORMAL;
             }
+            
+
         }
+        if (previousState == GuiControlState::PRESSED && state != GuiControlState::PRESSED)
+            app->audio->PlayFx(audioFxId);
        
         value = knobX / float(bounds.w - 8) * 100;
         
@@ -74,8 +77,8 @@ bool GuiSlider::Draw(Render* render)
     // Draw the slider
     if (state != GuiControlState::OFF)
     {
-        render->DrawTexture(barTex, bounds.x / app->win->GetScale(), bounds.y / app->win->GetScale());
-        render->DrawTexture(knobTex, bounds.x / app->win->GetScale() + knobX, bounds.y / app->win->GetScale(), new SDL_Rect{ 0,0,8,8 });
+        render->DrawTexture(barTex, (bounds.x - app->render->camera.x) / app->win->GetScale(), (bounds.y - app->render->camera.y) / app->win->GetScale());
+        render->DrawTexture(knobTex, (bounds.x - app->render->camera.x) / app->win->GetScale() + knobX, (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ 0,0,8,8 });
     }
     return true;
 }

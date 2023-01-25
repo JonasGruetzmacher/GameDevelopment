@@ -25,7 +25,8 @@ public:
 	SDL_Texture* tex;
 	int rectX;
 
-	uint audioFxId;
+	uint audioFxId1;
+	uint audioFxId2;
 };
 
 #endif // __GUIBUTTON_H__

@@ -151,15 +151,32 @@ bool TitleScene::CleanUp()
 {
 	LOG("Freeing TitleScene");
 
-	playButton->state = GuiControlState::OFF;
-	continueButton->state = GuiControlState::OFF;
-	settingsButton->state = GuiControlState::OFF;
-	musicSlider->state = GuiControlState::OFF;
-	fxSlider->state = GuiControlState::OFF;
-	fullscreenCheckBox->state = GuiControlState::OFF;
-	vSyncCheckBox->state = GuiControlState::OFF;
-
 	return true;
+}
+
+void TitleScene::SetGui(bool guiOn) 
+{
+	if (guiOn)
+	{
+		playButton->state = GuiControlState::NORMAL;
+		continueButton->state = GuiControlState::NORMAL;
+		settingsButton->state = GuiControlState::NORMAL;
+		creditsButton->state = GuiControlState::NORMAL;
+		quitButton->state = GuiControlState::NORMAL;
+	}
+	else
+	{
+		playButton->state = GuiControlState::OFF;
+		continueButton->state = GuiControlState::OFF;
+		settingsButton->state = GuiControlState::OFF;
+		creditsButton->state = GuiControlState::OFF;
+		quitButton->state = GuiControlState::OFF;
+		musicSlider->state = GuiControlState::OFF;
+		fxSlider->state = GuiControlState::OFF;
+		fullscreenCheckBox->state = GuiControlState::OFF;
+		vSyncCheckBox->state = GuiControlState::OFF;
+		showSettings = false;
+	}
 }
 
 bool TitleScene::OnGuiMouseClickEvent(GuiControl* control)

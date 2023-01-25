@@ -193,10 +193,14 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->physics->active = false;
 			app->logoScene->active = false;
 			app->titleScene->active = true;
+			app->titleScene->SetGui(true);
+			app->scene->SetGui(false);
 		}
 		if (scene == "Scene")
 		{
 			app->titleScene->CleanUp();
+			app->titleScene->SetGui(false);
+			app->scene->SetGui(true);
 			app->scene->active = true;
 			app->logoScene->active = false;
 			app->map->active = true;

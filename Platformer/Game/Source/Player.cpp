@@ -141,58 +141,59 @@ bool Player::Update()
 		currentAnimation = &idleleft;
 	}
 
-
-	// L07 DONE 5: Add physics to the player - updated player position using physics	
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		moveState = MS_LEFT;
-		currentAnimation = &runleft;
-		direction = 1;
-		lookDirection = false;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		moveState = MS_IDLE;
-		currentAnimation = &jumpright;
-		direction = 0;
-		lookDirection = true;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
-		moveState = MS_IDLE;
-		currentAnimation = &jumpleft;
-		direction = 1;
-		lookDirection = false;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		moveState = MS_RIGHT;
-		currentAnimation = &runright;
-		direction = 0;
-		lookDirection = true;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
-		currentAnimation = &jumpright;
-		moveState = MS_IDLE;
-		direction = 0;
-		lookDirection = true;
-	}
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
-		Jump();
-		if (direction == 0) {
+	if (!app->scene->showPauseMenu)
+	{
+		// L07 DONE 5: Add physics to the player - updated player position using physics	
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			moveState = MS_LEFT;
+			currentAnimation = &runleft;
+			direction = 1;
+			lookDirection = false;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+			moveState = MS_IDLE;
 			currentAnimation = &jumpright;
+			direction = 0;
+			lookDirection = true;
 		}
-		if (direction == 1) {
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_UP) {
+			moveState = MS_IDLE;
 			currentAnimation = &jumpleft;
+			direction = 1;
+			lookDirection = false;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			moveState = MS_RIGHT;
+			currentAnimation = &runright;
+			direction = 0;
+			lookDirection = true;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_D) == KEY_UP) {
+			currentAnimation = &jumpright;
+			moveState = MS_IDLE;
+			direction = 0;
+			lookDirection = true;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) {
+			Jump();
+			if (direction == 0) {
+				currentAnimation = &jumpright;
+			}
+			if (direction == 1) {
+				currentAnimation = &jumpleft;
+			}
+
+		}
+		if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
+
+			if (shootTimer.ReadMSec() > 100)
+			{
+				Shoot();
+			}
 		}
 
+		Move();
 	}
-	if (app->input->GetKey(SDL_SCANCODE_K) == KEY_DOWN) {
-		
-		if (shootTimer.ReadMSec() > 100)
-		{
-			Shoot();
-		}
-	}
-
-	Move();
-
 
 
 	//Update player position in pixels
@@ -202,7 +203,9 @@ bool Player::Update()
 	app->render->camera.x = -position.x * app->win->GetScale() + app->render->camera.w / 2;
 	app->render->camera.y = -position.y * app->win->GetScale() + app->render->camera.h / 2 + 50;
 
+
 	currentAnimation->Update();
+
 	app->render->DrawTexture(texture, position.x, position.y, &currentAnimation->GetCurrentFrame());
 	//app->map
 	//currentAnimation->Update();

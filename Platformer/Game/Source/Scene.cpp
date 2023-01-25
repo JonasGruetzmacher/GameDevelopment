@@ -10,6 +10,7 @@
 #include "Map.h"
 #include "FadeToBlack.h"
 #include "GuiManager.h"
+#include "Physics.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -66,12 +67,33 @@ bool Scene::Start()
 	// Texture to show path origin 
 	originTex = app->tex->Load("Assets/Textures/x.png");
 
+	settingsBackground = app->tex->Load("Assets/Textures/SettingsBackground.png");
+
 	uint w, h;
 	app->win->GetWindowSize(w, h);
 
 
-	//button1 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "Button 1", { (int)w / 2 - 50,(int)h / 2 - 30,100,20 }, this);
-	//button2 = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Button 2", { (int)w / 2 - 50,(int)h / 2,100,20 }, this);
+	settingsButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 200, "Settings", { (int)w / 2 - 80,(int)h / 2 - 30,80,24}, this, {0,0,0,0}, 160);
+
+	musicSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 201, "Music Volume", { (int)w / 2 - 320,(int)h / 2 + 160,96,8 }, this, { 8,88,0,0 });
+	fxSlider = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 202, "Fx Volume", { (int)w / 2 + 90,(int)h / 2 + 160,96,8 }, this, { 8,88,0,0 });
+	musicSlider->state = GuiControlState::OFF;
+	fxSlider->state = GuiControlState::OFF;
+	musicSlider->SetValue(app->audio->GetMusicVolume());
+	fxSlider->SetValue(app->audio->GetFxVolume());
+
+	fullscreenCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 203, "Fullscreen", { (int)w / 2 - 300,(int)h / 2 + 210,88,16 }, this, { 0,0,0,0 }, 0);
+	vSyncCheckBox = (GuiCheckBox*)app->guiManager->CreateGuiControl(GuiControlType::CHECKBOX, 204, "Vsync", { (int)w / 2 + 100,(int)h / 2 + 210,88,16 }, this, { 0,0,0,0 }, 1);
+	fullscreenCheckBox->state = GuiControlState::OFF;
+	vSyncCheckBox->state = GuiControlState::OFF;
+	fullscreenCheckBox->SetValue(app->win->fullscreen);
+	vSyncCheckBox->SetValue(app->render->vsync);
+
+	quitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 205, "Quit", { (int)w / 2 - 32,(int)h / 2 - 270,48,24 }, this, { 0,0,0,0 }, 248);
+
+	resumeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 206, "Resume", { (int)w / 2 - 80,(int)h / 2 - 110,80,24 }, this, { 0,0,0,0 }, 72);
+
+	titleScreenButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 207, "Title", { (int)w / 2 - 80,(int)h / 2 - 190,80,24 }, this, { 0,0,0,0 }, 160);
 
 	return ret;
 }
@@ -79,6 +101,7 @@ bool Scene::Start()
 // Called each loop iteration
 bool Scene::PreUpdate()
 {
+
 	return true;
 }
 
@@ -104,7 +127,13 @@ bool Scene::Update(float dt)
 		app->fadeToBlack->SwitchMap(2);
 	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 		app->fadeToBlack->SwitchMap(currentLevel);
-	//if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
+		if (showPauseMenu)
+			Resume();
+		else
+			Pause();
+	}
 		
 	if (restartLevel) {
 		restartLevel = false;
@@ -118,9 +147,10 @@ bool Scene::Update(float dt)
 	// Draw map
 	app->map->Draw();
 
-	//L15: Draw GUI
-	app->guiManager->Draw();
 	
+
+	
+
 	//Debug
 	if (debugMode)
 	{
@@ -172,8 +202,20 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	uint w, h;
+	app->win->GetWindowSize(w, h);
+
+	if (showSettings)
+	{
+		app->render->DrawTexture(settingsBackground, (int(w) / 2 - app->render->camera.x) / app->win->GetScale() - 110, (int(h) / 2 - app->render->camera.y) / app->win->GetScale() + 25);
+	}
+
+	app->guiManager->Draw();
+
+	if(quit)
 		ret = false;
+
+	
 
 	return ret;
 }
@@ -223,6 +265,54 @@ bool Scene::SetUp(int level)
 	return ret;
 }
 
+bool Scene::Pause() 
+{
+	settingsButton->state = GuiControlState::NORMAL;
+	resumeButton->state = GuiControlState::NORMAL;
+	quitButton->state = GuiControlState::NORMAL;
+	titleScreenButton->state = GuiControlState::NORMAL;
+	showPauseMenu = true;
+
+	app->physics->active = false;
+
+	return true;
+}
+
+bool Scene::Resume()
+{
+	settingsButton->state = GuiControlState::OFF;
+	quitButton->state = GuiControlState::OFF;
+	resumeButton->state = GuiControlState::OFF;
+	titleScreenButton->state = GuiControlState::OFF;
+	musicSlider->state = GuiControlState::OFF;
+	fxSlider->state = GuiControlState::OFF;
+	fullscreenCheckBox->state = GuiControlState::OFF;
+	vSyncCheckBox->state = GuiControlState::OFF;
+	showSettings = false;
+	showPauseMenu = false;
+
+	app->physics->active = true;
+
+	return true;
+}
+
+void Scene::SetGui(bool guiOn) 
+{
+	if (guiOn) 
+	{
+		
+	}
+	else
+	{
+		settingsButton->state = GuiControlState::OFF;
+		quitButton->state = GuiControlState::OFF;
+		resumeButton->state = GuiControlState::OFF;
+		titleScreenButton->state = GuiControlState::OFF;
+		showSettings = false;
+		showPauseMenu = false;
+	}
+}
+
 bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 {
 	// L15: DONE 5: Implement the OnGuiMouseClickEvent method
@@ -230,12 +320,43 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 
 	switch (control->id)
 	{
-	case 1:
-		LOG("Button Play click");
-		app->fadeToBlack->FadeToBlackScene("Scene", 0.2);
+	case 200:
+		showSettings = !showSettings;
+		if (!showSettings)
+		{
+			musicSlider->state = GuiControlState::OFF;
+			fxSlider->state = GuiControlState::OFF;
+			fullscreenCheckBox->state = GuiControlState::OFF;
+			vSyncCheckBox->state = GuiControlState::OFF;
+		}
+		else
+		{
+			musicSlider->state = GuiControlState::NORMAL;
+			fxSlider->state = GuiControlState::NORMAL;
+			fullscreenCheckBox->state = GuiControlState::NORMAL;
+			vSyncCheckBox->state = GuiControlState::NORMAL;
+		}
 		break;
-	case 2:
-		LOG("Button 2 click");
+	case 201:
+		app->audio->SetMusicVolume(musicSlider->GetValue());
+		break;
+	case 202:
+		app->audio->SetFxVolume(fxSlider->GetValue());
+		break;
+	case 203:
+		app->win->SetFullscreen(fullscreenCheckBox->toggle);
+		break;
+	case 204:
+		app->render->vsync = vSyncCheckBox->toggle;
+		break;
+	case 205:
+		quit = true;
+		break;
+	case 206:
+		Resume();
+		break;
+	case 207:
+		app->fadeToBlack->FadeToBlackScene("TitleScene", 0.2);
 		break;
 	}
 

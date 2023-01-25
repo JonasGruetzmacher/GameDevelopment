@@ -56,7 +56,7 @@ bool GuiCheckBox::Update(float dt)
 			{
 				if (previousState != state) {
 					state = GuiControlState::PRESSED;
-					app->audio->PlayFx(click2FxId);
+					
 					
 				}
 			}
@@ -67,6 +67,7 @@ bool GuiCheckBox::Update(float dt)
 				//Check if the button can be clicked
 				if (canClick)
 				{
+					app->audio->PlayFx(click2FxId);
 					toggle = !toggle;
 					NotifyObserver();
 					canClick = false;
@@ -96,47 +97,47 @@ bool GuiCheckBox::Draw(Render* render)
 	switch (state)
 	{
 	case GuiControlState::DISABLED:
-		render->DrawTexture(buttonTex, bounds.x / app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ texId * 80, 24 * 1,72,16 });
+		render->DrawTexture(buttonTex, (bounds.x-app->render->camera.x) / app->win->GetScale(), (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ texId * 80, 24 * 1,72,16 });
 		if (toggle)
 		{
-			app->render->DrawTexture(checkBoxTex, bounds.x / app->win->GetScale() + 76, bounds.y / app->win->GetScale(), new SDL_Rect{ 24, 24 * 1, 16, 16 });
+			app->render->DrawTexture(checkBoxTex, (bounds.x - app->render->camera.x) / app->win->GetScale() + 76, (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ 24, 24 * 1, 16, 16 });
 		}
 		else
 		{
-			app->render->DrawTexture(checkBoxTex, bounds.x / app->win->GetScale() + 76, bounds.y / app->win->GetScale(), new SDL_Rect{ 0, 24 * 1, 16, 16 });
+			app->render->DrawTexture(checkBoxTex, (bounds.x - app->render->camera.x) / app->win->GetScale() + 76, (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ 0, 24 * 1, 16, 16 });
 		}
 		break;
 	case GuiControlState::NORMAL:
-		render->DrawTexture(buttonTex, bounds.x / app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ texId * 80, 0, 72, 16 });
+		render->DrawTexture(buttonTex, (bounds.x - app->render->camera.x) / app->win->GetScale(), (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ texId * 80, 0, 72, 16 });
 		if (toggle)
 		{
-			app->render->DrawTexture(checkBoxTex, bounds.x / app->win->GetScale() + 76, bounds.y / app->win->GetScale(), new SDL_Rect{ 24, 0, 16, 16 });
+			app->render->DrawTexture(checkBoxTex, (bounds.x - app->render->camera.x) / app->win->GetScale() + 76, (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ 24, 0, 16, 16 });
 		}
 		else
 		{
-			app->render->DrawTexture(checkBoxTex, bounds.x / app->win->GetScale() + 76, bounds.y / app->win->GetScale(), new SDL_Rect{ 0, 0, 16, 16 });
+			app->render->DrawTexture(checkBoxTex, (bounds.x - app->render->camera.x) / app->win->GetScale() + 76, (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ 0, 0, 16, 16 });
 		}
 		break;
 	case GuiControlState::FOCUSED:
-		render->DrawTexture(buttonTex, bounds.x / app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ texId * 80, 24 * 2, 72, 16 });
+		render->DrawTexture(buttonTex, (bounds.x - app->render->camera.x) / app->win->GetScale(), (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ texId * 80, 24 * 2, 72, 16 });
 		if (toggle)
 		{
-			app->render->DrawTexture(checkBoxTex, bounds.x / app->win->GetScale() + 76, bounds.y / app->win->GetScale(), new SDL_Rect{ 24, 24 * 2, 16, 16 });
+			app->render->DrawTexture(checkBoxTex, (bounds.x - app->render->camera.x) / app->win->GetScale() + 76, (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ 24, 24 * 2, 16, 16 });
 		}
 		else
 		{
-			app->render->DrawTexture(checkBoxTex, bounds.x / app->win->GetScale() + 76, bounds.y / app->win->GetScale(), new SDL_Rect{ 0, 24 * 2, 16, 16 });
+			app->render->DrawTexture(checkBoxTex, (bounds.x - app->render->camera.x) / app->win->GetScale() + 76, (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ 0, 24 * 2, 16, 16 });
 		}
 		break;
 	case GuiControlState::PRESSED:
-		render->DrawTexture(buttonTex, bounds.x / app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ texId * 80, 24 * 3, 72 , 16 });
+		render->DrawTexture(buttonTex, (bounds.x - app->render->camera.x) / app->win->GetScale(), (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ texId * 80, 24 * 3, 72 , 16 });
 		if (toggle)
 		{
-			app->render->DrawTexture(checkBoxTex, bounds.x / app->win->GetScale() + 76, bounds.y / app->win->GetScale(), new SDL_Rect{ 24, 24 * 3, 16, 16 });
+			app->render->DrawTexture(checkBoxTex, (bounds.x - app->render->camera.x) / app->win->GetScale() + 76, (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ 24, 24 * 3, 16, 16 });
 		}
 		else
 		{
-			app->render->DrawTexture(checkBoxTex, bounds.x / app->win->GetScale() + 76, bounds.y / app->win->GetScale(), new SDL_Rect{ 0, 24 * 3, 16, 16 });
+			app->render->DrawTexture(checkBoxTex, (bounds.x - app->render->camera.x) / app->win->GetScale() + 76, (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ 0, 24 * 3, 16, 16 });
 		}
 		break;
 	case GuiControlState::OFF:

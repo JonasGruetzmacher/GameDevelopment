@@ -27,6 +27,8 @@ private:
 
     int mouseX, mouseY;
     unsigned int click;
+
+    uint audioFxId;
 };
 
 #endif // __GUISLIDER_H__

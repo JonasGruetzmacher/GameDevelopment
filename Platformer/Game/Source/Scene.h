@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "Item.h"
 #include "GuiButton.h"
+#include "GuiSlider.h"
+#include "GuiCheckBox.h"
 
 struct Level {
 	int id;
@@ -43,9 +45,13 @@ public:
 	// Define multiple Gui Event methods
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
-public:
-
 	bool SetUp(int level);
+
+	void SetGui(bool guiOn);
+
+private:
+	bool Pause();
+	bool Resume();
 
 public:
 
@@ -55,17 +61,35 @@ public:
 	bool restartLevel = false;
 	bool nextLevel = false;
 	bool debugMode = false;
+	bool showPauseMenu = false;
 
 private:
 	SDL_Texture* img;
 	SDL_Texture* mouseTileTex = nullptr;
 	SDL_Texture* originTex = nullptr;
+	SDL_Texture* settingsBackground;
 
 	List<Level*> levels;
 
 	//Debug
 	iPoint origin;
 	bool originSelected = false;
+
+	GuiButton* settingsButton;
+	GuiButton* resumeButton;
+	GuiButton* quitButton;
+	GuiButton* titleScreenButton;
+
+	GuiSlider* musicSlider;
+	GuiSlider* fxSlider;
+
+	GuiCheckBox* fullscreenCheckBox;
+	GuiCheckBox* vSyncCheckBox;
+
+	bool showSettings = false;
+	
+
+	bool quit = false;
 };
 
 #endif // __SCENE_H__

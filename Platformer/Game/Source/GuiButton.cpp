@@ -17,7 +17,8 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, int rectX) : GuiControl(GuiCont
 
 	tex = app->tex->Load("Assets/Textures/buttons.png");
 
-	//audioFxId = app->audio->LoadFx("Assets/Audio/Fx/retro-video-game-coin-pickup-38299.ogg");
+	audioFxId1 = app->audio->LoadFx("Assets/Audio/Fx/click1.ogg");
+	audioFxId2 = app->audio->LoadFx("Assets/Audio/Fx/click2.ogg");
 }
 
 GuiButton::~GuiButton()
@@ -39,9 +40,11 @@ bool GuiButton::Update(float dt)
 			mouseY * app->win->GetScale() >= bounds.y && mouseY * app->win->GetScale() <= bounds.y + bounds.h * app->win->GetScale()) {
 
 			state = GuiControlState::FOCUSED;
+			if (previousState == GuiControlState::NORMAL)
+				app->audio->PlayFx(audioFxId1);
 			if (previousState != state) {
 				LOG("Change state from %d to %d", previousState, state);
-				//app->audio->PlayFx(audioFxId);
+				
 			}
 
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT) {
@@ -51,6 +54,7 @@ bool GuiButton::Update(float dt)
 			//
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_UP) {
 				NotifyObserver();
+				app->audio->PlayFx(audioFxId2);
 			}
 		}
 		else {
@@ -68,55 +72,20 @@ bool GuiButton::Draw(Render* render)
 	switch (state)
 	{
 	case GuiControlState::DISABLED:
-
-		//SDL_Rect rect = { 0,0,190,66 };
-		//render->DrawTexture(buttonTex, bounds.x, bounds.y, &rect);
-		if (tex == nullptr)
-		{
-			render->DrawRectangle(bounds, 200, 200, 200, 255, true, false);
-		}
-		else 
-		{
-			render->DrawTexture(tex, bounds.x / app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ rectX, (bounds.h + 8) * 1,bounds.w,bounds.h });
-		}
+		render->DrawTexture(tex, (bounds.x - app->render->camera.x)/ app->win->GetScale(), (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ rectX, (bounds.h + 8) * 1,bounds.w,bounds.h });
 		break;
 	case GuiControlState::NORMAL:
-		if (tex == nullptr)
-		{
-			render->DrawRectangle(bounds, 0, 0, 255, 255, true, false);
-		}
-		else
-		{
-			render->DrawTexture(tex, bounds.x/app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ rectX,0,bounds.w,bounds.h});
-		}
+		//render->DrawTexture(tex, bounds.x/app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ rectX,0,bounds.w,bounds.h});
+		render->DrawTexture(tex, (bounds.x - app->render->camera.x) / app->win->GetScale(), (bounds.y - app->render->camera.y) /app->win->GetScale(), new SDL_Rect{rectX,0,bounds.w,bounds.h});
 		break;
 	case GuiControlState::FOCUSED:
-		if (tex == nullptr)
-		{
-			render->DrawRectangle(bounds, 0, 0, 20, 255, true, false);
-		}
-		else
-		{
-			render->DrawTexture(tex, bounds.x / app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ rectX, (bounds.h + 8) * 2,bounds.w,bounds.h });
-		}
+		render->DrawTexture(tex, (bounds.x - app->render->camera.x) / app->win->GetScale(), (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ rectX, (bounds.h + 8) * 2,bounds.w,bounds.h });
 		break;
 	case GuiControlState::PRESSED:
-		if (tex == nullptr)
-		{
-			render->DrawRectangle(bounds, 0, 255, 0, 255, true, false);
-		}
-		else
-		{
-			render->DrawTexture(tex, bounds.x / app->win->GetScale(), bounds.y / app->win->GetScale(), new SDL_Rect{ rectX, (bounds.h + 8) * 3,bounds.w,bounds.h });
-		}
+		render->DrawTexture(tex, (bounds.x - app->render->camera.x) / app->win->GetScale(), (bounds.y - app->render->camera.y) / app->win->GetScale(), new SDL_Rect{ rectX, (bounds.h + 8) * 3,bounds.w,bounds.h });
 		break;
 	case GuiControlState::OFF:
 		break;
-	}
-
-	if (state != GuiControlState::OFF && tex == nullptr)
-	{
-		app->render->DrawText(text.GetString(), bounds.x, bounds.y, bounds.w * app->win->GetScale(), bounds.h * app->win->GetScale(), { 255,255,255 });
 	}
 	return true;
 }
