@@ -51,6 +51,9 @@ public:
 
 	void SetGui(bool guiOn);
 
+	bool LoadState(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&);
+
 private:
 	bool Pause();
 	bool Resume();
@@ -89,6 +92,9 @@ private:
 
 
 	List<Level*> levels;
+
+	Timer levelTimer;
+	float levelTime;
 
 	//Debug
 	iPoint origin;

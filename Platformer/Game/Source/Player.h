@@ -50,6 +50,7 @@ public:
 	int health = 3;
 	int ammo = 4;
 	int coins = 0;
+	int score = 0;
 private:
 
 	//L02: DONE 1: Declare player parameters

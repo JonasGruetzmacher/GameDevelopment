@@ -33,6 +33,7 @@ bool Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
 	bool ret = true;
+	levelTimer = Timer();
 
 	currentLevel = config.child("currentlevel").attribute("value").as_int();
 	for (pugi::xml_node levelNode = config.child("level"); levelNode; levelNode = levelNode.next_sibling("level"))
@@ -103,7 +104,7 @@ bool Scene::Start()
 
 	resumeButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 206, "Resume", { (int)w / 2 - 80,(int)h / 2 - 110,80,24 }, this, { 0,0,0,0 }, 72);
 
-	titleScreenButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 207, "Title", { (int)w / 2 - 80,(int)h / 2 - 190,80,24 }, this, { 0,0,0,0 }, 160);
+	titleScreenButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 207, "Title", { (int)w / 2 - 80,(int)h / 2 - 190,80,24 }, this, { 0,0,0,0 }, 384);
 
 	return ret;
 }
@@ -241,14 +242,21 @@ bool Scene::DrawGameUI()
 
 	for (int i = 0; i < player->health; i++) 
 	{
-		ret = app->render->DrawTexture(gameUI, (int(w) / 2 - app->render->camera.x) / app->win->GetScale() - 160 + 10*i, (int(h) / 2 - app->render->camera.y) / app->win->GetScale() - 95, &uiHeart);
+		ret = app->render->DrawTexture(gameUI, (int(w) / 2 - app->render->camera.x) / app->win->GetScale() - 160 + 10*i, (int(h) / 2 - app->render->camera.y) / app->win->GetScale() - 95 + ((int)player->position.x/10 + i) %3, &uiHeart);
 	}
 	for (int i = 0; i < player->ammo; i++)
 	{
-		ret = app->render->DrawTexture(gameUI, (int(w) / 2 - app->render->camera.x) / app->win->GetScale() + 150 - 10 * i, (int(h) / 2 - app->render->camera.y) / app->win->GetScale() - 95, &uiAmmo);
+		ret = app->render->DrawTexture(gameUI, (int(w) / 2 - app->render->camera.x) / app->win->GetScale() + 150 - 10 * i, (int(h) / 2 - app->render->camera.y) / app->win->GetScale() - 95 + ((int)player->position.x / 10 + i) % 3, &uiAmmo);
 	}
+	if (!showPauseMenu)
+		levelTime = levelTimer.ReadSec();
+	SString stringTime = SString("%.0f", levelTime);
+	ret = app->chars->DrawText(int(w) / 2 + 50*app->win->GetScale(), int(h) / 2 - 95 * app->win->GetScale(), stringTime);
+	
+	ret = app->chars->DrawText(int(w) / 2 - 50 * app->win->GetScale(), int(h) / 2 - 95 * app->win->GetScale(), SString("%06u", player->score));
+	ret = app->render->DrawTexture(gameUI, (int(w) / 2 - app->render->camera.x) / app->win->GetScale() - 160, (int(h) / 2 - app->render->camera.y) / app->win->GetScale() - 80, &uiCoin);
+	ret = app->chars->DrawText(int(w) / 2 - 152 * app->win->GetScale(), int(h) / 2 - 80 * app->win->GetScale(), SString("%.0f", player->coins));
 
-	app->chars->DrawText(50, 0, "TEST!9");
 	return ret;
 }
 
@@ -294,12 +302,15 @@ bool Scene::SetUp(int level)
 		if (retWalkMap) app->pathfinding->SetMap(w, h, data);
 	}
 
+	levelTimer.Start();
+	levelTimer.SetTime(levelTime);
 
 	return ret;
 }
 
 bool Scene::Pause() 
 {
+	levelTimer.Pause();
 	settingsButton->state = GuiControlState::NORMAL;
 	resumeButton->state = GuiControlState::NORMAL;
 	quitButton->state = GuiControlState::NORMAL;
@@ -313,6 +324,7 @@ bool Scene::Pause()
 
 bool Scene::Resume()
 {
+	levelTimer.Resume();
 	settingsButton->state = GuiControlState::OFF;
 	quitButton->state = GuiControlState::OFF;
 	resumeButton->state = GuiControlState::OFF;
@@ -393,5 +405,20 @@ bool Scene::OnGuiMouseClickEvent(GuiControl* control)
 		break;
 	}
 
+	return true;
+}
+
+bool Scene::SaveState(pugi::xml_node& data)
+{
+	//pugi::xml_node player = data.append_child("player");
+
+	data.append_attribute("leveltime") = levelTime;
+
+	return true;
+}
+
+bool Scene::LoadState(pugi::xml_node& data)
+{
+	levelTime = data.attribute("leveltime").as_float();
 	return true;
 }

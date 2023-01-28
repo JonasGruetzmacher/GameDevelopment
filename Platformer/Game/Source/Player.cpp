@@ -12,6 +12,7 @@
 #include "EntityManager.h"
 #include "FadeToBlack.h"
 #include "Timer.h"
+#include "Chars.h"
 
 Player::Player(pugi::xml_node params) : Entity(EntityType::PLAYER)
 {
@@ -286,6 +287,7 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		if (physA->body->GetPosition().y + 1 < physB->body->GetPosition().y) {
 			app->audio->PlayFx(1);
 			app->entityManager->DestroyEntity(physB->listener);
+			score += 100;
 			pbody->body->SetLinearVelocity(b2Vec2(0, 0));
 			float mass = pbody->body->GetMass();
 			pbody->body->ApplyLinearImpulse(b2Vec2(0, -jumpPower * mass), pbody->body->GetWorldCenter(), true);
@@ -331,6 +333,7 @@ bool Player::LoadState(pugi::xml_node& data)
 	ammo = data.attribute("ammo").as_int();
 	health = data.attribute("health").as_int();
 	coins = data.attribute("coins").as_int();
+	score = data.attribute("score").as_int();
 	
 	active = true;
 	SummonPlayer();
@@ -355,6 +358,7 @@ bool Player::SaveState(pugi::xml_node& data)
 	data.append_attribute("health") = health;
 	data.append_attribute("coins") = coins;
 	data.append_attribute("ammo") = ammo;
+	data.append_attribute("score") = score;
 	data.append_child("velocity");
 	data.child("velocity").append_attribute("x") = pbody->body->GetLinearVelocity().x;
 	data.child("velocity").append_attribute("y") = pbody->body->GetLinearVelocity().y;

@@ -95,6 +95,7 @@ void Bullet::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::ENEMY:
 		LOG("Collision Enemy");
 		app->entityManager->DestroyEntity(physB->listener);
+		app->scene->player->score += 100;
 	case ColliderType::BULLET:
 		app->entityManager->DestroyEntity(physA->listener);
 
