@@ -1,0 +1,113 @@
+<config>
+  <app>
+    <title>Game Development Testbed</title>
+    <organization>UPC</organization>
+	<frcap value = "16"/>
+  </app>
+
+  <renderer>
+    <vsync value="true"/>
+  </renderer>
+
+  <window>
+    <resolution width="1000" height="600" scale="3"/>
+    <fullscreen value="false"/>
+    <borderless value="false"/>
+    <resizable value="false"/>
+    <fullscreen_window value="false"/>
+  </window>
+
+  <audio>
+    <music volume="10" path="Assets/Audio/Music/GameDevMusic.mp3"/>
+    <fx volume="10"/>
+	<sounds>
+        <fx name="jump" path="Assets/Audio/Fx/jump.wav"/>
+		<fx name="death" path="Assets/Audio/Fx/death.wav"/>
+		<fx name="kill" path="Assets/Audio/Fx/kill.wav"/>
+		<fx name="shot" path="Assets/Audio/Fx/shot.wav"/>
+	</sounds>
+  </audio>
+
+  <!-- L02: DONE: Add an element for the entity manager and add the player parameters -->
+  <scene>
+    <player x="150" y="300" texturepath="Assets/Textures/Player.png"/>
+	  <level path="Assets/Maps/Level1.tmx" id="1" name="Level1"/>
+	  <level path="Assets/Maps/Level2.tmx" id="2" name="Level2"/>	
+	<currentlevel value ="1"/>
+	  <debug mouseTileTex = "Assets/Textures/path.png" originTex ="Assets/Textures/x.png" />
+	  <UI>
+		  <settings backgroundPath ="Assets/Textures/SettingsBackground.png"/>
+		  <gameUI path="Assets/Textures/Paper-Pixels-8x8/UI.png">
+			  <heart x="0" y="32" w="8" h="8"/>
+			  <coin x="16" y="32" w="8" h="8"/>
+			  <ammo x="96" y="32" w="8" h="8"/>
+		  </gameUI>
+	  </UI>
+
+  </scene>
+
+  <map>
+    <mapfolder path="Assets/Maps/"/>
+    <mapfile path="Assets/Maps/Level2.tmx"/>
+	  
+  </map>
+
+	<logoScene>
+		<logorect x="0" y="0" w="400" h="200"/>
+		<duration value="3"/>
+		<path value="Assets/Textures/upc.png"/>
+	</logoScene>
+	<titleScene>
+		<logorect x="0" y="0" w="400" h="200"/>
+		<path value="Assets/Textures/TitleScreen.png"/>
+	</titleScene>
+
+	<chars path="Assets/Textures/Paper-Pixels-8x8/UI.png">
+		<char c="0" x="0" y="104" w="8" h="8"/>
+		<char c="1" x="8" y="104" w="8" h="8"/>
+		<char c="2" x="16" y="104" w="8" h="8"/>
+		<char c="3" x="24" y="104" w="8" h="8"/>
+		<char c="4" x="32" y="104" w="8" h="8"/>
+		<char c="5" x="40" y="104" w="8" h="8"/>
+		<char c="6" x="48" y="104" w="8" h="8"/>
+		<char c="7" x="56" y="104" w="8" h="8"/>
+		<char c="8" x="64" y="104" w="8" h="8"/>
+		<char c="9" x="72" y="104" w="8" h="8"/>
+		<char c="A" x="0" y="120" w="8" h="8"/>
+		<char c="B" x="8" y="120" w="8" h="8"/>
+		<char c="C" x="16" y="120" w="8" h="8"/>
+		<char c="D" x="24" y="120" w="8" h="8"/>
+		<char c="E" x="32" y="120" w="8" h="8"/>
+		<char c="F" x="40" y="120" w="8" h="8"/>
+		<char c="G" x="48" y="120" w="8" h="8"/>
+		<char c="H" x="56" y="120" w="8" h="8"/>
+		<char c="I" x="64" y="120" w="8" h="8"/>
+		<char c="J" x="72" y="120" w="8" h="8"/>
+		<char c="K" x="80" y="120" w="8" h="8"/>
+		<char c="L" x="88" y="120" w="8" h="8"/>
+		<char c="M" x="96" y="120" w="8" h="8"/>
+		<char c="N" x="0" y="128" w="8" h="8"/>
+		<char c="O" x="8" y="128" w="8" h="8"/>
+		<char c="P" x="16" y="128" w="8" h="8"/>
+		<char c="Q" x="24" y="128" w="8" h="8"/>
+		<char c="R" x="32" y="128" w="8" h="8"/>
+		<char c="S" x="40" y="128" w="8" h="8"/>
+		<char c="T" x="48" y="128" w="8" h="8"/>
+		<char c="U" x="56" y="128" w="8" h="8"/>
+		<char c="V" x="64" y="128" w="8" h="8"/>
+		<char c="W" x="72" y="128" w="8" h="8"/>
+		<char c="X" x="80" y="128" w="8" h="8"/>
+		<char c="Y" x="88" y="128" w="8" h="8"/>
+		<char c="Z" x="96" y="128" w="8" h="8"/>
+		<char c="." x="0" y="112" w="8" h="8"/>
+		<char c="!" x="8" y="112" w="8" h="8"/>
+		<char c="?" x="16" y="112" w="8" h="8"/>
+		<char c="," x="24" y="112" w="8" h="8"/>
+		<char c="'" x="32" y="112" w="8" h="8"/>
+		<char c=":" x="40" y="112" w="8" h="8"/>
+		<char c=";" x="48" y="112" w="8" h="8"/>
+		<char c="+" x="56" y="112" w="8" h="8"/>
+		<char c="-" x="64" y="112" w="8" h="8"/>
+		
+	</chars>
+</config>

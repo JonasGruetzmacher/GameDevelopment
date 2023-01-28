@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="5" height="2" tilewidth="8" tileheight="8" infinite="1" nextlayerid="3" nextobjectid="6">
+ <tileset firstgid="1" name="UI" tilewidth="8" tileheight="8" tilecount="272" columns="16">
+  <image source="Paper-Pixels-8x8/UI.png" width="128" height="136"/>
+ </tileset>
+ <tileset firstgid="273" name="Tiles" tilewidth="8" tileheight="8" tilecount="1476" columns="18">
+  <image source="Paper-Pixels-8x8/Tiles.png" width="144" height="656"/>
+ </tileset>
+ <layer id="1" name="Kachelebene 1" width="5" height="2">
+  <data encoding="csv">
+   <chunk x="-16" y="0" width="16" height="16">
+1,3,0,1,3,0,0,0,0,0,0,0,0,0,0,0,
+33,35,0,33,35,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+5,7,0,5,7,0,0,0,0,0,0,0,0,0,0,0,
+37,39,0,37,39,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+9,11,0,9,11,0,0,0,0,0,0,0,0,0,0,0,
+41,43,0,41,43,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+1715,1715,0,1715,1715,0,0,0,0,0,0,0,0,0,0,0,
+1715,1715,0,1715,1715,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</chunk>
+  </data>
+ </layer>
+ <objectgroup id="2" name="CheckMark">
+  <object id="1" gid="232" x="-99.9375" y="35.94" width="8" height="8"/>
+  <object id="4" gid="232" x="-99.9375" y="59.94" width="8" height="8"/>
+  <object id="5" gid="232" x="-99.9375" y="83.94" width="8" height="8"/>
+  <object id="3" gid="232" x="-99.9375" y="11.9375" width="8" height="8"/>
+ </objectgroup>
+</map>
