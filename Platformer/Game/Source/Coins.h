@@ -1,4 +1,4 @@
-++#ifndef __COINS_H__
+#ifndef __COINS_H__
 #define __COINS_H__
 
 #include "Entity.h"
@@ -48,26 +48,23 @@ private:
 	const char* texturePath;
 	Animation* currentAnimation = nullptr;
 	Animation idle;
-	Animation idleleft;
-	Animation runright;
-	Animation runleft;
 	//Animation jumpright;
 	//Animation jumpleft;
 	// L07 DONE 5: Add physics to the player - declare a Physics body
 	PhysBody* pbody;
-	//_moveState moveState;
+	_moveState moveState;
 	//int speed = 5;
 	//bool right = true;
 	BehaviourState behaviourState = IDLE;
 	SString moveClass;
 	const DynArray<iPoint>* path;
 
-	/* void Move();
-	void FindPath();
-	void Jump();
-	void SummonEnemy();
-	void SummonFlyingEnemy();
-	void SummonWalkingEnemy();*/
+	// void Move();
+	//void FindPath();
+	//void Jump();
+	void SummonCoin();
+	//void SummonFlyingEnemy();
+	//void SummonWalkingEnemy();
 	void Unstuck(float posX, float posY);
 };
 

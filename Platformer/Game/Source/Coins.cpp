@@ -1,6 +1,6 @@
-+#include "App.h"
+#include "App.h"
 #include "Textures.h"
-#include "Enemy.h"
+#include "Coins.h"
 #include "Audio.h"
 #include "Input.h"
 #include "Render.h"
@@ -12,7 +12,7 @@
 #include "Map.h"
 #include "PathFinding.h"
 
-Coin::Coins(pugi::xml_node params) : Entity(EntityType::COIN)
+Coin::Coin(pugi::xml_node params) : Entity(EntityType::COIN)
 {
 	SString nameID = "Coin";
 	nameID += params.attribute("id").as_string();
@@ -166,8 +166,9 @@ void Coin::OnCollision(PhysBody* physA, PhysBody* physB) {
 	// L07 DONE 7: Detect the type of collision
 
 	switch (physB->ctype)
-	{
-	case ColliderType::ITEM:
+	{ 
+		/*  
+	 case ColliderType::ITEM:
 		LOG("Collision ITEM");
 		break;
 	case ColliderType::PLATFORM:
@@ -189,5 +190,8 @@ void Coin::OnCollision(PhysBody* physA, PhysBody* physB) {
 		Unstuck(physB->body->GetPosition().x, physB->body->GetPosition().y);
 		isJumping = false;
 		break;
-	}
+	}*/
+	case ColliderType::PLAYER:
+		LOG("Collision ITEM");
+		break;
 }
