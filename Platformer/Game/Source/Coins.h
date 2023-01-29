@@ -1,4 +1,4 @@
-+#ifndef __COINS_H__
+++#ifndef __COINS_H__
 #define __COINS_H__
 
 #include "Entity.h"

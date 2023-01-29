@@ -34,7 +34,7 @@
     <ClCompile Include="Source\GuiToggle.cpp" />
     <ClCompile Include="Source\GuiCheckBox.cpp" />
     <ClCompile Include="Source\Chars.cpp" />
-    <ClCompile Include="Coins.cpp" />
+    <ClCompile Include="Source\Coins.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -94,7 +94,7 @@
     <ClInclude Include="Source\GuiToggle.h" />
     <ClInclude Include="Source\GuiCheckBox.h" />
     <ClInclude Include="Source\Chars.h" />
-    <ClInclude Include="Coins.h" />
+    <ClInclude Include="Source\Coins.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
