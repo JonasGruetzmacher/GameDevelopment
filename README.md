@@ -2,9 +2,7 @@
 
 ## Description
 
-In this update of our platformer game, we have introduced ground and flying enemies. These enemies have pathfinding implemented, meaning they will chase the player if they get close. The player can defeat these enemies by jumping on them or shooting them with the 'k' key.
-
-We have also fixed various bugs and added a logo and title screen to the game. It is now possible to load and switch between two different maps, either using the debug keys or by reaching the goal flower in the first level. Please note that the maps are currently just placeholders to showcase the implemented features.
+In this update of our platformer game, we have introduced UI, new Collectibles and optimization. Enemies now have health and need to be shot twice to die.
 
 ## 0.3 Features
 
@@ -33,6 +31,7 @@ We have also fixed various bugs and added a logo and title screen to the game. I
  - Added reachable Goal in the first level
  - Enemies can be killed by jumping on them or shooting them
  
+ 
 ## Controls
 
  - 'A' - move left
@@ -58,6 +57,13 @@ We have also fixed various bugs and added a logo and title screen to the game. I
 - Improve level design
 - Fix smaller bugs
 - Improve sounds
+
+## Old Features
+- Extra level
+- Improved loading (Items and Enemies in Map config, all sounds in config)
+- Player and Enemy animations
+- saving and loading is consistent
+- Added screens
 
 ## Developers
 
