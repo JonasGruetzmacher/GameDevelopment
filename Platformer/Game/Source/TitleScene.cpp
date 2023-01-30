@@ -164,6 +164,13 @@ void TitleScene::SetGui(bool guiOn)
 		settingsButton->state = GuiControlState::NORMAL;
 		creditsButton->state = GuiControlState::NORMAL;
 		quitButton->state = GuiControlState::NORMAL;
+		pugi::xml_document gameStateFile;
+		pugi::xml_parse_result result = gameStateFile.load_file("save_game.xml");
+
+		if (result == NULL)
+		{
+			continueButton->state = GuiControlState::DISABLED;
+		}
 	}
 	else
 	{
@@ -196,6 +203,7 @@ bool TitleScene::OnGuiMouseClickEvent(GuiControl* control)
 		LOG("Button Continue click");
 		app->LoadFromFile();
 		app->fadeToBlack->FadeToBlackScene("Scene", 0.2);
+		app->scene->load = true;
 		break;
 	case 3:
 		showSettings = !showSettings;

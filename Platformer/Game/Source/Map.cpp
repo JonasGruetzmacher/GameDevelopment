@@ -481,6 +481,9 @@ bool Map::LoadCollisions(pugi::xml_node& node, ObjectGroup* group)
         else if (type == "Goal") {
             pBody->ctype = ColliderType::GOAL;
         }
+        else if (type == "CheckPoint") {
+            pBody->ctype = ColliderType::CHECKPOINT;
+        }
         else
         {
             pBody->ctype = ColliderType::UNKNOWN;
@@ -530,12 +533,14 @@ bool Map::LoadEntities(pugi::xml_node& node)
             app->scene->player = (Player*)app->entityManager->CreateEntity(EntityType::PLAYER, objectNode);
 
         }
+        else if(name == "Item")
+        {
+            app->entityManager->CreateEntity(EntityType::ITEM, objectNode);
+        }
         else {
             app->entityManager->CreateEntity(EntityType::ENEMY, objectNode);
         }
     }
-
-    //pugi::xml_node test = app->scene->player->parameters;
 
     return ret;
 }
@@ -553,8 +558,6 @@ bool Map::LoadAllObjectGroups(pugi::xml_node mapNode)
         
         mapData.objectGroups.Add(objectGroup);
 
-        //add the objectgroup to the map
-        //mapData.maplayers.Add(mapLayer);
     }
 
     pugi::xml_node test = app->scene->player->parameters;

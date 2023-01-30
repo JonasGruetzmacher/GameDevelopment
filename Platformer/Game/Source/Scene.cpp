@@ -59,8 +59,6 @@ bool Scene::Awake(pugi::xml_node& config)
 	pugi::xml_node ammoUINode = config.child("UI").child("gameUI").child("ammo");
 	uiAmmo = { ammoUINode.attribute("x").as_int(),ammoUINode.attribute("y").as_int(),ammoUINode.attribute("w").as_int(),ammoUINode.attribute("h").as_int() };
 
-
-
 	return ret;
 }
 
@@ -120,10 +118,16 @@ bool Scene::PreUpdate()
 bool Scene::Update(float dt)
 {
 	// L03: DONE 3: Request App to Load / Save when pressing the keys F5 (save) / F6 (load)
-	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN && !showPauseMenu)
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN && !showPauseMenu || save)
+	{
+		save = false;
 		app->SaveGameRequest();
-	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN && !showPauseMenu)
+	}
+	if ((app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN && !showPauseMenu) || load)
+	{
+		load = false;
 		app->LoadGameRequest();
+	}
 	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 		player->godMode = !player->godMode;
 	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
@@ -153,6 +157,7 @@ bool Scene::Update(float dt)
 	if (nextLevel) {
 		nextLevel = false;
 		app->fadeToBlack->SwitchMap(currentLevel + 1);
+		save = true;
 	}
 
 	// Draw map
@@ -255,7 +260,7 @@ bool Scene::DrawGameUI()
 	
 	ret = app->chars->DrawText(int(w) / 2 - 50 * app->win->GetScale(), int(h) / 2 - 95 * app->win->GetScale(), SString("%06u", player->score));
 	ret = app->render->DrawTexture(gameUI, (int(w) / 2 - app->render->camera.x) / app->win->GetScale() - 160, (int(h) / 2 - app->render->camera.y) / app->win->GetScale() - 80, &uiCoin);
-	ret = app->chars->DrawText(int(w) / 2 - 152 * app->win->GetScale(), int(h) / 2 - 80 * app->win->GetScale(), SString("%.0f", player->coins));
+	ret = app->chars->DrawText(int(w) / 2 - 152 * app->win->GetScale(), int(h) / 2 - 80 * app->win->GetScale(), SString("%u", player->coins));
 
 	return ret;
 }

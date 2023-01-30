@@ -36,7 +36,7 @@ public:
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&);
 
-	bool Die();
+	bool TakeDamage(int amount);
 
 	bool SetPosition(int x, int y);
 
@@ -54,7 +54,7 @@ private:
 	Animation runleft;
 	//Animation jumpright;
 	//Animation jumpleft;
-	// L07 DONE 5: Add physics to the player - declare a Physics body
+	// L07 DONE 5: Add physics to the enemy - declare a Physics body
 	PhysBody* pbody;
 	//_moveState moveState;
 	int speed = 5;
@@ -71,6 +71,9 @@ private:
 	void SummonFlyingEnemy();
 	void SummonWalkingEnemy();
 	void Unstuck(float posX, float posY);
+	void Die();
+
+	int health = 2;
 };
 
 

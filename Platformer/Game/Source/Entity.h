@@ -47,6 +47,11 @@ public:
 		return true;
 	}
 
+	virtual bool TakeDamage(int amount)
+	{
+		return true;
+	}
+
 	virtual bool LoadState(pugi::xml_node&)
 	{
 		return true;

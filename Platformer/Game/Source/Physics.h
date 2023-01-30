@@ -24,6 +24,7 @@ enum bodyType {
 };
 
 enum class ColliderType {
+	AMMO,
 	PLAYER,
 	ITEM,
 	PLATFORM,
@@ -34,6 +35,7 @@ enum class ColliderType {
 	HEALTH,
 	BULLET,
 	GOAL,
+	CHECKPOINT,
 	UNKNOWN
 	// ..
 };

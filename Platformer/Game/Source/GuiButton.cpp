@@ -17,8 +17,8 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, int rectX) : GuiControl(GuiCont
 
 	tex = app->tex->Load("Assets/Textures/buttons.png");
 
-	audioFxId1 = app->audio->LoadFx("Assets/Audio/Fx/click1.ogg");
-	audioFxId2 = app->audio->LoadFx("Assets/Audio/Fx/click2.ogg");
+	audioFxId1 = 7;
+	audioFxId2 = 8;
 }
 
 GuiButton::~GuiButton()

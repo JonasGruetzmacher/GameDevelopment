@@ -97,14 +97,12 @@
   <ItemGroup>
     <ClCompile Include="Source\Bullet.cpp" />
     <ClCompile Include="Source\Chars.cpp" />
-    <ClCompile Include="Source\Coins.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\GuiButton.cpp" />
     <ClCompile Include="Source\GuiCheckBox.cpp" />
     <ClCompile Include="Source\GuiManager.cpp" />
     <ClCompile Include="Source\GuiSlider.cpp" />
     <ClCompile Include="Source\GuiToggle.cpp" />
-    <ClCompile Include="Source\HealthItem.cpp" />
     <ClCompile Include="Source\PathFinding.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\FadeToBlack.cpp" />
@@ -126,7 +124,6 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="Source\Bullet.h" />
     <ClInclude Include="Source\Chars.h" />
-    <ClInclude Include="Source\Coins.h" />
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\GuiButton.h" />
     <ClInclude Include="Source\GuiCheckBox.h" />
@@ -134,7 +131,6 @@
     <ClInclude Include="Source\GuiManager.h" />
     <ClInclude Include="Source\GuiSlider.h" />
     <ClInclude Include="Source\GuiToggle.h" />
-    <ClInclude Include="Source\HealthItem.h" />
     <ClInclude Include="Source\PathFinding.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Entity.h" />

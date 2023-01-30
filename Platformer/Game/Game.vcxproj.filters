@@ -34,8 +34,6 @@
     <ClCompile Include="Source\GuiToggle.cpp" />
     <ClCompile Include="Source\GuiCheckBox.cpp" />
     <ClCompile Include="Source\Chars.cpp" />
-    <ClCompile Include="Source\Coins.cpp" />
-    <ClCompile Include="Source\HealthItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -95,8 +93,6 @@
     <ClInclude Include="Source\GuiToggle.h" />
     <ClInclude Include="Source\GuiCheckBox.h" />
     <ClInclude Include="Source\Chars.h" />
-    <ClInclude Include="Source\Coins.h" />
-    <ClInclude Include="Source\HealthItem.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

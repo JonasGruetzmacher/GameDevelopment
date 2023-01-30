@@ -94,11 +94,18 @@ void Bullet::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::ENEMY:
 		LOG("Collision Enemy");
-		app->entityManager->DestroyEntity(physB->listener);
-		app->scene->player->score += 100;
+		app->scene->player->score += 10;
+		physB->listener->TakeDamage(1);
 	case ColliderType::BULLET:
 		app->entityManager->DestroyEntity(physA->listener);
-
 		break;
+	case ColliderType::AMMO:
+		app->entityManager->DestroyEntity(physA->listener);
+	case ColliderType::COIN:
+		app->entityManager->DestroyEntity(physA->listener);
+	case ColliderType::HEALTH:
+		app->entityManager->DestroyEntity(physA->listener);
+	case ColliderType::CHECKPOINT:
+		app->entityManager->DestroyEntity(physA->listener);
 	}
 }

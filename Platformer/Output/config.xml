@@ -25,6 +25,11 @@
 		<fx name="death" path="Assets/Audio/Fx/death.wav"/>
 		<fx name="kill" path="Assets/Audio/Fx/kill.wav"/>
 		<fx name="shot" path="Assets/Audio/Fx/shot.wav"/>
+		<fx name="pickup" path="Assets/Audio/Fx/pickup.wav"/>
+		<fx name="checkpoint" path="Assets/Audio/Fx/checkpoint.wav"/>
+		<fx name="click1" path="Assets/Audio/Fx/click1.ogg"/>
+		<fx name="click2" path="Assets/Audio/Fx/click2.ogg"/>
+		<fx name="loose" path="Assets/Audio/Fx/loose.wav"/>
 	</sounds>
   </audio>
 

@@ -14,7 +14,7 @@ GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds) : GuiControl(GuiControlType::SL
     this->maxValue = (bounds.x + bounds.w) / app->win->GetScale() + 8;
     barTex = app->tex->Load("Assets/Textures/Slider.png");
     knobTex = app->tex->Load("Assets/Textures/Knob.png");
-    audioFxId = app->audio->LoadFx("Assets/Audio/Fx/click2.ogg");
+    audioFxId = 8;
 
     SetValue((bounds.w - 8) / 2);
 }

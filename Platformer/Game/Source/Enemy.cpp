@@ -11,6 +11,7 @@
 #include "Physics.h"
 #include "Map.h"
 #include "PathFinding.h"
+#include "EntityManager.h"
 
 Enemy::Enemy(pugi::xml_node params) : Entity(EntityType::ENEMY)
 {
@@ -35,7 +36,6 @@ bool Enemy::Awake() {
 	//L02: DONE 5: Get Enemy parameters from XML
 
 	position = startPosition;
-	LOG(name.GetString());
 	
 	tile =  GetTileSetWithGid()->GetTile(gid);
 	if (tile != NULL)
@@ -86,9 +86,6 @@ void Enemy::SummonFlyingEnemy()
 
 	pbody->ctype = ColliderType::ENEMY;
 	pbody->body->SetGravityScale(0);
-
-
-	//moveState = MS_IDLE;
 }
 
 void Enemy::SummonEnemy() 
@@ -114,9 +111,6 @@ void Enemy::SummonWalkingEnemy()
 	pbody->listener = this;
 
 	pbody->ctype = ColliderType::ENEMY;
-
-
-	//moveState = MS_IDLE;
 }
 
 bool Enemy::Update()
@@ -270,6 +264,23 @@ bool Enemy::SaveState(pugi::xml_node& data)
 	return true;
 }
 
+bool Enemy::TakeDamage(int amount)
+{
+	health -= amount;
+
+	if (health <= 0)
+		Die();
+
+	return true;
+}
+
+void Enemy::Die() 
+{
+	app->entityManager->DestroyEntity(this);
+	app->scene->player->score += 100;
+
+}
+
 void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 	// L07 DONE 7: Detect the type of collision
@@ -297,6 +308,10 @@ void Enemy::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("Collision WATER");
 		Unstuck(physB->body->GetPosition().x, physB->body->GetPosition().y);
 		isJumping = false;
+		break;
+	case ColliderType::CHECKPOINT:
+		LOG("Collision WALL");
+		Unstuck(physB->body->GetPosition().x, physB->body->GetPosition().y);
 		break;
 	}
 }

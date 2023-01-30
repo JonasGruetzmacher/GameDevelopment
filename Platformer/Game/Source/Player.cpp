@@ -284,11 +284,22 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::COIN:
 		LOG("+1 coin");
+		app->audio->PlayFx(5);
+		app->entityManager->DestroyEntity(physB->listener);
 		score += 50;
+		coins++;
 		break;
 	case ColliderType::HEALTH:
 		LOG("+1 health");
+		app->audio->PlayFx(5);
+		app->entityManager->DestroyEntity(physB->listener);
 		GainHealth();
+		break;
+	case ColliderType::AMMO:
+		LOG("Get Ammo");
+		app->audio->PlayFx(5);
+		ammo = 4;
+		app->entityManager->DestroyEntity(physB->listener);
 		break;
 	case ColliderType::ENEMY:
 		LOG("Collision ENEMY");
@@ -302,24 +313,30 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 			jump -= 1;
 			if (jump < 0)
 				jump = 0;
-			
 		}
 		else if (!godMode) {
 			TakeDamage();
 		}
 		break;
+	case ColliderType::CHECKPOINT:
+		LOG("Collision Checkpoint");
+		app->SaveGameRequest();
+		app->audio->PlayFx(6);
+		jump = 0;
+
 	}
 	
 }
 
 bool Player::TakeDamage()
 {
-	app->audio->PlayFx(2);
+	
 	health--;
 	if (health < 1)
 	{
 		Die();
 	}
+		app->audio->PlayFx(2);
 
 	return true;
 }
@@ -328,12 +345,15 @@ bool Player::GainHealth() {
 		health++;
 	}
 
+	return true;
 }
 
 bool Player::Die() {
 	LOG("Player died");
-	app->audio->PlayFx(2);
+	
+	app->audio->PlayFx(7);
 	app->fadeToBlack->FadeToBlackScene("TitleScene", 0.4);
+	
 
 	return true;
 }

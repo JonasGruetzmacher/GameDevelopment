@@ -72,6 +72,9 @@ public:
 	bool debugMode = false;
 	bool showPauseMenu = false;
 
+	bool load = false;
+	bool save = false;
+
 private:
 	SDL_Texture* img;
 

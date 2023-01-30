@@ -18,8 +18,8 @@ GuiCheckBox::GuiCheckBox(uint32 id, SDL_Rect bounds, const char* text, int texId
     drawBasic = false;
 
     //Load Button Click Sounds
-    click1FxId = app->audio->LoadFx("Assets/Audio/Fx/click1.ogg");
-    click2FxId = app->audio->LoadFx("Assets/Audio/Fx/click2.ogg");
+	click1FxId = 7;
+	click2FxId = 8;
 
     buttonTex = app->tex->Load("Assets/Textures/CheckBoxButtons.png");
 	checkBoxTex = app->tex->Load("Assets/Textures/CheckBox.png");
