@@ -1,0 +1,55 @@
+<config>
+  <app>
+    <title>Game Development Testbed</title>
+    <organization>UPC</organization>
+  </app>
+
+  <renderer>
+    <vsync value="true"/>
+  </renderer>
+
+  <window>
+    <resolution width="1000" height="600" scale="3"/>
+    <fullscreen value="false"/>
+    <borderless value="false"/>
+    <resizable value="false"/>
+    <fullscreen_window value="false"/>
+  </window>
+
+  <audio>
+    <music volume="10" path="Assets/Audio/Music/GameDevMusic.mp3"/>
+    <fx volume="10"/>
+	<sounds>
+        <fx name="jump" path="Assets/Audio/Fx/jump.wav"/>
+		<fx name="death" path="Assets/Audio/Fx/death.wav"/>
+		<fx name="kill" path="Assets/Audio/Fx/kill.wav"/>
+		<fx name="shot" path="Assets/Audio/Fx/shot.wav"/>
+	</sounds>
+  </audio>
+
+  <!-- L02: DONE: Add an element for the entity manager and add the player parameters -->
+  <scene>
+    <player x="150" y="300" texturepath="Assets/Textures/Player.png"/>
+	  <level path="Assets/Maps/Level1.tmx" id="1" name="Level1"/>
+	  <level path="Assets/Maps/Level2.tmx" id="2" name="Level2"/>	
+	<currentlevel value ="1"/>
+
+  </scene>
+
+  <map>
+    <mapfolder path="Assets/Maps/"/>
+    <mapfile path="Assets/Maps/Level2.tmx"/>
+	  
+  </map>
+
+	<logoScene>
+		<logorect x="0" y="0" w="400" h="200"/>
+		<duration value="3"/>
+		<path value="Assets/Textures/upc.png"/>
+	</logoScene>
+	<titleScene>
+		<logorect x="0" y="0" w="400" h="200"/>
+		<path value="Assets/Textures/TitleScreen.png"/>
+	</titleScene>
+  
+</config>

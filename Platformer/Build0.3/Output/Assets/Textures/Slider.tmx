@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="12" height="1" tilewidth="8" tileheight="8" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="Tiles" tilewidth="8" tileheight="8" tilecount="1476" columns="18">
+  <image source="Paper-Pixels-8x8/Tiles.png" width="144" height="656"/>
+ </tileset>
+ <layer id="1" name="Kachelebene 1" width="12" height="1">
+  <data encoding="csv">
+168,223,223,223,223,223,223,223,223,223,223,168
+</data>
+ </layer>
+</map>

@@ -6,7 +6,23 @@ In this update of our platformer game, we have introduced ground and flying enem
 
 We have also fixed various bugs and added a logo and title screen to the game. It is now possible to load and switch between two different maps, either using the debug keys or by reaching the goal flower in the first level. Please note that the maps are currently just placeholders to showcase the implemented features.
 
-## Key Features
+## 0.3 Features
+
+ - Collectibles
+ - Heart that restores health
+ - Coins
+ - Ammo clip to restore ammunition
+ - Gravestone that automatically saves
+ - Goal Flower now automatically saves in the new level
+ - GUI Titlescreen
+ - GUI Game Scene
+ - Ingame pause Menu
+ - Game Timer
+ - Level Score
+ - moving health and ammo UI
+ - Optimization (normalizing using delta time, capped to 60FPS)
+
+## 0.2 Features
 
  - Introduction of enemies
  - Improved player animations 
@@ -38,8 +54,7 @@ We have also fixed various bugs and added a logo and title screen to the game. I
 ## To-Do
 - Improve pathfinding by moving diagonal
 - Improve Screens
-- Add UI
-- Add health to Player and enemies
+- Add drops on enemy death
 - Improve level design
 - Fix smaller bugs
 - Improve sounds
@@ -54,4 +69,3 @@ We have also fixed various bugs and added a logo and title screen to the game. I
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
 
-{AdditionalLicenses}

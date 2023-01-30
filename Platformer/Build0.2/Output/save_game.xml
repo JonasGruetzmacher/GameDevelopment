@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<save_state level="2">
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<:anonymous />
+	<pathfinding />
+	<scene />
+	<map />
+	<entitymanager>
+		<entities>
+			<Player x="205" y="320" jump="0">
+				<velocity x="0" y="0" />
+			</Player>
+			<Enemy71 x="337" y="377">
+				<velocity x="0" y="0" />
+			</Enemy71>
+			<Enemy72 x="364" y="280">
+				<velocity x="0" y="0" />
+			</Enemy72>
+			<Enemy73 x="509" y="377">
+				<velocity x="0" y="0" />
+			</Enemy73>
+			<Enemy74 x="326" y="184">
+				<velocity x="0" y="0" />
+			</Enemy74>
+			<Enemy75 x="340" y="184">
+				<velocity x="0" y="0" />
+			</Enemy75>
+			<Enemy95 x="422" y="225">
+				<velocity x="0" y="0" />
+			</Enemy95>
+			<Enemy96 x="435" y="261">
+				<velocity x="0" y="0" />
+			</Enemy96>
+			<Enemy98 x="214" y="309">
+				<velocity x="-5.48545395e-05" y="4.99994516" />
+			</Enemy98>
+		</entities>
+	</entitymanager>
+	<titleScene />
+	<logoScene />
+	<fade />
+	<renderer>
+		<camera x="-115" y="-610" />
+	</renderer>
+</save_state>

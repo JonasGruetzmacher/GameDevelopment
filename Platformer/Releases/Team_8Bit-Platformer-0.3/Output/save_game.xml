@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<save_state level="2">
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<:anonymous />
+	<pathfinding />
+	<map />
+	<scene leveltime="0" />
+	<entitymanager>
+		<entities>
+			<Player x="143" y="321" jump="0" health="3" coins="0" ammo="4" score="0">
+				<velocity x="-13.4320307" y="0" />
+			</Player>
+			<Enemy71 x="337" y="284">
+				<velocity x="0" y="1.16666675" />
+			</Enemy71>
+			<Enemy72 x="364" y="281">
+				<velocity x="0" y="0" />
+			</Enemy72>
+			<Enemy73 x="509" y="227">
+				<velocity x="0" y="1.16666675" />
+			</Enemy73>
+			<Enemy74 x="326" y="184">
+				<velocity x="0" y="0" />
+			</Enemy74>
+			<Enemy75 x="340" y="186">
+				<velocity x="0" y="0" />
+			</Enemy75>
+			<Enemy95 x="422" y="225">
+				<velocity x="0" y="0" />
+			</Enemy95>
+			<Enemy96 x="435" y="261">
+				<velocity x="0" y="0" />
+			</Enemy96>
+			<Enemy98 x="267" y="304">
+				<velocity x="0" y="0" />
+			</Enemy98>
+			<Enemy99 x="267" y="286">
+				<velocity x="0" y="0" />
+			</Enemy99>
+		</entities>
+	</entitymanager>
+	<titleScene />
+	<logoScene />
+	<fade />
+	<chars />
+	<guiManager />
+	<renderer>
+		<camera x="71" y="-613" />
+	</renderer>
+</save_state>
