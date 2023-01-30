@@ -44,7 +44,7 @@ public:
 	bool godMode = false;
 
 	bool TakeDamage();
-
+	bool GainHealth();
 public:
 	int direction = 0;
 	int health = 3;

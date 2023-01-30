@@ -284,11 +284,11 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		break;
 	case ColliderType::COIN:
 		LOG("+1 coin");
-		app->scene->nextLevel = true;
+		score += 50;
 		break;
 	case ColliderType::HEALTH:
 		LOG("+1 health");
-		app->scene->nextLevel = true;
+		GainHealth();
 		break;
 	case ColliderType::ENEMY:
 		LOG("Collision ENEMY");
@@ -322,6 +322,12 @@ bool Player::TakeDamage()
 	}
 
 	return true;
+}
+bool Player::GainHealth() {
+	if (health < 3) {
+		health++;
+	}
+
 }
 
 bool Player::Die() {
