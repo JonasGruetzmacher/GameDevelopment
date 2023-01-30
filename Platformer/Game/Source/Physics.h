@@ -30,6 +30,8 @@ enum class ColliderType {
 	WALL,
 	WATER,
 	ENEMY,
+	COIN,
+	HEALTH,
 	BULLET,
 	GOAL,
 	UNKNOWN

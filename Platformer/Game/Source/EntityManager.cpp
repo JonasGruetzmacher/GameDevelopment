@@ -5,6 +5,7 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "Enemy.h"
+#include "HealthItem.h"
 #include "Coins.h"
 #include "Bullet.h"
 
@@ -102,6 +103,9 @@ Entity* EntityManager::CreateEntity(EntityType type, pugi::xml_node parameters)
 		entity = new Enemy(parameters);
 		break;
 	case EntityType::COIN:
+		entity = new Coin(parameters);
+		break;
+	case EntityType::HEALTH:
 		entity = new Coin(parameters);
 		break;
 	default: break;

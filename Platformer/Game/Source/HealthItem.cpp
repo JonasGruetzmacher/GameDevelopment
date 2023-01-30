@@ -1,6 +1,6 @@
 #include "App.h"
 #include "Textures.h"
-#include "Coins.h"
+#include "HealthItem.h"
 #include "Audio.h"
 #include "Input.h"
 #include "Render.h"
@@ -12,7 +12,7 @@
 #include "Map.h"
 #include "PathFinding.h"
 
-Coin::Coin(pugi::xml_node params) : Entity(EntityType::COIN)
+Health::Health(pugi::xml_node params) : Entity(EntityType::HEALTH)
 {
 	SString nameID = "Coin";
 	nameID += params.attribute("id").as_string();
@@ -25,11 +25,11 @@ Coin::Coin(pugi::xml_node params) : Entity(EntityType::COIN)
 
 }
 
-Coin::~Coin() {
+Health::~Health() {
 
 }
 
-bool Coin::Awake() {
+bool Health::Awake() {
 
 	//L02: DONE 1: Initialize Enemy parameters
 	//L02: DONE 5: Get Enemy parameters from XML
@@ -47,23 +47,23 @@ bool Coin::Awake() {
 	}
 	else
 	{
-		  currentAnimation = &idle;
-			idle.PushBack(GetTileSetWithGid()->GetTileRect(gid));
-			colliderHeight = 5;
-			colliderWidth = 5;
-			colliderPos = { 0,0 };
+		currentAnimation = &idle;
+		idle.PushBack(GetTileSetWithGid()->GetTileRect(gid));
+		colliderHeight = 5;
+		colliderWidth = 5;
+		colliderPos = { 0,0 };
 	}
 
 	return true;
 }
 
-bool Coin::Start() {
-	SummonCoin();
+bool Health::Start() {
+	SummonHealth();
 
 	return true;
 }
 
-bool Coin::SetPosition(int x, int y)
+bool Health::SetPosition(int x, int y)
 {
 	bool ret = true;
 
@@ -77,13 +77,13 @@ bool Coin::SetPosition(int x, int y)
 	return ret;
 }
 
-void Coin::SummonCoin()
+void Health::SummonHealth()
 {
 	pbody = app->physics->CreateRectangle(position.x + colliderPos.x, position.y + colliderPos.y, colliderWidth, colliderHeight, bodyType::DYNAMIC);
 	pbody->body->SetFixedRotation(true);
 	pbody->listener = this;
 
-	pbody->ctype = ColliderType::COIN;
+	pbody->ctype = ColliderType::HEALTH;
 
 
 }
@@ -101,32 +101,32 @@ bool Coin::Update()
 	return true;
 }*/
 
-bool Coin::CleanUp()
+bool Health::CleanUp()
 {
 	app->physics->world;
 	pbody->body->GetWorld()->DestroyBody(pbody->body);
 	return true;
 }
 
-bool Coin::LoadState(pugi::xml_node& data)
+bool Health::LoadState(pugi::xml_node& data)
 {
 	position.x = data.attribute("x").as_int();
 	position.y = data.attribute("y").as_int();
 
 	active = true;
-	SummonCoin();
+	SummonHealth();
 
 	b2Vec2 vel;
 	vel.x = data.child("velocity").attribute("x").as_int();
 	vel.y = data.child("velocity").attribute("y").as_int();
 	pbody->body->SetLinearVelocity(vel);
-	LOG("load Coin");
+	LOG("load HealthItem");
 	return true;
 }
 
 // L03: DONE 8: Create a method to save the state of the renderer
 // using append_child and append_attribute
-bool Coin::SaveState(pugi::xml_node& data)
+bool Health::SaveState(pugi::xml_node& data)
 {
 	//pugi::xml_node Enemy = data.append_child("Enemy");
 
@@ -139,7 +139,7 @@ bool Coin::SaveState(pugi::xml_node& data)
 	return true;
 }
 
-void Coin::OnCollision(PhysBody* physA, PhysBody* physB) {
+void Health::OnCollision(PhysBody* physA, PhysBody* physB) {
 
 	// L07 DONE 7: Detect the type of collision
 

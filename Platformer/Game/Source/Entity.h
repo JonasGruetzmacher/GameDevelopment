@@ -15,6 +15,7 @@ enum class EntityType
 	PLAYER,
 	ITEM,
 	ENEMY,
+	HEALTH,
 	COIN,
 	BULLET,
 	UNKNOWN

@@ -1,5 +1,5 @@
-#ifndef __COINS_H__
-#define __COINS_H__
+#ifndef __HEALTH_H__
+#define __HEALTH_H__
 
 #include "Entity.h"
 #include "Point.h"
@@ -14,13 +14,13 @@ struct SDL_Texture;
 	IDLE
 };*/
 
-class Coin : public Entity
+class Health : public Entity
 {
 public:
 
-	Coin(pugi::xml_node parameters);
+	Health(pugi::xml_node parameters);
 
-	virtual ~Coin();
+	virtual ~Health();
 
 	bool Awake();
 
@@ -62,7 +62,7 @@ private:
 	// void Move();
 	//void FindPath();
 	//void Jump();
-	void SummonCoin();
+	void SummonHealth();
 	//void SummonFlyingEnemy();
 	//void SummonWalkingEnemy();
 	//void Unstuck(float posX, float posY);
